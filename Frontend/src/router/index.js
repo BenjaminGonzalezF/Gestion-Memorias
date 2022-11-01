@@ -21,6 +21,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/visualizarTemas.vue')
   },
   
+  {
+    path: '/solicitudmemoria',
+    name: 'solicitudmemoria',
+    component: () => import(/* webpackChunkName: "about2" */ '../views/Vistasolicitar.vue')
+  },
 ]
 
 const router = new VueRouter({
