@@ -7,7 +7,7 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: () => import(/* webpackChunkName: "about" */ '../views/MenuAlumno.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/FormularioRegistroAlumno.vue')
   },
 ]
 
