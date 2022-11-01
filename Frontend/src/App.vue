@@ -1,19 +1,6 @@
 <template>
   <v-app>
-        <v-app-bar color="white" app
-        height="100">
-            <v-img max-height="100" max-width="100" src="./assets/LOGO_UTAL.png"></v-img>
-            <v-tabs centered class="ml-n9" >
-                <v-tab>
-                    Oferta de temas
-                </v-tab>
 
-                <v-tab>
-                    Solicitud de tema
-                </v-tab>
-
-            </v-tabs> 
-        </v-app-bar>
 
     <v-main>
       <router-view/>
