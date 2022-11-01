@@ -7,7 +7,7 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: () => import(/* webpackChunkName: "about" */ '../views/MenuAlumno.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
   },
   
   {
@@ -20,6 +20,21 @@ const routes = [
     path: '/solicitudmemoria',
     name: 'solicitudmemoria',
     component: () => import(/* webpackChunkName: "about2" */ '../views/Vistasolicitar.vue')
+  },
+  {
+    path: '/profesor',
+    name: 'Profesor',
+    component: () => import('../views/Profesor.vue')
+  },
+  {
+    path: '/Alumno',
+    name: 'Alumno',
+    component: () => import('../views/VistaAlumno.vue')
+  },
+  {
+    path: '/directora',
+    name: 'directora',
+    component: () => import('../views/VistaDirectora.vue')
   },
 ]
 
