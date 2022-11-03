@@ -1,32 +1,29 @@
 <template>
-  <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view/>
-  </div>
+  <v-app>
+
+
+    <v-main>
+      <router-view/>
+    </v-main>
+    <v-footer color="272727" padless>
+      <v-row justify="center" no-gutters>
+        <v-btn v-for="icono in iconos" :key="icono" color="white" text rounded class="my-2" icon>
+          <v-icon size="24px">{{icono}}</v-icon>
+        </v-btn>
+        <v-col class="grey py-4 text-center white--text" cols="12">
+          {{ new Date().getFullYear() }} — <strong>Utal</strong>
+        </v-col>
+      </v-row>
+    </v-footer>
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+<script>
+//import { Icon } from '@iconify/vue2';
+export default {
+  
+  data: () => ({
+    //
+  }),
+};
+</script>
