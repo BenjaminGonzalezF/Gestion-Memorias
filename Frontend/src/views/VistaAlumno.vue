@@ -20,7 +20,7 @@
               </div>
               <v-spacer></v-spacer>
               <v-card-actions>
-                <v-contain class="mx-auto mb-n9"> <strong> {{oferta.profesor}}</strong></v-contain>
+                <v-container class="mx-auto mb-n9"> <strong> {{oferta.profesor}}</strong></v-container>
               </v-card-actions>
             </v-card>
           </v-col>
