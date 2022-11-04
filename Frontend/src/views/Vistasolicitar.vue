@@ -13,10 +13,10 @@
                     <v-expansion-panel
                         v-for="ArraySemestres in semestres" :key="ArraySemestres.id"
                     >
-                        <v-expansion-panel-header> {{ArraySemestres.nombre}}</v-expansion-panel-header>
+                        <v-expansion-panel-header> <H3>{{ArraySemestres.nombre}}</H3></v-expansion-panel-header>
                     <v-expansion-panel-content>
                     <v-col v-for="ArrayRamos in ArraySemestres.ramos " :key="ArrayRamos.id" col="1">
-                        <v-card height="60" width="400">
+                        <v-card height="60" width="80%">
                         <v-col>
                             <v-row>
                                 <v-checkbox
@@ -132,7 +132,254 @@ let semestres1= [
                     selected: null
                 }
             ],
+        },
+        {
+            id: 1,
+            nombre: "Semestre 3",
+            ramos:[
+                {
+                    name:"Programación Avanzada",
+                    selected: null
+                },
+                {
+                    name:"Lenguaje y Paradigmas de Programación",
+                    selected: null
+                },
+                {
+                    name:"Algebra Lineal",
+                    selected: null
+                },
+                {
+                    name:"Cálculo II",
+                    selected: null
+                },
+                {
+                    name:"Autogestión de Aprendizaje",
+                    selected: null
+                },
+                {
+                    name:"Idioma Extranjero III",
+                    selected: null
+                }
+            ],
         }, 
+        {
+            id: 1,
+            nombre: "Semestre 4",
+            ramos:[
+                {
+                    name:"Proyecto de Programacion",
+                    selected: null
+                },
+                {
+                    name:"Algoritmos y Estruturas de Datos",
+                    selected: null
+                },
+                {
+                    name:"Modelos Discretos",
+                    selected: null
+                },
+                {
+                    name:"Probabilidades y Estadística",
+                    selected: null
+                },
+                {
+                    name:"Trabajo en Equipo y Desarrollo de Habilidades Sociales",
+                    selected: null
+                },
+                {
+                    name:"Idioma Extranjero IV",
+                    selected: null
+                },
+                {
+                    name:"Deportes II",
+                    selected: null
+                }
+            ],
+        }, 
+        {
+            id: 1,
+            nombre: "Semestre 5",
+            ramos:[
+                {
+                    name:"Requisitos de Sofware",
+                    selected: null
+                },
+                {
+                    name:"Metodologías de Desarrollo y Plani. de Proyectos de Sof.",
+                    selected: null
+                },
+                {
+                    name:"Diseño de Base de Datos",
+                    selected: null
+                },
+                {
+                    name:"Ecuaciones Diferenciales",
+                    selected: null
+                },
+                {
+                    name:"Física General",
+                    selected: null
+                },
+                {
+                    name:"Comprensión de Contextos Sociales",
+                    selected: null
+                },
+                {
+                    name:"Idioma Extranjero V",
+                    selected: null
+                }
+            ],
+        }, 
+        {
+            id: 1,
+            nombre: "Semestre 6",
+            ramos:[
+                {
+                    name:"Diseño de Software",
+                    selected: null
+                },
+                {
+                    name:"Máquinas Abstractas y Lenguajes Formales",
+                    selected: null
+                },
+                {
+                    name:"Arquitectura de Computadores y Diseño de Circulos Digitales",
+                    selected: null
+                },
+                {
+                    name:"Electricidad y Magnetismo",
+                    selected: null
+                },
+                {
+                    name:"Comprensión de Contexto Culturales",
+                    selected: null
+                },
+                {
+                    name:"Idioma Extranjero VI",
+                    selected: null
+                }
+            ],
+        }, 
+        {
+            id: 1,
+            nombre: "Semestre 7",
+            ramos:[
+                {
+                    name:"Construcción de Software",
+                    selected: null
+                },
+                {
+                    name:"Gestión de Base de Datos",
+                    selected: null
+                },
+                {
+                    name:"Sistemas Operativos",
+                    selected: null
+                },
+                {
+                    name:"Redes de Computadores",
+                    selected: null
+                },
+                {
+                    name:"Fundamentos de Administración",
+                    selected: null
+                },
+                {
+                    name:"Etica y Responsabilidad Social",
+                    selected: null
+                }
+            ],
+        }, 
+        {
+            id: 1,
+            nombre: "Semestre 8",
+            ramos:[
+                {
+                    name:"Electivo I",
+                    selected: null
+                },
+                {
+                    name:"Inteligencia Artificial",
+                    selected: null
+                },
+                {
+                    name:"Administración de Redes y Sistemas Computacionales",
+                    selected: null
+                },
+                {
+                    name:"Sistemas Distribuidos",
+                    selected: null
+                },
+                {
+                    name:"Ingeniería Económica y Evaluaciónes de Proyectos",
+                    selected: null
+                },
+                {
+                    name:"Responsabilidad Social",
+                    selected: null
+                }
+            ],
+        }, 
+        {
+            id: 1,
+            nombre: "Semestre 9",
+            ramos:[
+                {
+                    name:"Taller de Desarrollo de Software",
+                    selected: null
+                },
+                {
+                    name:"Seguridad Informática",
+                    selected: null
+                },
+                {
+                    name:"Electivo II",
+                    selected: null
+                },
+                {
+                    name:"Gestión de Proyectos Tecnológicos",
+                    selected: null
+                },
+                {
+                    name:"Gestión de Recursos Humanos",
+                    selected: null
+                }
+            ],
+        }, 
+        {
+            id: 1,
+            nombre: "Semestre 10",
+            ramos:[
+                {
+                    name:"Foemulación de Proyecto de Titulación",
+                    selected: null
+                },
+                {
+                    name:"Electivo III",
+                    selected: null
+                },
+                {
+                    name:"Gestión de Innovación y Emprendimiento",
+                    selected: null
+                }
+            ],
+        }, 
+        {
+            id: 1,
+            nombre: "Semestre 11",
+            ramos:[
+                {
+                    name:"Proyecto de Titulación",
+                    selected: null
+                },
+                {
+                    name:"Electivo IV",
+                    selected: null
+                }
+            ],
+        }, 
+         
     ]
   export default {
     data() {
