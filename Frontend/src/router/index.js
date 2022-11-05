@@ -1,19 +1,40 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: HomeView
+    path: '/login',
+    name: 'login',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
+  },
+  
+  {
+    path: '/visualizarTemas',
+    name: 'visualizarTemas',
+    component: () => import(/* webpackChunkName: "about" */ '../views/visualizarTemas.vue')
+  },
+  
+  {
+    path: '/solicitudmemoria',
+    name: 'solicitudmemoria',
+    component: () => import(/* webpackChunkName: "about2" */ '../views/Vistasolicitar.vue')
   },
   {
-    path: '/about',
-    name: 'about',
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    path: '/profesor',
+    name: 'Profesor',
+    component: () => import('../views/Profesor/Solicitudes.vue')
+  },
+  {
+    path: '/Alumno',
+    name: 'Alumno',
+    component: () => import('../views/VistaAlumno.vue')
+  },
+  {
+    path: '/directora',
+    name: 'directora',
+    component: () => import('../views/VistaDirectora.vue')
   },
 ]
 
