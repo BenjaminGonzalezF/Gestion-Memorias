@@ -7,19 +7,19 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
+    component: () => import('../views/Login.vue')
   },
   
   {
     path: '/visualizarTemas',
     name: 'visualizarTemas',
-    component: () => import(/* webpackChunkName: "about" */ '../views/visualizarTemas.vue')
+    component: () => import( '../views/visualizarTemas.vue')
   },
   
   {
     path: '/solicitudmemoria',
     name: 'solicitudmemoria',
-    component: () => import(/* webpackChunkName: "about2" */ '../views/Vistasolicitar.vue')
+    component: () => import('../views/Vistasolicitar.vue')
   },
   {
     path: '/profesor',
