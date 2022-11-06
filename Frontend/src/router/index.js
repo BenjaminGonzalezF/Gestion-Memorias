@@ -36,11 +36,6 @@ const routes = [
     name: 'directora',
     component: () => import('../views/VistaDirectora.vue')
   },
-  {
-    path: '/comite',
-    name: 'comite',
-    component: () => import('../views/vistaComite.vue')
-  },
 ]
 
 const router = new VueRouter({
