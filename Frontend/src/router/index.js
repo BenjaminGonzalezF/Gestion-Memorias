@@ -15,6 +15,11 @@ const routes = [
     name: 'visualizarTemas',
     component: () => import(/* webpackChunkName: "about" */ '../views/visualizarTemas.vue')
   },
+  {
+    path: '/VistaComite',
+    name: 'VistaComite',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Comite/VistaComite.vue')
+  },
   
   {
     path: '/solicitudmemoria',
