@@ -18,7 +18,7 @@
         </v-hover>
       </v-card-text>
     </v-card>
-    <v-main>
+    <v-main class="fondo">
       <v-card class="mx-auto mt-5" max-width="460" elevation="3" outlined>
         <v-card-title>
           Bienvenido {{this.nombre_ingreso}}
@@ -219,10 +219,8 @@ export default {
 
 <style>
   .fondo{
-    background-image: url("../assets/logo.png");
+    background-image: url('https://cdn.discordapp.com/attachments/1034862333966684261/1039324077829128202/iccExtension2.jpg');
     height: 100%;
-    filter: blur(8px);
-    -webkit-filter: blur(8px);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
