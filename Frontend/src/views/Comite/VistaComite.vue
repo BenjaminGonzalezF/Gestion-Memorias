@@ -1,56 +1,58 @@
 <template>
-      
-    <div class="Oferta de temas">
-       
+    <div class="Solicitudes">
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
-            <v-app-bar  
-            color="#00CCFF" 
-        >    
-            <v-img 
-                max-height="40" 
-                max-width="50" 
-                src="@/assets/utal.png"   
-            ></v-img> 
-            <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon> 
-             
-        </v-app-bar> 
-        <v-navigation-drawer v-model="drawer" absolute temporary color="#00CCFF"> 
-            <v-list-item> 
-            <v-list-item-avatar> 
-                <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img> 
-            </v-list-item-avatar> 
-             
-            <v-list-item-content> 
-                <v-list-item-title>John Leider</v-list-item-title> 
-            </v-list-item-content> 
-            </v-list-item> 
- 
-            <v-divider></v-divider> 
- 
-            <v-list dense> 
-            <v-list-item v-for="item in items" :key="item.title" link> 
-                <v-list-item-icon> 
-                    <v-icon>{{ item.icon }}</v-icon> 
-                </v-list-item-icon> 
- 
-                <v-list-item-content> 
-                    <v-list-item-title>{{ item.title }}</v-list-item-title> 
-                </v-list-item-content> 
-            </v-list-item> 
-            </v-list> 
-        </v-navigation-drawer>    
-      
-       
+    
+        <v-app-bar >
+            <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        </v-app-bar>
+        <v-navigation-drawer v-model="drawer" absolute temporary>
+            <v-list-item>
+            <v-list-item-avatar>
+                <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
+            </v-list-item-avatar>
+            
+            <v-list-item-content>
+                <v-list-item-title>John Leider</v-list-item-title>
+            </v-list-item-content>
+            </v-list-item>
+    
+            <v-divider></v-divider>
+    
+            <v-list dense>
+            <v-list-item v-for="item in items" :key="item.title" link>
+                <v-list-item-icon>
+                <v-icon>{{ item.icon }}</v-icon>
+                </v-list-item-icon>
+    
+                <v-list-item-content>
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item-content>
+            </v-list-item>
+            </v-list>
+        </v-navigation-drawer>
         <div>
-         
             <v-container class="my-3">
                 <v-layout row class="mx-1">
                     <v-spacer></v-spacer>
+                    <v-btn-toggle
+                    v-model="toggle"
+                    dense
+                    class="mr-2"
+                    style="max-height: 20px !important"
+                    >
+                    <v-btn small color="deep-purple lighten-2" :disabled="toggle === 0">
+                        <v-icon class="white--text">mdi-view-agenda</v-icon>
+                    </v-btn>
+
+                    <v-btn small color="deep-purple lighten-2" :disabled="toggle === 1">
+                        <v-icon class="white--text">mdi-view-grid</v-icon>
+                    </v-btn>
+                    </v-btn-toggle>
                     <v-menu offset-y>
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn
                         depressed
-                        color="#f5a42a"
+                        color="deep-purple lighten-2"
                         class="mb-5"
                         dark
                         small
@@ -83,19 +85,48 @@
                             <div>{{ project.descripcion }}</div>
                             </v-flex>
                             <v-flex xs2 sm1 md2>
-                            <div class="caption grey--text">Profesor</div>
+                            <div class="caption grey--text">Estudiante</div>
                             <div>{{ project.estudiante }}</div>
                             </v-flex>
 
+                            <v-flex xs6 sm4 md1>
+                            <div class="caption grey--text">fecha</div>
+                            <div>{{ project.fecha }}</div>
+                            </v-flex>
                             <v-flex xs2 sm3 md2>
                             <!-- <div class="caption grey--text">Durum</div> -->
                             <div class="my-1 text-center">
-                                <v-btn @click="verSolicitud(project.id, project.title, project.descripcion, project.estudiante, project.fecha)" >
-                                    Ver descripcion tema
+                                <v-btn @click="verSolicitud(project.id, project.title, project.descripcion, project.estudiante, project.fecha)">
+                                    Ver solicitud
                                 </v-btn>
                             </div>
                             </v-flex>
                             <v-flex xs6 sm1 md1>
+                            <v-tooltip top>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn
+                                    fab
+                                    text
+                                    small
+                                    color="green accent-2"
+                                    class="mt-1"
+                                >
+                                    
+                                    <v-icon> mdi-checkbox-marked-circle</v-icon>
+                                </v-btn>
+                                <v-btn
+                                    fab
+                                    text
+                                    small
+                                    color="red accent-2"
+                                    class="mt-1"
+                                    @click="deleteProject(project.id)"
+                                >
+                                    <v-icon>mdi-delete</v-icon>
+                                </v-btn>
+
+                                </template>
+                            </v-tooltip>
                             </v-flex>
                         </v-layout>
                      </v-card>
@@ -118,23 +149,27 @@
                                                 <div>{{ descripcionProyecto }}</div>
                                                 </v-flex>
                                                 <v-flex>
-                                                <div class="caption grey--text">Profesor</div>
+                                                <div class="caption grey--text">Estudiante</div>
                                                 <div>{{ estudiante }}</div>
+                                                </v-flex>
+
+                                                <v-flex>
+                                                <div class="caption grey--text">fecha</div>
+                                                <div>{{ fecha }}</div>
                                                 </v-flex>
                                             </v-container>
                                         </v-card-text>
 
                                     </v-card>
                                 </v-col>
-                                <v-col cols="12" sm="12" md="6">
+                            <v-col cols="12" sm="12" md="6">
                                 <v-card>
+                                    <v-card-title>
+                                        <span class="text-h5">Datos estudiante</span>
+                                    </v-card-title>
                                     <v-card-text>
                                         <v-container>
-                                            <div class="my-1 text-center">
-                                <v-btn @click="enviarSolicitud(project.id, project.title, project.descripcion, project.estudiante, project.fecha)" color="#f5a42a" >
-                                    Enviar Solicitud
-                                </v-btn>
-                            </div>
+                                            
                                         </v-container>
                                     </v-card-text>
                                 </v-card>
@@ -143,31 +178,33 @@
                         </v-container>  
                     </v-dialog>
                 </div>
+                
             </v-container>
         </div>
         </v-sheet>
         
     </div>
-
-</template>
-
+  </template>
+  
 <script>
-import headerAlumno from '@/components/headerAlumno.vue';
- export default {
-    name: 'Alumno',
+
+export default {
+    name: 'Solicitudes',
     data() {
         return {
             drawer: null,
             drawerSolicitud : false,
             tituloProyecto: null,
             descripcionProyecto: null,
-            profesor : null,
+            estudiante : null,
+            fecha : null,
             solicitudes:[{
                 id: 1,
                 title: 'proyecto 1',
                 person: 'Manuel',
                 descripcion:'EL proyecto 1 se tratara sobre blablabla',
-                profesor: 'Daniel Moreno',
+                estudiante: 'Jose Gomez',
+                fecha: '01/11/2022',
                 status:'completado'
             },
             {
@@ -175,7 +212,8 @@ import headerAlumno from '@/components/headerAlumno.vue';
                 title: 'proyecto 2',
                 person: 'Joselito',
                 descripcion:'EL proyecto 2 se tratara sobre blablabla',
-                profesor: 'Rodrigo Paves',
+                estudiante: 'Joselito Rodriguez',
+                fecha: '01/11/2022',
                 status:'en progreso'
             },
             {
@@ -183,15 +221,16 @@ import headerAlumno from '@/components/headerAlumno.vue';
                 title: 'proyecto 3',
                 person: 'Manuel Gonzalez',
                 descripcion:'EL proyecto 3 se tratara sobre blablabla',
-                profesor: 'Luis Silvestre',
+                estudiante: 'Pedro Bustamante',
+                fecha: '01/11/2022',
                 status:'atrasado'
             }
             ],
             itemsOrdenar: [
                 { title: 'Por titulo', prop: 'title' },
                 {
-                title: 'Por profesor',
-                prop: 'profesor',
+                title: 'Por creador',
+                prop: 'person',
                 },
                 {
                 title: 'Por fecha',
@@ -199,8 +238,7 @@ import headerAlumno from '@/components/headerAlumno.vue';
                 },
             ],
             items: [
-                { title: "Oferta temas", icon: "mdi-folder" },
-                { title: "Solicitud de temas", icon: "mdi-folder" },
+                { title: "Solicitudes de proyecto", icon: "mdi-folder" },
                 { title: "Cerrar sesion", icon: "mdi-forum" },
             ],
         };
@@ -211,13 +249,18 @@ import headerAlumno from '@/components/headerAlumno.vue';
         this.tituloProyecto = titulo
         this.descripcionProyecto = descripcion
         this.estudiante = estudiante
+        this.fecha = fecha
+    },
+    getChipColor(color) {
+      if (color == 'completado') return 'green accent-3'
+      else if (color == 'en progreso') return 'orange accent-2'
+      else if (color == 'atrasado') return 'red accent-2'
+    },
+    getsolicitudestatus(status) {
+      if (status == 'completado') return 'Completado'
+      else if (status == 'en progreso') return 'En progreso'
+      else if (status == 'atrasado') return 'Atrasado'
     },
 }
 }
 </script>
-
-<style> 
-    .v-list-item:hover { 
-        background: #f5a42a; 
-    } 
-</style>

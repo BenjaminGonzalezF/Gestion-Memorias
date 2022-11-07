@@ -5,7 +5,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/login',
+    path: '/',
     name: 'login',
     component: () => import('../views/Login.vue')
   },
@@ -14,6 +14,11 @@ const routes = [
     path: '/visualizarTemas',
     name: 'visualizarTemas',
     component: () => import( '../views/visualizarTemas.vue')
+  },
+  {
+    path: '/VistaComite',
+    name: 'VistaComite',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Comite/VistaComite.vue')
   },
   
   {
