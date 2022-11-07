@@ -219,7 +219,7 @@ export default {
 
 <style>
   .fondo{
-    background-image: url("../assets/logo.png");
+    background-image: url("../assets/logo.svg");
     height: 100%;
     filter: blur(8px);
     -webkit-filter: blur(8px);
