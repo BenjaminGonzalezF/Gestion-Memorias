@@ -15,6 +15,11 @@ const routes = [
     name: 'visualizarTemas',
     component: () => import(/* webpackChunkName: "about" */ '../views/visualizarTemas.vue')
   },
+  {
+    path: '/VistaComite',
+    name: 'VistaComite',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Comite/VistaComite.vue')
+  },
   
   {
     path: '/solicitudmemoria',
@@ -24,7 +29,7 @@ const routes = [
   {
     path: '/profesor',
     name: 'Profesor',
-    component: () => import('../views/Profesor.vue')
+    component: () => import('../views/Profesor/Solicitudes.vue')
   },
   {
     path: '/Alumno',

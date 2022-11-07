@@ -1,10 +1,9 @@
 <template>
-  <v-container class="mx-auto">
+  <v-container >
     <h1 class="subheading grey--text mb-10">Solicitudes pendientes</h1>
-    <v-container>
-      <v-row>
-        <v-col v-for="oferta in ofertas" :key=oferta.titulo cols="4">
-          <v-card height="190" width="340">
+    <v-container >
+        <v-col v-for="oferta in ofertas" :key=oferta.titulo >
+          <v-card  class="mx-auto" height=50% width=60%>
             <v-card-title class="white--text blue-grey">{{ oferta.titulo }}</v-card-title>
             <v-spacer></v-spacer>
             <v-card-text>
@@ -16,7 +15,6 @@
             </v-card-actions>
           </v-card>
         </v-col>
-      </v-row>
     </v-container>
   </v-container>
 
