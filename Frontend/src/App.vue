@@ -17,6 +17,7 @@ export default {
     alumnos:[],
   }),
   beforeMount() {
+    // Solo funciona con los alumnos...
     var usuario_id=null
     var alumno_sesion=null
     usuario_id=localStorage.getItem("key_usuario")

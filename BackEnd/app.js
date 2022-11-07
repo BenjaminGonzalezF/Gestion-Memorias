@@ -24,11 +24,12 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/api', require('./routes/Admin'));
-app.use('/api', require('./routes/Alumno'));
-app.use('/api', require('./routes/Funcionario'));
-app.use('/api', require('./routes/Solicitud'));
-app.use('/api', require('./routes/Tema'));
+app.use('/api', require('./routes/Alumnos'));
+app.use('/api', require('./routes/Profesores'));
+app.use('/api', require('./routes/Solicitudes'));
+app.use('/api', require('./routes/Temas'));
+app.use('/api', require('./routes/Comite'));
+app.use('/api', require('./routes/Escuela'));
 
 // Middleware para Vue.js router modo history
 const history = require('connect-history-api-fallback');
