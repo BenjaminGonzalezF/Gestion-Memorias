@@ -5,7 +5,7 @@
         <v-app-bar >
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         </v-app-bar>
-        <v-navigation-drawer v-model="drawer" absolute temporary>
+        <v-navigation-drawer v-model="drawer" absolute temporary  color="#00CCFF">
             <v-list-item>
             <v-list-item-avatar>
                 <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
@@ -255,3 +255,9 @@ export default {
 }
 }
 </script>
+
+<style> 
+    .v-list-item:hover { 
+        background: #f5a42a; 
+    } 
+</style>
