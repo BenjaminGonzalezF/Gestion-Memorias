@@ -22,9 +22,19 @@ const routes = [
     component: () => import(/* webpackChunkName: "about2" */ '../views/Vistasolicitar.vue')
   },
   {
-    path: '/profesor',
-    name: 'Profesor',
+    path: '/profesor/Solicitudes',
+    name: 'Profesor/Solicitudes',
     component: () => import('../views/Profesor/Solicitudes.vue')
+  },
+  {
+    path: '/profesor/Estudiantes',
+    name: 'Profesor/Estudiantes',
+    component: () => import('../views/Profesor/Estudiantes.vue')
+  },
+  {
+    path: '/profesor/Proyectos',
+    name: 'Profesor/Proyectos',
+    component: () => import('../views/Profesor/Proyectos.vue')
   },
   {
     path: '/Alumno',
