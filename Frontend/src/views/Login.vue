@@ -82,7 +82,7 @@ export default {
             }
             if (ingresado) {
               localStorage.setItem("key_usuario", id);
-              //this.$router.push({ path: "/Alumno" })
+              this.$router.push({ path: "/Alumno" })
               Swal.fire(
                 'Ingreso!',
                 'Has ingresado correctamente!',
@@ -113,7 +113,7 @@ export default {
             }
             if (ingresado) {
               localStorage.setItem("key_usuario", id);
-              //this.$router.push({ path: "/Alumno" })
+              this.$router.push({ path: "/profesor" })
               Swal.fire(
                 'Ingreso!',
                 'Has ingresado correctamente!',
@@ -144,7 +144,7 @@ export default {
             }
             if (ingresado) {
               localStorage.setItem("key_usuario", id);
-              //this.$router.push({ path: "/Alumno" })
+              this.$router.push({ path: "/directora" })
               Swal.fire(
                 'Ingreso!',
                 'Has ingresado correctamente!',
@@ -175,7 +175,7 @@ export default {
             }
             if (ingresado) {
               localStorage.setItem("key_usuario", id);
-              //this.$router.push({ path: "/Alumno" })
+              this.$router.push({ path: "/VistaComite" })
               Swal.fire(
                 'Ingreso!',
                 'Has ingresado correctamente!',
