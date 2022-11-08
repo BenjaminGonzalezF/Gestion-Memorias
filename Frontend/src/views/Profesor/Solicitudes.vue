@@ -229,3 +229,9 @@ export default {
 }
 }
 </script>
+
+<style> 
+    .v-list-item:hover { 
+        background: #f5a42a; 
+    } 
+</style>
