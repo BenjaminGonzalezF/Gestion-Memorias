@@ -48,7 +48,7 @@
                 drawer: null, 
                 items: [
                 { title: "Oferta temas", route: '/Alumno', icon: "mdi-folder" },
-                { title: "Solicitud de temas", route: '/solicitudmemoria', icon: "mdi-folder" },
+                { title: "Solicitud de temas", route: '/solicitudTemas', icon: "mdi-folder" },
                 { title: "Cerrar sesion", icon: "mdi-forum" },
             ],
                 hover: "red" 
@@ -57,7 +57,7 @@
         methods: {
             cerrarsesion(ref){
                 if(ref=="Cerrar sesion"){
-                    if (this.$route.path !== "/Alumno"||this.$route.path !== "/solicitudmemoria") {
+                    if (this.$route.path !== "/Alumno"||this.$route.path !== "/solicitudTemas") {
                         localStorage.clear();
                         this.$router.push({ path: "/" })
                     }

@@ -121,30 +121,7 @@ import HeaderAlumno from "@/components/headerAlumno.vue";
             tituloProyecto: null,
             descripcionProyecto: null,
             profesor: null,
-            estudiante: null,
-            solicitudes: [{
-                    id: 1,
-                    title: "proyecto 1",
-                    person: "Manuel",
-                    descripcion: "EL proyecto 1 se tratara sobre blablabla",
-                    profesor: "Daniel Moreno",
-                    status: "completado"
-                }, {
-                    id: 2,
-                    title: "proyecto 2",
-                    person: "Joselito",
-                    descripcion: "EL proyecto 2 se tratara sobre blablabla",
-                    profesor: "Rodrigo Paves",
-                    status: "en progreso"
-                }, {
-                    id: 3,
-                    title: "proyecto 3",
-                    person: "Manuel Gonzalez",
-                    descripcion: "EL proyecto 3 se tratara sobre blablabla",
-                    profesor: "Luis Silvestre",
-                    status: "atrasado"
-                }
-            profesor : null,
+            estudiante: null,   
             solicitudes:[{
                 id: 1,
                 title: 'proyecto 1',
@@ -184,11 +161,7 @@ import HeaderAlumno from "@/components/headerAlumno.vue";
                     prop: "fecha",
                 },
             ],
-            items: [
-                { title: "Oferta temas", icon: "mdi-folder", link: "/alumno"},
-                { title: "Solicitud de temas", icon: "mdi-folder", link: "/solicitudTemas" },
-                { title: "Cerrar sesion", icon: "mdi-forum", link: "/" },
-            ],
+
         };
     },
     methods: {

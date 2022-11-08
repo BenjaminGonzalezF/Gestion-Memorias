@@ -121,7 +121,7 @@ export default {
             }
             if (ingresado) {
               localStorage.setItem("key_usuario", id);
-              this.$router.push({ path: "/profesor" })
+              this.$router.push({ path: "/profesor/solicitudes" })
               Swal.fire(
                 'Ingreso!',
                 'Has ingresado correctamente!',
