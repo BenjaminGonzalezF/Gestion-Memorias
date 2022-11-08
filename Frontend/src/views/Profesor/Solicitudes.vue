@@ -102,20 +102,17 @@
                             </div>
                             </v-flex>
                             <v-flex xs6 sm1 md1>
-                            <v-tooltip top>
-                                <template v-slot:activator="{ on, attrs }">
-                                <v-btn
-                                    fab
-                                    text
-                                    small
-                                    color="red accent-2"
+                                <v-btn fab text small color="blue accent-2"
                                     class="mt-1"
-                                    @click="deleteProject(project.id)"
-                                >
+                                    @click="aceptarProyecto(project.id)">
+                                    <v-icon>mdi-check</v-icon>
+                                </v-btn>
+                            </v-flex>
+                            <v-flex xs6 sm1 md1>
+                                <v-btn fab text small color="red accent-2" class="mt-1"
+                                    @click="deleteProject(project.id)">
                                     <v-icon>mdi-delete</v-icon>
                                 </v-btn>
-                                </template>
-                            </v-tooltip>
                             </v-flex>
                         </v-layout>
                      </v-card>
@@ -187,9 +184,10 @@ export default {
             descripcionProyecto: null,
             estudiante : null,
             fecha : null,
+            toggle : null,
             solicitudes:[{
                 id: 1,
-                title: 'proyecto 1',
+                title: 'proyecto base de datos',
                 person: 'Manuel',
                 descripcion:'EL proyecto 1 se tratara sobre blablabla',
                 estudiante: 'Jose Gomez',
@@ -198,33 +196,31 @@ export default {
             },
             {
                 id: 2,
-                title: 'proyecto 2',
+                title: 'proyecto pagina web',
                 person: 'Joselito',
                 descripcion:'EL proyecto 2 se tratara sobre blablabla',
                 estudiante: 'Joselito Rodriguez',
-                fecha: '01/11/2022',
+                fecha: '01/11/2020',
                 status:'en progreso'
             },
             {
                 id: 3,
-                title: 'proyecto 3',
+                title: 'proyecto desarrollo sistema con php',
                 person: 'Manuel Gonzalez',
                 descripcion:'EL proyecto 3 se tratara sobre blablabla',
                 estudiante: 'Pedro Bustamante',
-                fecha: '01/11/2022',
+                fecha: '01/11/2019',
                 status:'atrasado'
             }
             ],
             itemsOrdenar: [
                 { title: 'Por titulo', prop: 'title' },
                 {
-                title: 'Por creador',
-                prop: 'person',
-                },
+                title: 'Por estudiante',
+                prop: 'estudiante', },
                 {
                 title: 'Por fecha',
-                prop: 'fecha',
-                },
+                prop: 'fecha', },
             ],
             items: [
                 { title: "Mis solicitudes", icon: "mdi-folder" },
@@ -235,6 +231,9 @@ export default {
         };
     },
     methods: {
+    sortBy(prop) {
+        this.solicitudes.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
+    },
     verSolicitud(id, titulo, descripcion, estudiante, fecha){
         this.drawerSolicitud = true
         this.tituloProyecto = titulo
