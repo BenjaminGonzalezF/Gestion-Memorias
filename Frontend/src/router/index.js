@@ -24,7 +24,7 @@ const routes = [
   {
     path: '/solicitudmemoria',
     name: 'solicitudmemoria',
-    component: () => import('../views/Vistasolicitar.vue')
+    component: () => import('../views/Alumno/Vistasolicitar.vue')
   },
   {
     path: '/profesor',
