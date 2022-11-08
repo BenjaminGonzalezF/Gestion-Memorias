@@ -1,6 +1,14 @@
 <template>
   <v-app>
-    <v-card color="#00CCCC">
+    <div class="text-center mt-12"  v-if="this.$store.state.loading">
+      <h2>Loading</h2>
+      <v-progress-circular
+        :size="50"
+        color="primary"
+        indeterminate
+      ></v-progress-circular>
+    </div>
+    <v-card color="#00CCCC" v-if="!this.$store.state.loading">
       <v-card-text height="100%">
         <v-hover v-slot="{ hover }">
           <v-btn @click="cambiar_nombre(1)" plain class="white--text" :style="{ 'background-color': hover ? '#FF0182' : '#00CCCC' }">Alumno</v-btn>
@@ -18,7 +26,7 @@
         </v-hover>
       </v-card-text>
     </v-card>
-    <v-main>
+    <v-main v-if="!this.$store.state.loading">
       <v-card class="mx-auto mt-5" max-width="460" elevation="3" outlined>
         <v-card-title>
           Bienvenido {{this.nombre_ingreso}}
