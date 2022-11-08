@@ -1,5 +1,7 @@
 <template>
+      
     <div class="Oferta de temas">
+       
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
             <v-app-bar  
             color="#00CCFF" 
@@ -18,7 +20,7 @@
                 <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img> 
             </v-list-item-avatar> 
              
-            <v-list-item-content>
+            <v-list-item-content> 
                 <v-list-item-title>John Leider</v-list-item-title> 
             </v-list-item-content> 
             </v-list-item> 
@@ -30,7 +32,7 @@
                 <v-list-item-icon> 
                     <v-icon>{{ item.icon }}</v-icon> 
                 </v-list-item-icon> 
-
+ 
                 <v-list-item-content> 
                     <v-list-item-title>{{ item.title }}</v-list-item-title> 
                 </v-list-item-content> 
@@ -38,8 +40,9 @@
             </v-list> 
         </v-navigation-drawer>    
       
+       
         <div>
-            
+         
             <v-container class="my-3">
                 <v-layout row class="mx-1">
                     <v-spacer></v-spacer>
@@ -83,56 +86,49 @@
                             <div class="caption grey--text">Profesor</div>
                             <div>{{ project.profesor }}</div>
                             </v-flex>
-
+                            
                             <v-flex xs2 sm3 md2>
                             <!-- <div class="caption grey--text">Durum</div> -->
-                            <div class="my-1 text-center">
-                                <v-btn @click="verSolicitud(project.id, project.title, project.descripcion, project.estudiante, project.fecha)" >
-                                    Ver descripcion tema
-                                </v-btn>
+                            <div class="caption grey--text">Acción: </div>
+                            
+                                <div class="box">
+                                    
+                                    <v-btn @click="verSolicitud(project.id, project.title, project.descripcion, project.estudiante, project.fecha)" >
+                                        Ver descripcion tema
+                                    </v-btn>
+                                    
+                                    
+                                </div>
+                            </v-flex>
+                            <div class="caption grey--text">Estado:
+                                <div class="box  black--text" >
+                                    <p v-if="project.aceptado">Aceptado por {{project.aprobador}} </p>
+                                    <p v-else>Esperando aprobación por {{project.aprobador}}</p>
+                                </div>
                             </div>
-                            </v-flex>
-                            <v-flex xs6 sm1 md1>
-                            </v-flex>
+                            
+                            
                         </v-layout>
                      </v-card>
                     <v-dialog v-model="drawerSolicitud" max-width="900">
                         <v-container class="grey lighten-5">
-                            <v-row>
-                                <v-col cols="12" sm="12" md="6">
-                                    <v-card>
-                                        <v-card-title>
-                                            <span class="text-h5">Datos proyecto</span>
-                                        </v-card-title>
-                                        <v-card-text>
-                                            <v-container>
-                                                <v-flex>
-                                                <div class="caption grey--text">Proyecto:</div>
-                                                <div>{{ tituloProyecto }}</div>
-                                                </v-flex>
-                                                <v-flex>
-                                                <div class="caption grey--text">Descripción:</div>
-                                                <div>{{ descripcionProyecto }}</div>
-                                                </v-flex>
-                                            </v-container>
-                                        </v-card-text>
-
-                                    </v-card>
-                                </v-col>
-                                <v-col cols="12" sm="12" md="6">
-                                <v-card>
-                                    <v-card-text>
-                                        <v-container>
-                                            <div class="my-1 text-center">
-                                <v-btn @click="enviarSolicitud(project.id, project.title, project.descripcion, project.estudiante, project.fecha)" color="#f5a42a" >
-                                    Enviar Solicitud
-                                </v-btn>
-                            </div>
-                                        </v-container>
-                                    </v-card-text>
-                                </v-card>
-                            </v-col>
-                            </v-row>
+                            <v-card>
+                                <v-card-title>
+                                    <span class="text-h5">Datos proyecto</span>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-container>
+                                        <v-flex>
+                                        <div class="caption grey--text">Proyecto:</div>
+                                        <div>{{ tituloProyecto }}</div>
+                                        </v-flex>
+                                        <v-flex>
+                                        <div class="caption grey--text">Descripción:</div>
+                                        <div>{{ descripcionProyecto }}</div>
+                                        </v-flex>
+                                    </v-container>
+                                </v-card-text>
+                            </v-card>
                         </v-container>  
                     </v-dialog>
                 </div>
@@ -162,7 +158,9 @@ import headerAlumno from '@/components/headerAlumno.vue';
                 descripcionGeneral:'EL proyecto 1 se tratara sobre blablabla',
                 profesor: 'Daniel Moreno',
                 status:'completado',
-                descripcion:'Esto es una descripcion 1'
+                descripcion:'Esto es una descripcion 1',
+                aceptado: false,
+                aprobador: 'Profesor'
             },
             {
                 id: 2,
@@ -171,7 +169,9 @@ import headerAlumno from '@/components/headerAlumno.vue';
                 descripcionGeneral:'EL proyecto 2 se tratara sobre blablabla',
                 profesor: 'Rodrigo Pavez',
                 status:'en progreso',
-                descripcion:'Esto es una descripcion 2'
+                descripcion:'Esto es una descripcion 2',
+                aceptado: true,
+                aprobador: 'Comite'
             },
             {
                 id: 3,
@@ -180,7 +180,9 @@ import headerAlumno from '@/components/headerAlumno.vue';
                 descripcionGeneral:'EL proyecto 3 se tratara sobre blablabla',
                 profesor: 'Luis Silvestre',
                 status:'atrasado',
-                descripcion:'Esto es una descripcion 3'
+                descripcion:'Esto es una descripcion 3',
+                aceptado: false,
+                aprobador: 'Directora'
             }
             ],
             itemsOrdenar: [
@@ -216,4 +218,8 @@ import headerAlumno from '@/components/headerAlumno.vue';
     .v-list-item:hover { 
         background: #f5a42a; 
     } 
+    .box {
+        display: flex;
+        font-size: 16px;
+    }
 </style>

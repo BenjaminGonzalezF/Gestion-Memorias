@@ -41,6 +41,11 @@ const routes = [
     name: 'directora',
     component: () => import('../views/VistaDirectora.vue')
   },
+  {
+    path: '/solicitudTemas',
+    name: 'solicitudTemas',
+    component: () => import('../views/Alumno/VistaSolicitudTema.vue')
+  }
 ]
 
 const router = new VueRouter({
