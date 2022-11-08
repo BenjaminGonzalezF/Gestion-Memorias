@@ -1,5 +1,6 @@
 <template>
-  <v-container class="mx-auto">
+  <div>
+    <HeaderProfe2></HeaderProfe2>
     <h1 class="subheading grey--text mb-10">Ofertas de tema</h1>
     <v-container>
         <v-row>
@@ -26,21 +27,24 @@
           </v-col>
         </v-row>
       </v-container>
-  </v-container>
+  </div>
 
 </template>
 
 <script>
+import HeaderProfe2 from '@/components/headerProfe2.vue';
+
   export default{
-    data(){
-      return{
-        ofertas:[
-          {titulo:'Tema 1 ',descripcion: 'Ejemplo 1', profesor:'Daniel Moreno'},
-          {titulo:'Tema 2 ',descripcion: 'Ejemplo 2', profesor:'Daniel Moreno'},
-          {titulo:'Tema 3 ',descripcion: 'Ejemplo 3', profesor:'Daniel Moreno'},
-          {titulo:'Tema 4 ',descripcion: 'Ejemplo 4', profesor:'Daniel Moreno'},
-        ],
-      }
-    }
-  };
+    data() {
+        return {
+            ofertas: [
+                { titulo: "Tema 1 ", descripcion: "Ejemplo 1", profesor: "Daniel Moreno" },
+                { titulo: "Tema 2 ", descripcion: "Ejemplo 2", profesor: "Daniel Moreno" },
+                { titulo: "Tema 3 ", descripcion: "Ejemplo 3", profesor: "Daniel Moreno" },
+                { titulo: "Tema 4 ", descripcion: "Ejemplo 4", profesor: "Daniel Moreno" },
+            ],
+        };
+    },
+    components: { HeaderProfe2 }
+};
 </script>
