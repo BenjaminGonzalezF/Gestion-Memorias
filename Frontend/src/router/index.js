@@ -5,21 +5,26 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/login',
+    path: '/',
     name: 'login',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
+    component: () => import('../views/Login.vue')
   },
   
   {
     path: '/visualizarTemas',
     name: 'visualizarTemas',
-    component: () => import(/* webpackChunkName: "about" */ '../views/visualizarTemas.vue')
+    component: () => import( '../views/visualizarTemas.vue')
+  },
+  {
+    path: '/VistaComite',
+    name: 'VistaComite',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Comite/VistaComite.vue')
   },
   
   {
     path: '/solicitudmemoria',
     name: 'solicitudmemoria',
-    component: () => import(/* webpackChunkName: "about2" */ '../views/Vistasolicitar.vue')
+    component: () => import('../views/Vistasolicitar.vue')
   },
   {
     path: '/profesor',
@@ -29,7 +34,7 @@ const routes = [
   {
     path: '/Alumno',
     name: 'Alumno',
-    component: () => import('../views/VistaAlumno.vue')
+    component: () => import('../views/Alumno/VistaAlumno.vue')
   },
   {
     path: '/directora',
