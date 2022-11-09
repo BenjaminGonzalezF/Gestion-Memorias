@@ -26,8 +26,7 @@
         </v-hover>
       </v-card-text>
     </v-card>
-    <v-main class="fondo">
-    <v-main v-if="!this.$store.state.loading">
+    <v-main class="fondo" v-if="!this.$store.state.loading">
       <v-card class="mx-auto mt-5" max-width="460" elevation="3" outlined>
         <v-card-title>
           Bienvenido {{this.nombre_ingreso}}
