@@ -2,4 +2,4 @@
     Desarrollado en vue2, vuex, router, express, mongo.
 
 ## Link Hosting
-    https://contrucciondesoftwareu3.herokuapp.com/#/
+    https://contruapi.herokuapp.com/#/
