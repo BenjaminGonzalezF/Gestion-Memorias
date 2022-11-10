@@ -16,9 +16,9 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/visualizarTemas.vue')
   },
   {
-    path: '/VistaComite',
+    path: '/Comite',
     name: 'VistaComite',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Comite/VistaComite.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/Comite/SolicitudesComite.vue')
   },
   
   {
