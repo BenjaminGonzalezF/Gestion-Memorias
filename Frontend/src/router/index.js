@@ -55,7 +55,12 @@ const routes = [
     path: '/solicitudTemas',
     name: 'solicitudTemas',
     component: () => import('../views/Alumno/VistaSolicitudTema.vue')
-  }
+  },
+  {
+    path: '/estudiantes',
+    name: 'estudiantes',
+    component: () => import('../views/Estudiantes.vue')
+  }   
 ]
 
 const router = new VueRouter({
