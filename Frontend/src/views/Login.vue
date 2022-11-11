@@ -1,6 +1,14 @@
 <template>
   <v-app>
-    <v-card color="#00CCCC">
+    <div class="text-center mt-12"  v-if="this.$store.state.loading">
+      <h2>Loading</h2>
+      <v-progress-circular
+        :size="50"
+        color="primary"
+        indeterminate
+      ></v-progress-circular>
+    </div>
+    <v-card color="#00CCCC" v-if="!this.$store.state.loading">
       <v-card-text height="100%">
         <v-hover v-slot="{ hover }">
           <v-btn @click="cambiar_nombre(1)" plain class="white--text" :style="{ 'background-color': hover ? '#FF0182' : '#00CCCC' }">Alumno</v-btn>
@@ -18,7 +26,7 @@
         </v-hover>
       </v-card-text>
     </v-card>
-    <v-main>
+    <v-main class="fondo" v-if="!this.$store.state.loading">
       <v-card class="mx-auto mt-5" max-width="460" elevation="3" outlined>
         <v-card-title>
           Bienvenido {{this.nombre_ingreso}}
@@ -113,7 +121,7 @@ export default {
             }
             if (ingresado) {
               localStorage.setItem("key_usuario", id);
-              this.$router.push({ path: "/profesor" })
+              this.$router.push({ path: "/profesor/solicitudes" })
               Swal.fire(
                 'Ingreso!',
                 'Has ingresado correctamente!',
@@ -219,10 +227,8 @@ export default {
 
 <style>
   .fondo{
-    background-image: url("../assets/logo.svg");
+    background-image: url('https://cdn.discordapp.com/attachments/1034862333966684261/1039324077829128202/iccExtension2.jpg');
     height: 100%;
-    filter: blur(8px);
-    -webkit-filter: blur(8px);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;

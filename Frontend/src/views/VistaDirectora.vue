@@ -26,16 +26,18 @@
           <v-divider></v-divider> 
 
           <v-list dense> 
-          <v-list-item v-for="item in items" :key="item.title" link> 
-              <v-list-item-icon> 
+          <v-list-item v-for="item in items" :key="item.title" link  @click="redirigir(item.title)"> 
+              <v-list-item-icon > 
                   <v-icon>{{ item.icon }}</v-icon> 
+                  
               </v-list-item-icon> 
 
               <v-list-item-content> 
                   <v-list-item-title>{{ item.title }}</v-list-item-title> 
+                  
               </v-list-item-content> 
           </v-list-item> 
-          </v-list> 
+          </v-list>   
       </v-navigation-drawer>
       <div>
           <v-container class="my-3">
@@ -208,8 +210,30 @@ export default {
     else if (status == 'en progreso') return 'En progreso'
     else if (status == 'atrasado') return 'Atrasado'
   },
+ 
+  redirigir(ref){
+                if(ref=="Mis solicitudes"){
+                    if (this.$route.path !== "/profesor") {
+                        this.$router.push({ path: "/profesor" })
+                    }
+                    console.log("1")
+                }else if(ref=="Estudiantes"){
+                    if (this.$route.path !== "/algo") {
+                        this.$router.push({ path: "/algo" })
+                    }
+                    console.log("2")
+                }else{
+                    if (this.$route.path !== "/") {
+                        this.$router.push({ path: "/" })
+                    }
+                    console.log("3")
+                }
+            } 
+  }
+
+
 }
-}
+
 </script>
 
 <style> 

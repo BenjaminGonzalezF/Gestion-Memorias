@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     visibilidadheader:false,
-    visibilidadfooter:false
+    visibilidadfooter:false,
+    loading:true,
   },
   getters: {
   },

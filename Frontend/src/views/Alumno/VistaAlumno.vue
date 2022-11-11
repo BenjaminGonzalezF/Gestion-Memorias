@@ -1,43 +1,8 @@
 <template>
+      <v-app>
+    <HeaderAlumno></HeaderAlumno>
     <div class="Oferta de temas">
-        <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
-            <v-app-bar  
-            color="#00CCFF" 
-        >    
-            <v-img 
-                max-height="40" 
-                max-width="50" 
-                src="@/assets/utal.png"   
-            ></v-img> 
-            <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon> 
-             
-        </v-app-bar> 
-        <v-navigation-drawer v-model="drawer" absolute temporary color="#00CCFF"> 
-            <v-list-item> 
-            <v-list-item-avatar> 
-                <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img> 
-            </v-list-item-avatar> 
-             
-            <v-list-item-content>
-                <v-list-item-title>John Leider</v-list-item-title> 
-            </v-list-item-content> 
-            </v-list-item> 
- 
-            <v-divider></v-divider> 
- 
-            <v-list dense> 
-            <v-list-item v-for="item in items" :key="item.title" :to="item.link" link> 
-                <v-list-item-icon> 
-                    <v-icon>{{ item.icon }}</v-icon> 
-                </v-list-item-icon> 
-
-                <v-list-item-content> 
-                    <v-list-item-title>{{ item.title }}</v-list-item-title> 
-                </v-list-item-content> 
-            </v-list-item> 
-            </v-list> 
-        </v-navigation-drawer>    
-      
+    
         <div>
             
             <v-container class="my-3">
@@ -138,23 +103,25 @@
                 </div>
             </v-container>
         </div>
-        </v-sheet>
-        
+    
+    
     </div>
-
+</v-app>
 </template>
 
 <script>
-import headerAlumno from '@/components/headerAlumno.vue';
+import HeaderAlumno from "@/components/headerAlumno.vue";
+
  export default {
-    name: 'Alumno',
+    name: "Alumno",
     data() {
         return {
             drawer: null,
-            drawerSolicitud : false,
+            drawerSolicitud: false,
             tituloProyecto: null,
             descripcionProyecto: null,
-            profesor : null,
+            profesor: null,
+            estudiante: null,   
             solicitudes:[{
                 id: 1,
                 title: 'proyecto 1',
@@ -184,31 +151,35 @@ import headerAlumno from '@/components/headerAlumno.vue';
             }
             ],
             itemsOrdenar: [
-                { title: 'Por titulo', prop: 'title' },
+                { title: "Por titulo", prop: "title" },
                 {
-                title: 'Por profesor',
-                prop: 'profesor',
+                    title: "Por profesor",
+                    prop: "profesor",
                 },
                 {
-                title: 'Por fecha',
-                prop: 'fecha',
+                    title: "Por fecha",
+                    prop: "fecha",
                 },
             ],
-            items: [
-                { title: "Oferta temas", icon: "mdi-folder", link: "/alumno"},
-                { title: "Solicitud de temas", icon: "mdi-folder", link: "/solicitudTemas" },
-                { title: "Cerrar sesion", icon: "mdi-forum", link: "/" },
-            ],
+
         };
     },
     methods: {
-    verSolicitud(id, titulo, descripcion, estudiante, fecha){
-        this.drawerSolicitud = true
-        this.tituloProyecto = titulo
-        this.descripcionProyecto = descripcion
-        this.estudiante = estudiante
+        verSolicitud(id, titulo, descripcion, estudiante, fecha) {
+            this.drawerSolicitud = true;
+            this.tituloProyecto = titulo;
+            this.descripcionProyecto = descripcion;
+            this.estudiante = estudiante;
+        },
+        enviarSolicitud(){
+            if (this.$route.path == "/Alumno") {
+                this.$router.push({ path: "/solicitudmemoria" })
+            }
+        }
+
+       
     },
-}
+    components: { HeaderAlumno }
 }
 </script>
 

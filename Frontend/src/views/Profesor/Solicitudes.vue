@@ -1,35 +1,7 @@
 <template>
     <div class="Solicitudes">
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
-    
-        <v-app-bar >
-            <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        </v-app-bar>
-        <v-navigation-drawer v-model="drawer" absolute temporary  color="#00CCFF">
-            <v-list-item>
-            <v-list-item-avatar>
-                <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
-            </v-list-item-avatar>
-            
-            <v-list-item-content>
-                <v-list-item-title>John Leider</v-list-item-title>
-            </v-list-item-content>
-            </v-list-item>
-    
-            <v-divider></v-divider>
-    
-            <v-list dense>
-            <v-list-item v-for="item in items" :key="item.title" link>
-                <v-list-item-icon>
-                <v-icon>{{ item.icon }}</v-icon>
-                </v-list-item-icon>
-    
-                <v-list-item-content>
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
-                </v-list-item-content>
-            </v-list-item>
-            </v-list>
-        </v-navigation-drawer>
+        <headerProfe></headerProfe>
         <div>
             <v-container class="my-3">
                 <v-layout row class="mx-1">
@@ -40,11 +12,11 @@
                     class="mr-2"
                     style="max-height: 20px !important"
                     >
-                    <v-btn small color="deep-purple lighten-2" :disabled="toggle === 0">
+                    <v-btn small color="rgb(0, 204, 255)" :disabled="toggle === 0">
                         <v-icon class="white--text">mdi-view-agenda</v-icon>
                     </v-btn>
 
-                    <v-btn small color="deep-purple lighten-2" :disabled="toggle === 1">
+                    <v-btn small color="rgb(0, 204, 255)" :disabled="toggle === 1">
                         <v-icon class="white--text">mdi-view-grid</v-icon>
                     </v-btn>
                     </v-btn-toggle>
@@ -52,7 +24,7 @@
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn
                         depressed
-                        color="deep-purple lighten-2"
+                        color="rgb(0, 204, 255)"
                         class="mb-5"
                         dark
                         small
@@ -173,9 +145,12 @@
   </template>
   
 <script>
-
+import headerProfe from '@/components/headerProfe.vue';
 export default {
     name: 'Solicitudes',
+    components:{
+        headerProfe,
+    },
     data() {
         return {
             drawer: null,

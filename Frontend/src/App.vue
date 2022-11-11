@@ -14,28 +14,81 @@
 <script>
 export default {
   data: () => ({
+    directora:[],
+    comite:[],
+    profesores:[],
     alumnos:[],
   }),
   beforeMount() {
-    // Solo funciona con los alumnos...
+    // Alumno
     var usuario_id=null
-    var alumno_sesion=null
+    var usuario_sesion=null
     usuario_id=localStorage.getItem("key_usuario")
     console.log("sesionID: "+usuario_id)
     if(usuario_id!==null){
       console.log("Sesion Activa")
-      this.axios.get("todos_alumnos")
+      var ingresado=false
+      this.axios.get("todos_escuela")
           .then((response) => {
-            this.alumnos = response.data;
-            alumno_sesion=this.alumnos.filter(a => a._id==usuario_id)
-            console.log(alumno_sesion)
-            if (this.$route.path !== `/Alumno`) {
-             this.$router.push({ path: "/Alumno" })
+            this.directora = response.data;
+            usuario_sesion=this.directora.filter(a => a._id==usuario_id)
+            if(usuario_sesion.length!==0){
+              if (this.$route.path !== `/directora`) {
+               this.$router.push({ path: "/directora" })
+               this.$store.state.loading=false
+              }
             }
           })
           .catch((e) => {
             console.log('error' + e);
         })
+        usuario_sesion=null
+        this.axios.get("todos_comite")
+          .then((response) => {
+            this.comite = response.data;
+            usuario_sesion=this.comite.filter(a => a._id==usuario_id)
+            if(usuario_sesion.length!==0){
+              if (this.$route.path !== `/VistaComite`) {
+               this.$router.push({ path: "/VistaComite" })
+              }
+              this.$store.state.loading=false
+            }
+          })
+          .catch((e) => {
+            console.log('error' + e);
+        })
+        usuario_sesion=null
+        this.axios.get("todos_profesores")
+          .then((response) => {
+            this.profesores = response.data;
+            usuario_sesion=this.profesores.filter(a => a._id==usuario_id)
+            if(usuario_sesion.length!==0){
+              if (this.$route.path !== `/profesor`) {
+               this.$router.push({ path: "/profesor" })
+              }
+              this.$store.state.loading=false
+            }
+          })
+          .catch((e) => {
+            console.log('error' + e);
+        })
+        usuario_sesion=null
+        this.axios.get("todos_alumnos")
+          .then((response) => {
+            this.alumnos = response.data;
+            usuario_sesion=this.alumnos.filter(a => a._id==usuario_id)
+            if(usuario_sesion.length!==0){
+              if (this.$route.path !== `/Alumno`) {
+               this.$router.push({ path: "/Alumno" })
+              }
+              this.$store.state.loading=false
+            }
+          })
+          .catch((e) => {
+            console.log('error' + e);
+        })
+    }else{
+      this.$store.state.loading=false
     }
   },
 };
