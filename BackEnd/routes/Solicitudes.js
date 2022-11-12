@@ -2,7 +2,7 @@ import express from 'express';
 const router = express.Router();
 
 // importar el modelo nota
-import Solicitud from '../models/Solicitudes';
+import Solicitud from '../models/solicitudes';
 
 // Agregar una nota
 router.post('/nuevo_solicitud', async(req, res) => {
@@ -18,11 +18,10 @@ router.post('/nuevo_solicitud', async(req, res) => {
   }
 });
 
-// Get con parámetros
-router.get('/solicitud/:id', async(req, res) => {
-  const _id = req.params.id;
+// Get con todos los documentos
+router.get('/todos_solicitudes', async(req, res) => {
   try {
-    const notaDB = await Solicitud.findOne({_id});
+    const notaDB = await Solicitud.find();
     res.json(notaDB);
   } catch (error) {
     return res.status(400).json({
@@ -32,11 +31,13 @@ router.get('/solicitud/:id', async(req, res) => {
   }
 });
 
-// Get con todos los documentos
-router.get('/todos_solicitudes', async(req, res) => {
+// Get con parámetros
+router.get('/solicitud_profesor/:id', async(req, res) => {
+  const _id = req.params.id;
   try {
-    const notaDb = await Solicitud.find();
-    res.json(notaDb);
+    const notaDB = await Solicitud.find();
+    const filtro = notaDB.filter(v => v.profeguiaid ==_id);
+    res.json(filtro);
   } catch (error) {
     return res.status(400).json({
       mensaje: 'Ocurrio un error',
@@ -45,18 +46,27 @@ router.get('/todos_solicitudes', async(req, res) => {
   }
 });
 
-// Delete eliminar una nota
-router.delete('/solicitud_el/:id', async(req, res) => {
+router.get('/solicitud_alumno/:id', async(req, res) => {
   const _id = req.params.id;
   try {
-    const notaDb = await Solicitud.findByIdAndDelete({_id});
-    if(!notaDb){
-      return res.status(400).json({
-        mensaje: 'No se encontró el id indicado',
-        error
-      })
-    }
-    res.json(notaDb);  
+    const notaDB = await Solicitud.find();
+    const filtro = notaDB.filter(v => v.alumnoid ==_id);
+    res.json(filtro);
+  } catch (error) {
+    return res.status(400).json({
+      mensaje: 'Ocurrio un error',
+      error
+    })
+  }
+});
+
+
+router.get('/solicitud_tema/:id', async(req, res) => {
+  const _id = req.params.id;
+  try {
+    const notaDB = await Solicitud.find();
+    const filtro = notaDB.filter(v => v.temaid ==_id);
+    res.json(filtro);
   } catch (error) {
     return res.status(400).json({
       mensaje: 'Ocurrio un error',
@@ -75,25 +85,6 @@ router.put('/solicitud_ac/:id', async(req, res) => {
       body,
       {new: true});
     res.json(notaDb);  
-  } catch (error) {
-    return res.status(400).json({
-      mensaje: 'Ocurrio un error',
-      error
-    })
-  }
-});
-
-// ENLACE (solicitud profeguia, alumno y tema)
-router.get('/solicitud_enl/:idprofguia/:idalumno/:idtema', async(req, res) => {
-  const _idprofguia = req.params.idprofguia;
-  const _idalumno = req.params.idalumno;
-  const _idtema = req.params.idtema;
-  try {
-    const notaBD = await Solicitud.find();
-    const enl_solicitudProf = notaBD.filter(v => v.profeguiaid==_idprofguia)
-    const enl_solicitudAlum = enl_solicitudProf.filter(v => v.alumnoid==_idalumno)
-    const enl_solicitudFinal = enl_solicitudAlum.filter(v => v.temaid==_idtema)
-    res.json(enl_solicitudFinal);
   } catch (error) {
     return res.status(400).json({
       mensaje: 'Ocurrio un error',

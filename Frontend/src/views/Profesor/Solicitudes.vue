@@ -1,6 +1,6 @@
 <template>
     <div class="Solicitudes">
-        <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
+        <v-sheet height="1000" class="overflow-hidden" style="position: relative;" v-if="!this.$store.state.loading">
         <headerProfe></headerProfe>
         <div>
             <v-container class="my-3">
@@ -146,10 +146,12 @@
   
 <script>
 import headerProfe from '@/components/headerProfe.vue';
+import loading from '@/components/loading.vue';
 export default {
     name: 'Solicitudes',
     components:{
         headerProfe,
+        loading,
     },
     data() {
         return {
