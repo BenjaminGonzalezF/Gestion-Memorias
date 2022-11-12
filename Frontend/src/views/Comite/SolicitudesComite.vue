@@ -1,7 +1,7 @@
 <template>
     <div class="Solicitudes">
-        <v-sheet height="1000" class="overflow-hidden" style="position: relative;" v-if="!this.$store.state.loading">
-        <headerProfe></headerProfe>
+        <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
+        <headerComite></headerComite>
         <div>
             <v-container class="my-3">
                 <v-layout row class="mx-1">
@@ -74,16 +74,27 @@
                             </div>
                             </v-flex>
                             <v-flex xs6 sm1 md1>
-                                <v-btn fab text small color="blue accent-2"
+                                <v-btn fab text small color="green accent-2"
                                     class="mt-1"
-                                    @click="aceptarProyecto(project.id)">
-                                    <v-icon>mdi-check</v-icon>
+                                    @click="confirmacion()"
+                                    >
+                                    <v-icon>mdi-checkbox-marked-circle</v-icon>
+                                    <!-- @click="aceptarProyecto(project.id)" -->
                                 </v-btn>
                             </v-flex>
                             <v-flex xs6 sm1 md1>
                                 <v-btn fab text small color="red accent-2" class="mt-1"
-                                    @click="deleteProject(project.id)">
-                                    <v-icon>mdi-delete</v-icon>
+                                    @click="confirmacion()"
+                                    >
+                                    <v-icon>mdi-cancel</v-icon>
+                                    <!-- @click="deleteProject(project.id)" -->
+                                </v-btn>
+                            </v-flex>
+                            <v-flex xs6 sm1 md1>
+                                <v-btn fab text small color="red accent-2" class="mt-1"
+                                    @click="exportPDF()"
+                                    >
+                                    Acta
                                 </v-btn>
                             </v-flex>
                         </v-layout>
@@ -145,13 +156,13 @@
   </template>
   
 <script>
-import headerProfe from '@/components/headerProfe.vue';
-import loading from '@/components/loading.vue';
+import jsPDF from 'jspdf'
+import Swal from 'sweetalert2'
+import headerComite from '@/components/headerComite.vue';
 export default {
     name: 'Solicitudes',
     components:{
-        headerProfe,
-        loading,
+        headerComite,
     },
     data() {
         return {
@@ -208,6 +219,35 @@ export default {
         };
     },
     methods: {
+    
+    confirmacion(){
+        Swal.fire({
+            title: 'Estas Seguro?',
+            text: "No se podrá revertir!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, confirmar!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                'Confirmado!',
+                '',
+                'success'
+                )
+            }
+        })
+    },
+
+    exportPDF() {
+        let pdfName = 'Acta'; 
+    var doc = new jsPDF();
+    doc.text("Hello World", 10, 10);
+    doc.save(pdfName + '.pdf');
+  },
+
+
     sortBy(prop) {
         this.solicitudes.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
     },

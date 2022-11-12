@@ -14,29 +14,16 @@
 <script>
 export default {
   data: () => ({
+    directora:[],
+    comite:[],
+    profesores:[],
     alumnos:[],
   }),
+  destroyed() {
+    console.log("App eliminado");
+  },
   beforeMount() {
-    // Solo funciona con los alumnos...
-    var usuario_id=null
-    var alumno_sesion=null
-    usuario_id=localStorage.getItem("key_usuario")
-    console.log("sesionID: "+usuario_id)
-    if(usuario_id!==null){
-      console.log("Sesion Activa")
-      this.axios.get("todos_alumnos")
-          .then((response) => {
-            this.alumnos = response.data;
-            alumno_sesion=this.alumnos.filter(a => a._id==usuario_id)
-            console.log(alumno_sesion)
-            if (this.$route.path !== `/Alumno`) {
-             this.$router.push({ path: "/Alumno" })
-            }
-          })
-          .catch((e) => {
-            console.log('error' + e);
-        })
-    }
+    this.$store.commit('cargar_datos')
   },
 };
 </script>

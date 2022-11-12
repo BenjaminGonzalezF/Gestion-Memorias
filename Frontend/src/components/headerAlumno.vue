@@ -25,13 +25,13 @@
             <v-divider></v-divider> 
  
             <v-list dense> 
-            <v-list-item v-for="item in items" :key="item.title" link> 
+            <v-list-item v-for="item in items" :key="item.title" :to="item.route" link @click="cerrarsesion(item.title)"> 
                 <v-list-item-icon> 
                     <v-icon>{{ item.icon }}</v-icon> 
                 </v-list-item-icon> 
  
                 <v-list-item-content> 
-                    <v-list-item-title>{{ item.title }}</v-list-item-title> 
+                    <v-list-item-title >{{ item.title }}</v-list-item-title> 
                 </v-list-item-content> 
             </v-list-item> 
             </v-list> 
@@ -46,16 +46,26 @@
         data(){ 
             return{ 
                 drawer: null, 
-                items: [ 
-                    { title: "Mis solicitudes", icon: "mdi-folder" }, 
-                    { title: "Mis proyectos", icon: "mdi-folder" }, 
-                    { title: "Estudiantes", icon: "mdi-account-multiple" }, 
-                    { title: "Cerrar sesion", icon: "mdi-forum" }, 
-                ], 
+                items: [
+                { title: "Oferta temas", route: '/Alumno', icon: "mdi-folder" },
+                { title: "Solicitud de temas", route: '/solicitudTemas', icon: "mdi-folder" },
+                { title: "Cerrar sesion", icon: "mdi-forum" },
+            ],
                 hover: "red" 
             } 
-        } 
-    } 
+        },
+        methods: {
+            cerrarsesion(ref){
+                if(ref=="Cerrar sesion"){
+                    if (this.$route.path !== "/Alumno"||this.$route.path !== "/solicitudTemas") {
+                        localStorage.clear();
+                        this.$router.push({ path: "/" })
+                    }
+                    console.log("3")
+                }
+            }
+       }
+    }
  
 </script> 
  
