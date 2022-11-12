@@ -1,6 +1,7 @@
 <template>
     <div class="Solicitudes">
-        <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
+        <loading></loading>
+        <v-sheet height="1000" class="overflow-hidden" style="position: relative;" v-if="!this.$store.state.loading && this.$store.state.ingresoUsuario && this.$store.state.esdirector">
             <v-app-bar color="#00CCFF">
                 <v-img max-height="40" max-width="50" src="@/assets/utal.png"></v-img>
                 <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
@@ -16,9 +17,7 @@
                         <v-list-item-title>Ruth Garrido</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-
                 <v-divider></v-divider>
-
                 <v-list dense>
                     <v-list-item v-for="item in items" :key="item.title" link @click="redirigir(item.title)">
                         <v-list-item-icon>
@@ -116,7 +115,7 @@
 </template>
 
 <script>
-
+import loading from "@/components/loading.vue"
 export default {
     name: 'Solicitudes',
     data() {
@@ -173,6 +172,16 @@ export default {
             ],
         };
     },
+    components: {
+        loading
+    },
+    destroyed() {
+        console.log("Directora eliminado");
+    },
+    beforeCreate() {
+        this.$store.state.loading=true
+        this.$store.commit('cargar_datos')
+    },
     methods: {
         verSolicitud(id, titulo, descripcion, estudiante, fecha) {
             this.drawerSolicitud = true
@@ -199,8 +208,8 @@ export default {
                 }
                 console.log("1")
             } else if (ref == "Estudiantes") {
-                if (this.$route.path !== "/estudiantes") {
-                    this.$router.push({ path: "/estudiantes" })
+                if (this.$route.path !== "/algo") {
+                    this.$router.push({ path: "/algo" })
                 }
                 console.log("2")
             } else {
@@ -219,6 +228,6 @@ export default {
 
 <style>
 .v-list-item:hover {
-     background: #f5a42a;
- }
+    background: #f5a42a;
+}
 </style>
