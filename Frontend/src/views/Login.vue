@@ -89,7 +89,7 @@ export default {
               if (usuario[0].esdirector) {
                   this.$router.push({ path: "/directora" })
                 } else if (usuario[0].escomite) {
-                  this.$router.push({ path: "/VistaComite" })
+                  this.$router.push({ path: "/Comite" })
                 } else if (usuario[0].esprofe) {
                   this.$router.push({ path: "/profesor/Solicitudes" })
                 } else {

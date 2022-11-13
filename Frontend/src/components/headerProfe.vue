@@ -15,10 +15,10 @@
       <v-list>
         <v-list-item-group>
           <v-list-item
-            v-for="(link, key) in links"
-            :key="key"
-            router
-            :to="link.route"
+          v-for="(link, key) in links"
+          :key="key"
+          link
+          @click="cerrarsesion(link.text)"
           >
             <v-list-item-icon>
               <v-icon class="white--text">{{ link.icon }}</v-icon>
@@ -61,5 +61,13 @@ export default {
       ],
     }
   },
+  methods:{
+    cerrarsesion(ref) {
+      if (ref == "Cerrar sesion") {
+        localStorage.clear()
+        this.$router.push({ path: "/" })
+      }
+    }
+  }
 }
 </script>

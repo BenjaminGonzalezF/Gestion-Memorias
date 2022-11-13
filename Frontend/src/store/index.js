@@ -21,7 +21,6 @@ export default new Vuex.Store({
     esalumno: false,
     esdirector: false,
     escomite: false,
-    rol:false,
   },
   getters: {
   },
@@ -42,16 +41,12 @@ export default new Vuex.Store({
                 this.state.esprofe=usuario_sesion.esprofe
                 this.state.escomite=usuario_sesion.escomite
                 if (usuario_sesion.esdirector) {
-                  this.state.rol="director"
                   router.push({ path: "/directora" })
                 } else if (usuario_sesion.escomite) {
-                  this.state.rol="comite"
-                  router.push({ path: "/VistaComite" })
+                  router.push({ path: "/Comite" })
                 } else if (usuario_sesion.esprofe) {
-                  this.state.rol="profesor"
                   router.push({ path: "/profesor/Solicitudes" })
                 } else {
-                  this.state.rol="alumno"
                   router.push({ path: "/Alumno" })
                 }
               }, 1000)

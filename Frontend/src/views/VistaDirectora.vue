@@ -1,7 +1,8 @@
 <template>
     <div class="Solicitudes">
         <loading></loading>
-        <v-sheet height="1000" class="overflow-hidden" style="position: relative;" v-if="!this.$store.state.loading && this.$store.state.ingresoUsuario && this.$store.state.esdirector">
+        <v-sheet height="1000" class="overflow-hidden" style="position: relative;"
+            v-if="!this.$store.state.loading && this.$store.state.ingresoUsuario && this.$store.state.esdirector">
             <v-app-bar color="#00CCFF">
                 <v-img max-height="40" max-width="50" src="@/assets/utal.png"></v-img>
                 <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
@@ -87,8 +88,7 @@
                                 </v-flex>
                                 <v-flex xs6 sm1 md1>
                                     <v-tooltip top>
-                                        <template v-slot:activator="{ on, attrs }">
-
+                                        <template v-slot:activator="{}">
                                             <div class="text-xs-center">
                                                 <div>
                                                     <v-spacer></v-spacer>
@@ -120,40 +120,14 @@ export default {
     name: 'Solicitudes',
     data() {
         return {
+            toggle:null,
             drawer: null,
             drawerSolicitud: false,
             tituloProyecto: null,
             descripcionProyecto: null,
             estudiante: null,
             fecha: null,
-            solicitudes: [{
-                id: 1,
-                title: 'proyecto 1',
-                person: 'Manuel',
-                descripcion: 'EL proyecto 1 se tratara sobre blablabla',
-                estudiante: 'Jose Gomez',
-                fecha: '01/11/2022',
-                status: 'completado'
-            },
-            {
-                id: 2,
-                title: 'proyecto 2',
-                person: 'Joselito',
-                descripcion: 'EL proyecto 2 se tratara sobre blablabla',
-                estudiante: 'Joselito Rodriguez',
-                fecha: '01/11/2022',
-                status: 'en progreso'
-            },
-            {
-                id: 3,
-                title: 'proyecto 3',
-                person: 'Manuel Gonzalez',
-                descripcion: 'EL proyecto 3 se tratara sobre blablabla',
-                estudiante: 'Pedro Bustamante',
-                fecha: '01/11/2022',
-                status: 'atrasado'
-            }
-            ],
+            solicitudes: [],
             itemsOrdenar: [
                 { title: 'Por titulo', prop: 'title' },
                 {
@@ -179,10 +153,45 @@ export default {
         console.log("Directora eliminado");
     },
     beforeCreate() {
-        this.$store.state.loading=true
+        this.$store.state.loading = true
         this.$store.commit('cargar_datos')
     },
+    created() {
+        this.cargar_solicitudes()
+    },
     methods: {
+        cargar_solicitudes() {
+            this.axios.get("todos_solicitudes").then((respS) => {
+                this.axios.get("todos_usuarios").then((respU) => {
+                    this.axios.get("todos_temas").then((respT) => {
+                        this.solicitudes = respS.data
+                        const usuarios = respU.data
+                        const temas = respT.data
+                        for(var i=0; i<this.solicitudes.length;i++){
+                            var alumnoid = this.solicitudes[i].alumnoid
+                            var temaid =this.solicitudes[i].temaid
+                            var profesorguiaid = this.solicitudes[i].profeguiaid
+
+                            let datos_alumno = usuarios.filter(u => u._id == alumnoid) 
+                            let datos_profesor = usuarios.filter(u => u._id == profesorguiaid) 
+                            let datos_tema = temas.filter(u => u._id == temaid) 
+
+                            this.solicitudes[i].title=datos_tema[0].nombre
+                            this.solicitudes[i].descripcion=datos_tema[0].descripcion
+                            this.solicitudes[i].fecha=datos_tema[0].fecha
+                            this.solicitudes[i].estudiante=datos_alumno[0].nombre
+                            this.solicitudes[i].profesor=datos_profesor[0].nombre
+                        }
+                    }).catch((e) => {
+                        console.log(e)
+                    })
+                }).catch((e) => {
+                    console.log(e)
+                })
+            }).catch((e) => {
+                console.log(e)
+            })
+        },
         verSolicitud(id, titulo, descripcion, estudiante, fecha) {
             this.drawerSolicitud = true
             this.tituloProyecto = titulo
@@ -206,17 +215,15 @@ export default {
                 if (this.$route.path !== "/profesor") {
                     this.$router.push({ path: "/profesor" })
                 }
-                console.log("1")
             } else if (ref == "Estudiantes") {
-                if (this.$route.path !== "/algo") {
-                    this.$router.push({ path: "/algo" })
+                if (this.$route.path !== "/directora/estudiantes") {
+                    this.$router.push({ path: "/directora/estudiantes" })
                 }
-                console.log("2")
             } else {
                 if (this.$route.path !== "/") {
                     this.$router.push({ path: "/" })
                 }
-                console.log("3")
+                localStorage.clear()
             }
         }
     }
