@@ -18,7 +18,7 @@ const routes = [
   {
     path: '/Comite',
     name: 'VistaComite',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Comite/SolicitudesComite.vue')
+    component: () => import('../views/Comite/SolicitudesComite.vue')
   },
   
   {
@@ -49,7 +49,7 @@ const routes = [
   {
     path: '/directora',
     name: 'directora',
-    component: () => import('../views/VistaDirectora.vue')
+    component: () => import('../views/Directora/VistaDirectora.vue')
   },
   {
     path: '/solicitudTemas',
@@ -59,7 +59,7 @@ const routes = [
   {
     path: '/estudiantes',
     name: 'estudiantes',
-    component: () => import('../views/Estudiantes.vue')
+    component: () => import('../views/Directora/Estudiantes.vue')
   }   
 ]
 

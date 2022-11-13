@@ -1,76 +1,64 @@
-<template> 
-    <div class=""> 
-        <v-app-bar  
-            color="#00CCFF" 
-        >    
-            <v-img 
-                max-height="40" 
-                max-width="50" 
-                src="@/assets/utal.png"   
-            ></v-img> 
-            <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon> 
-             
-        </v-app-bar> 
-        <v-navigation-drawer v-model="drawer" absolute temporary color="#00CCFF"> 
-            <v-list-item> 
-            <v-list-item-avatar> 
-                <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img> 
-            </v-list-item-avatar> 
-             
-            <v-list-item-content> 
-                <v-list-item-title>John Leider</v-list-item-title> 
-            </v-list-item-content> 
-            </v-list-item> 
- 
-            <v-divider></v-divider> 
- 
-            <v-list dense> 
-            <v-list-item v-for="item in items" :key="item.title" :to="item.route" link @click="cerrarsesion(item.title)"> 
-                <v-list-item-icon> 
-                    <v-icon>{{ item.icon }}</v-icon> 
-                </v-list-item-icon> 
- 
-                <v-list-item-content> 
-                    <v-list-item-title >{{ item.title }}</v-list-item-title> 
-                </v-list-item-content> 
-            </v-list-item> 
-            </v-list> 
-        </v-navigation-drawer>   
- 
-    </div> 
-     
-</template> 
- 
-<script> 
-    export default{ 
-        data(){ 
-            return{ 
-                drawer: null, 
-                items: [
-                { title: "Oferta temas", route: '/Alumno', icon: "mdi-folder" },
-                { title: "Solicitud de temas", route: '/solicitudTemas', icon: "mdi-folder" },
-                { title: "Cerrar sesion", icon: "mdi-forum" },
-            ],
-                hover: "red" 
-            } 
-        },
-        methods: {
-            cerrarsesion(ref){
-                if(ref=="Cerrar sesion"){
-                    if (this.$route.path !== "/Alumno"||this.$route.path !== "/solicitudTemas") {
-                        localStorage.clear();
-                        this.$router.push({ path: "/" })
-                    }
-                    console.log("3")
-                }
-            }
-       }
-    }
- 
-</script> 
- 
-<style> 
-    .v-list-item:hover { 
-        background: #FF0182; 
-    } 
-</style>
+<template>
+    <nav>
+      <v-navigation-drawer right app v-model="drawer" color= "rgb(0, 204, 255)">
+  
+        <v-layout column class="text-center">
+          <v-flex class="mt-6">
+            <v-avatar size="150">
+              <img src="@/assets/bateman.jpg" />
+            </v-avatar>
+            <p class="white--text subheading-1 text-weight-bold mt-2">
+              Patrick Bateman
+            </p>
+          </v-flex>
+        </v-layout>
+        <v-list>
+          <v-list-item-group>
+            <v-list-item
+              v-for="(link, key) in links"
+              :key="key"
+              router
+              :to="link.route"
+            >
+              <v-list-item-icon>
+                <v-icon class="white--text">{{ link.icon }}</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title class="white--text">{{
+                  link.text
+                }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-navigation-drawer>
+  
+      <v-app-bar flat app color= "rgb(0, 204, 255)">
+        <v-img max-height="40" max-width="50" src="@/assets/utal.png" >
+          
+        </v-img>
+        <v-app-bar-nav-icon right absolute class="grey--text" @click="drawer = !drawer">
+        </v-app-bar-nav-icon>
+        <v-spacer></v-spacer>
+      </v-app-bar>
+    </nav>
+  </template>
+  
+  <script>
+  export default {
+    data() {
+      return {
+        drawer: true,
+        links: [
+          { icon: 'mdi-view-dashboard', text: 'Temas ofrecidos', route: '/Alumno' },
+          {
+            icon: 'mdi-folder-heart',
+            text: 'Solicitud de temas',
+            route: '/solicitudTemas',
+          },
+          {icon: 'mdi-location-exit', text: 'Cerrar sesion', route: '/'}
+        ],
+      }
+    },
+  }
+  </script>

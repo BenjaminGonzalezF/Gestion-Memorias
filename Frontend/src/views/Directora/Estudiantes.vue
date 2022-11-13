@@ -1,10 +1,10 @@
 <template>
-    <div>
-        <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
-            <v-app-bar color="#00CCFF">
-                <v-img max-height="40" max-width="50" src="@/assets/utal.png"></v-img>
-                <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-            </v-app-bar>
+    <v-app>
+     <Headerdirectora></Headerdirectora>
+
+    <div class ="estudiantes">
+       
+       <div>
             <v-container class="my-3">
                 <v-layout row class="mx-1 my-1">
                     <v-spacer></v-spacer>
@@ -55,13 +55,14 @@
                     </v-card>
                 </div>
             </v-container>
-        </v-sheet>
+        </div>
 
-    </div>
+        </div>
+    </v-app>
 </template>
 
 <script>
-
+import Headerdirectora from "@/components/HeaderDirectora.vue"
 export default ({
     data() {
         return {
