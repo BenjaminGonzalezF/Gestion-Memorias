@@ -47,6 +47,11 @@ const routes = [
     component: () => import('../views/Alumno/VistaAlumno.vue')
   },
   {
+    path: '/Alumno/temaAprobado/:id?',
+    name: 'Alumno',
+    component: () => import('../views/Alumno/TemaAprobado.vue')
+  },
+  {
     path: '/directora',
     name: 'directora',
     component: () => import('../views/VistaDirectora.vue')
