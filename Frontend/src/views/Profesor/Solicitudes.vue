@@ -74,17 +74,7 @@
                             </div>
                             </v-flex>
                             <v-flex xs6 sm1 md1>
-                                <v-btn fab text small color="blue accent-2"
-                                    class="mt-1"
-                                    @click="aceptarProyecto(project.id)">
-                                    <v-icon>mdi-check</v-icon>
-                                </v-btn>
-                            </v-flex>
-                            <v-flex xs6 sm1 md1>
-                                <v-btn fab text small color="red accent-2" class="mt-1"
-                                    @click="deleteProject(project.id)">
-                                    <v-icon>mdi-delete</v-icon>
-                                </v-btn>
+                                <v-btn color="#f5a42a" @click="comentarios">Comentarios</v-btn>
                             </v-flex>
                         </v-layout>
                      </v-card>
@@ -135,6 +125,34 @@
                             </v-row>
                         </v-container>  
                     </v-dialog>
+
+                    <v-dialog v-model="drawerComentario" max-width="600">
+                        <v-container class="grey lighten-5">
+                            <v-col >
+                                <v-card>
+                                    <v-card-title>
+                                        <v-flex >
+                                        <span class="text-h5">Comentarios</span>
+                                        <p style="white-space: pre-line;">{{ message }}</p>
+                                        <br>
+                                        <textarea v-model="message" placeholder="Agregar Comentario"></textarea>
+                                        
+                                     </v-flex >
+                                     <v-flex > 
+                                        <v-btn color="green darken-1">Aceptar</v-btn> 
+                                        <v-btn color="red lighten-2">Rechazar</v-btn> 
+                                    </v-flex>
+                                </v-card-title>
+                                    <v-card-text>
+                                        <v-container>
+                                            
+                                        </v-container>
+                                    </v-card-text>
+                                </v-card>
+                            </v-col>
+                            
+                        </v-container>  
+                    </v-dialog>
                 </div>
                 
             </v-container>
@@ -157,6 +175,7 @@ export default {
         return {
             drawer: null,
             drawerSolicitud : false,
+            drawerComentario: false,
             tituloProyecto: null,
             descripcionProyecto: null,
             estudiante : null,
@@ -227,6 +246,9 @@ export default {
       if (status == 'completado') return 'Completado'
       else if (status == 'en progreso') return 'En progreso'
       else if (status == 'atrasado') return 'Atrasado'
+    },
+    comentarios(){
+        this.drawerComentario = true
     },
 }
 }
