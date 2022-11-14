@@ -9,53 +9,31 @@ const routes = [
     name: 'login',
     component: () => import('../views/Login.vue')
   },
-  
   {
-    path: '/visualizarTemas',
-    name: 'visualizarTemas',
-    component: () => import( '../views/visualizarTemas.vue')
-  },
-  {
-    path: '/Comite',
+    path: '/comite',
     name: 'VistaComite',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Comite/VistaComite.vue')
-  },
-  
-  {
-    path: '/solicitudmemoria',
-    name: 'solicitudmemoria',
-    component: () => import('../views/Alumno/Vistasolicitar.vue')
+    component: () => import('../views/Comite/VistaComite.vue')
   },
   {
-    path: '/profesor/Solicitudes',
-    name: 'Profesor/Solicitudes',
-    component: () => import('../views/Profesor/Solicitudes.vue')
+    path: '/profesor',
+    name: 'VistaProfesor',
+    component: () => import('../views/Profesor/VistaProfesor.vue')
   },
   {
-    path: '/profesor/Proyectos',
-    name: 'Profesor/Proyectos',
-    component: () => import('../views/Profesor/Proyectos.vue')
-  },
-  {
-    path: '/Alumno',
-    name: 'Alumno',
+    path: '/alumno',
+    name: 'VistaAlumno',
     component: () => import('../views/Alumno/VistaAlumno.vue')
   },
   {
     path: '/directora',
     name: 'directora',
-    component: () => import('../views/VistaDirectora.vue')
+    component: () => import('../views/Directora/VistaDirectora.vue')
   },
   {
-    path: '/solicitudTemas',
-    name: 'solicitudTemas',
-    component: () => import('../views/Alumno/VistaSolicitudTema.vue')
+    path: '/solicitudmemoria',
+    name: 'directora',
+    component: () => import('../views/Alumno/Vistasolicitar.vue')
   },
-  {
-    path: '/directora/estudiantes',
-    name: 'estudiantes',
-    component: () => import('../views/Estudiantes.vue')
-  }   
 ]
 
 const router = new VueRouter({

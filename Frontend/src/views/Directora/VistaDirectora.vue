@@ -39,19 +39,21 @@
       <loading></loading>
       <v-main v-if="!this.$store.state.loading">
         <vistaSolicitud v-if="vista==1"></vistaSolicitud>
+        <Estudiantes v-if="vista==2"></Estudiantes>
       </v-main>
     </v-app>
   </template>
 <script>
-import vistaSolicitud from "./VistaSolicitudAlumno.vue"
+import vistaSolicitud from "./VistaSolicitudDirectora.vue"
+import Estudiantes from './VistaAddUsuarioDirectora.vue';
 import Loading from '@/components/loading.vue';
 export default {
     data() {
         return {
             drawer: null,
             items: [
-                { title: "Solicitud", route: '/solicitudTemas', icon: "mdi-folder" },
-                { title: "Oferta Temas", route: '/solicitudTemas', icon: "mdi-folder" },
+                { title: "Solicitud de memorias", route: '/solicitudTemas', icon: "mdi-folder" },
+                { title: "Añadir Usuarios", route: '/solicitudTemas', icon: "mdi-folder" },
                 { title: "Cerrar sesion", icon: "mdi-forum" },
             ],
             hover: "red",
@@ -67,6 +69,7 @@ export default {
     },
     components:{
         vistaSolicitud,
+        Estudiantes,
         Loading
     },
     methods: {
@@ -76,10 +79,10 @@ export default {
                     localStorage.clear();
                     this.$router.push({ path: "/" })
                 }
-            }else if(ref == "Solicitud"){
-                this.vista=1
-            }else if(ref == "Oferta Temas"){
+            }else if(ref == "Añadir Usuarios"){
                 this.vista=2
+            }else if(ref == "Solicitud de memorias"){
+                this.vista=1
             }
         }
     }

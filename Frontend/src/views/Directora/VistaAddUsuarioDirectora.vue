@@ -1,18 +1,19 @@
 <template>
     <div>
+        <loading></loading>
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
-            <v-app-bar color="#00CCFF">
-                <v-img max-height="40" max-width="50" src="@/assets/utal.png"></v-img>
-                <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-            </v-app-bar>
+            <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;
+            top:20%;
+            left: 50%;" v-if="usuarios.length == 0">
+            </v-progress-circular>
             <v-container class="my-3">
                 <v-layout row class="mx-1 my-1">
                     <v-spacer></v-spacer>
 
                     <v-menu offset-y>
-                        <template v-slot:activator="{ on, attrs }">
+                        <template v-slot:activator="{}">
                             <v-btn color="pink" class="mb-5 white--text" @click="mostrarDialogo()">
-                                Agregar alumnos
+                                Agregar Usuarios
                             </v-btn>
                         </template>
                     </v-menu>
@@ -28,7 +29,8 @@
                                 hide-details></v-text-field>
                         </v-card-title>
 
-                        <v-data-table :items="usuarios" :headers="headers" :search="search" :items-per-page="5" v-if="usuarios.length > 0">
+                        <v-data-table :items="usuarios" :headers="headers" :search="search" :items-per-page="5"
+                            v-if="usuarios.length > 0">
                         </v-data-table>
                     </v-card>
                 </div>
@@ -111,10 +113,11 @@
 <script>
 import readXLS from "read-excel-file"
 import exportFromJSON from "export-from-json"
+import loading from '@/components/loading.vue';
 export default ({
     data() {
         return {
-            search:'',
+            search: '',
             e1: null,
             drawer: null,
             drawerAgregarAlumnos: null,
@@ -163,6 +166,7 @@ export default ({
     },
     components: {
         readXLS,
+        loading
     },
     created() {
         this.cargar_usuarios()
@@ -172,7 +176,6 @@ export default ({
             this.axios.get("todos_usuarios")
                 .then((response) => {
                     this.usuarios = response.data
-                    console.log(this.usuarios)
                 })
                 .catch((e) => {
                     console.log(e)

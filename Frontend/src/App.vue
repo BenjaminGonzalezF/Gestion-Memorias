@@ -1,6 +1,5 @@
 <template>
   <v-app>
-    <loading></loading>
     <v-main>
     <router-view/>
   </v-main>

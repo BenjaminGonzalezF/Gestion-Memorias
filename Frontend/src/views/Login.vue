@@ -89,11 +89,11 @@ export default {
               if (usuario[0].esdirector) {
                   this.$router.push({ path: "/directora" })
                 } else if (usuario[0].escomite) {
-                  this.$router.push({ path: "/Comite" })
+                  this.$router.push({ path: "/comite" })
                 } else if (usuario[0].esprofe) {
-                  this.$router.push({ path: "/profesor/Solicitudes" })
+                  this.$router.push({ path: "/profesor" })
                 } else {
-                  this.$router.push({ path: "/Alumno" })
+                  this.$router.push({ path: "/alumno" })
                 }
               console.log("ingreso correcto")
             }else{

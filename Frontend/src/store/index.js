@@ -43,11 +43,11 @@ export default new Vuex.Store({
                 if (usuario_sesion.esdirector) {
                   router.push({ path: "/directora" })
                 } else if (usuario_sesion.escomite) {
-                  router.push({ path: "/Comite" })
+                  router.push({ path: "/comite" })
                 } else if (usuario_sesion.esprofe) {
-                  router.push({ path: "/profesor/Solicitudes" })
+                  router.push({ path: "/profesor" })
                 } else {
-                  router.push({ path: "/Alumno" })
+                  router.push({ path: "/alumno" })
                 }
               }, 1000)
               this.interval = setTimeout(() => {

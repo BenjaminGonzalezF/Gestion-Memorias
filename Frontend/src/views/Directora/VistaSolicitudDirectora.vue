@@ -1,38 +1,11 @@
 <template>
     <div class="Solicitudes">
-        <loading></loading>
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;"
             v-if="!this.$store.state.loading && this.$store.state.ingresoUsuario && this.$store.state.esdirector">
-            <v-app-bar color="#00CCFF">
-                <v-img max-height="40" max-width="50" src="@/assets/utal.png"></v-img>
-                <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-
-            </v-app-bar>
-            <v-navigation-drawer v-model="drawer" absolute temporary color="#00CCFF">
-                <v-list-item>
-                    <v-list-item-avatar>
-                        <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
-                    </v-list-item-avatar>
-
-                    <v-list-item-content>
-                        <v-list-item-title>Ruth Garrido</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-divider></v-divider>
-                <v-list dense>
-                    <v-list-item v-for="item in items" :key="item.title" link @click="redirigir(item.title)">
-                        <v-list-item-icon>
-                            <v-icon>{{ item.icon }}</v-icon>
-
-                        </v-list-item-icon>
-
-                        <v-list-item-content>
-                            <v-list-item-title>{{ item.title }}</v-list-item-title>
-
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list>
-            </v-navigation-drawer>
+            <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;
+            top:20%;
+            left: 50%;" v-if="solicitudes.length == 0">
+            </v-progress-circular>
             <div>
                 <v-container class="my-3">
                     <v-layout row class="mx-1">
@@ -120,7 +93,7 @@ export default {
     name: 'Solicitudes',
     data() {
         return {
-            toggle:null,
+            toggle: null,
             drawer: null,
             drawerSolicitud: false,
             tituloProyecto: null,
@@ -149,13 +122,6 @@ export default {
     components: {
         loading
     },
-    destroyed() {
-        console.log("Directora eliminado");
-    },
-    beforeCreate() {
-        this.$store.state.loading = true
-        this.$store.commit('cargar_datos')
-    },
     created() {
         this.cargar_solicitudes()
     },
@@ -167,20 +133,20 @@ export default {
                         this.solicitudes = respS.data
                         const usuarios = respU.data
                         const temas = respT.data
-                        for(var i=0; i<this.solicitudes.length;i++){
+                        for (var i = 0; i < this.solicitudes.length; i++) {
                             var alumnoid = this.solicitudes[i].alumnoid
-                            var temaid =this.solicitudes[i].temaid
+                            var temaid = this.solicitudes[i].temaid
                             var profesorguiaid = this.solicitudes[i].profeguiaid
 
-                            let datos_alumno = usuarios.filter(u => u._id == alumnoid) 
-                            let datos_profesor = usuarios.filter(u => u._id == profesorguiaid) 
-                            let datos_tema = temas.filter(u => u._id == temaid) 
+                            let datos_alumno = usuarios.filter(u => u._id == alumnoid)
+                            let datos_profesor = usuarios.filter(u => u._id == profesorguiaid)
+                            let datos_tema = temas.filter(u => u._id == temaid)
 
-                            this.solicitudes[i].title=datos_tema[0].nombre
-                            this.solicitudes[i].descripcion=datos_tema[0].descripcion
-                            this.solicitudes[i].fecha=datos_tema[0].fecha
-                            this.solicitudes[i].estudiante=datos_alumno[0].nombre
-                            this.solicitudes[i].profesor=datos_profesor[0].nombre
+                            this.solicitudes[i].title = datos_tema[0].nombre
+                            this.solicitudes[i].descripcion = datos_tema[0].descripcion
+                            this.solicitudes[i].fecha = datos_tema[0].fecha
+                            this.solicitudes[i].estudiante = datos_alumno[0].nombre
+                            this.solicitudes[i].profesor = datos_profesor[0].nombre
                         }
                     }).catch((e) => {
                         console.log(e)
