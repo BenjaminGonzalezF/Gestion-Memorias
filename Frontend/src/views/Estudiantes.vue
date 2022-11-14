@@ -19,39 +19,16 @@
                     
                 </v-layout>
                 <v-spacer></v-spacer>
-                <div v-for="(alumno, index) in alumnos" :key="index">
+                <div>
                     <v-card color="rgb(247, 247, 247)" flat class="pa-6 mb-2">
-                        <v-layout row wrap outlined>
-                            <v-flex>
-                                <v-avatar>
-                                    <img :src="alumno.avatar">
-                                </v-avatar>
-                            </v-flex>
-
-                            <v-flex xs8 md2>
-                                <div class="caption grey--text">Estudiante</div>
-                                <div>{{ alumno.nombre }}</div>
-                            </v-flex>
-                            <v-flex xs6 md2>
-                                <div class="caption grey--text">matricula</div>
-                                <div>{{ alumno.matricula }}</div>
-                            </v-flex>
-                            <v-flex>
-                                <div class="caption grey--text">Correo</div>
-                                <div>{{ alumno.correo }}</div>
-                            </v-flex>
-
-                            <v-flex>
-                                <div class="caption grey--text">Modulos faltantes</div>
-                                <div>{{ alumno.modulosfaltantes }}</div>
-                            </v-flex>
-                            <v-flex xs2 sm3 md2>
-                                <!-- <div class="caption grey--text">Durum</div> -->
-                            </v-flex>
-                            <v-flex xs6 sm1 md1>
-
-                            </v-flex>
-                        </v-layout>
+                        <template>
+                            <v-data-table
+                                :headers="headers"
+                                :items="alumnos"
+                                :items-per-page="10"
+                                class="elevation-1"
+                            ></v-data-table>
+                        </template>
                     </v-card>
                 </div>
             </v-container>
@@ -66,33 +43,42 @@ export default ({
     data() {
         return {
             drawer: null,
+            headers:[
+                {text:'Alumno', align:"start", value:'nombre', },
+                {text:'Matricula', value:'matricula'},
+                {text:'Correo', value:'correo'},
+                {text:'Contraseña', value:'contrasena'},
+                {text:'trabaja ', value:'trabaja'},
+                {text:'Modulos faltantes', value:'modulosfaltantes'},
+            ],
             alumnos: [{
-                nombre: "Elisenda Rodriguez",
+                nombre: "Elisenda",
                 matricula: 2018407021,
                 correo: "elrodriguez18@alumnos.utalca.cl",
                 contrasena: "XRW45gVa",
                 trabaja: "",
                 modulosfaltantes: ["Electricidad y Magnetismo", "Programación Avanzada"],
-                avatar: "/avatar.png"
+                
             },
             {
-                nombre: "Elisenda Rodriguez",
+                nombre: " Rodriguez",
                 matricula: 2018407021,
                 correo: "elrodriguez18@alumnos.utalca.cl",
                 contrasena: "XRW45gVa",
                 trabaja: "",
                 modulosfaltantes: ["Electricidad y Magnetismo", "Programación Avanzada"],
-                avatar: "/avatar.png"
+                
             },
             {
-                nombre: "Elisenda Rodriguez",
+                nombre: "s",
                 matricula: 2018407021,
                 correo: "elrodriguez18@alumnos.utalca.cl",
                 contrasena: "XRW45gVa",
                 trabaja: "",
                 modulosfaltantes: ["Electricidad y Magnetismo", "Programación Avanzada"],
-                avatar: "/avatar.png"
-            }]
+                /* avatar: "/avatar.png" */
+            }],
+           
         }
     }
 })
