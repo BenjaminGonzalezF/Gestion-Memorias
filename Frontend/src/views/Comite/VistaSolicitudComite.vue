@@ -31,7 +31,7 @@
                             </v-list>
                         </v-menu>
                     </v-layout>
-                    <div v-for="(project) in temas" :key="project._id">
+                    <div v-for="project in temas" :key="project._id">
                         <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2">
                             <v-layout row wrap :class="`pa- project ${project.estadovalido}`">
                                 <v-flex xs8 md2>
@@ -50,7 +50,7 @@
                                     <!-- <div class="caption grey--text">Durum</div> -->
                                     <div class="my-1 text-center">
                                         <v-btn
-                                            @click="verSolicitud(project._id, project.nombre, project.descripcion, project.idCreador, project.fechacambio)">
+                                            @click="verSolicitud(project.nombre, project.descripcion, project.nombreCreador, project.fechacambio)">
                                             Ver más
                                         </v-btn>
                                     </div>
@@ -74,7 +74,7 @@
                                     <v-tooltip bottom v-for="voto in project.votos" :key="voto.refcomite" >
                                         <template v-slot:activator="{ on, attrs }" v-if="voto.voto!==null">
                                             <v-avatar size="30" v-bind="attrs" v-on="on">
-                                                <img src="@/assets/rey.jpg" v-if="voto.voto !== null" />
+                                                <img :src="voto.imgcomite" v-if="voto.voto !== null" />
                                             </v-avatar>
                                         </template>
                                         <span v-if="voto.voto===true">{{voto.nombrecomite}} = Aceptado</span>
@@ -103,7 +103,7 @@
                                                         <div>{{ descripcionProyecto }}</div>
                                                     </v-flex>
                                                     <v-flex>
-                                                        <div class="caption grey--text">Estudiante</div>
+                                                        <div class="caption grey--text">Creador</div>
                                                         <div>{{ estudiante }}</div>
                                                     </v-flex>
 
@@ -243,7 +243,7 @@ export default {
         sortBy(prop) {
             this.solicitudes.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
         },
-        verSolicitud(id, titulo, descripcion, estudiante, fecha) {
+        verSolicitud(titulo, descripcion, estudiante, fecha) {
             this.drawerSolicitud = true
             this.tituloProyecto = titulo
             this.descripcionProyecto = descripcion
