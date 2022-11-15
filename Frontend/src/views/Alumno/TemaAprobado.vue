@@ -48,6 +48,7 @@ export default {
     methods: {
         createPDF() {
             var pdf = new jsPDF('p', 'mm', 'letter');
+            var strArr = pdf.splitTextToSize(this.tema['Detalles del tema'], 195)
             pdf.setFontSize(22);
             pdf.setFontSize(16);
 
@@ -73,7 +74,8 @@ export default {
             pdf.text(13, 141, "_____________");
             pdf.text(13, 155, "Nombre del tema: " + this.tema['Nombre del tema']);
             pdf.text(13, 165, "Profesor guía: " + this.tema['Profesor Guía']);
-            pdf.text(13, 175, "Detalles del tema: " + this.tema['Detalles del tema']);
+            pdf.text(13,175,strArr)
+            //pdf.text(13, 175, "Detalles del tema: " + this.tema['Detalles del tema']);
         }
     }
 }
