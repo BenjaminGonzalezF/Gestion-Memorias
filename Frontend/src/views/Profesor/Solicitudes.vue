@@ -76,54 +76,62 @@
                         </v-layout>
                      </v-card>
                     <v-dialog v-model="drawerSolicitud" max-width="900">
-                        <v-container class="grey lighten-5">
-                            <v-row>
-                                <v-col cols="12" sm="12" md="6">
-                                    <v-card>
-                                        <v-card-title>
-                                            <span class="text-h5">Datos proyecto</span>
-                                        </v-card-title>
-                                        <v-card-text>
-                                            <v-container>
-                                                <v-flex>
-                                                <div class="caption grey--text">Titulo proyecto</div>
-                                                <div>{{ tituloProyecto }}</div>
-                                                </v-flex>
-                                                <v-flex>
-                                                <div class="caption grey--text">Descripcion general proyecto</div>
-                                                <div>{{ descripcionProyecto }}</div>
-                                                </v-flex>
-                                                <v-flex>
-                                                <div class="caption grey--text">Estudiante</div>
-                                                <div>{{ estudiante }}</div>
-                                                </v-flex>
+                        <v-card>
+                            <v-container class="grey lighten-5">
+                                <v-row>
+                                    <v-col cols="12" sm="12" md="6">
+                                        <v-card>
+                                            <v-card-title>
+                                                <span class="text-h5">Datos proyecto</span>
+                                            </v-card-title>
+                                            <v-card-text>
+                                                <v-container>
+                                                    <v-flex>
+                                                    <div class="caption grey--text">Titulo proyecto</div>
+                                                    <div>{{ tituloProyecto }}</div>
+                                                    </v-flex>
+                                                    <v-flex>
+                                                    <div class="caption grey--text">Descripcion general proyecto</div>
+                                                    <div>{{ descripcionProyecto }}</div>
+                                                    </v-flex>
+                                                    <v-flex>
+                                                    <div class="caption grey--text">Estudiante</div>
+                                                    <div>{{ estudiante }}</div>
+                                                    </v-flex>
 
-                                                <v-flex>
-                                                <div class="caption grey--text">fecha</div>
-                                                <div>{{ fecha }}</div>
-                                                </v-flex>
-                                            </v-container>
-                                        </v-card-text>
+                                                    <v-flex>
+                                                    <div class="caption grey--text">fecha</div>
+                                                    <div>{{ fecha }}</div>
+                                                    </v-flex>
+                                                </v-container>
+                                            </v-card-text>
 
-                                    </v-card>
-                                </v-col>
-                            <v-col cols="12" sm="12" md="6">
-                                <v-card>
-                                    <v-card-title>
-                                        <span class="text-h5">Datos estudiante</span>
-                                    </v-card-title>
-                                    <v-card-text>
-                                        <v-container>
-                                            
-                                        </v-container>
-                                    </v-card-text>
-                                </v-card>
-                            </v-col>
-                            </v-row>
-                        </v-container>  
+                                        </v-card>
+                                    </v-col>
+                                    <v-col cols="12" sm="12" md="6">
+                                        <v-card>
+                                            <v-card-title>
+                                                <span class="text-h5">Datos estudiante</span>
+                                            </v-card-title>
+                                            <v-card-text>
+                                                <v-container>
+                                                    
+                                                </v-container>
+                                            </v-card-text>
+                                        </v-card>
+                                    </v-col>                                
+                                </v-row>
+                            </v-container>
+                                <v-form class="px-3 pb-3" ref="form">
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="#FF0182" dark @click="submit"> Aceptar </v-btn>
+                                        <v-btn color="grey" text @click="dialog = false"> Rechazar </v-btn>                        
+                                    </v-card-actions>
+                                </v-form>
+                        </v-card>
                     </v-dialog>
                 </div>
-                
             </v-container>
         </div>
         </v-sheet>
