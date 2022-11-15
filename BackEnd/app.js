@@ -10,7 +10,7 @@ const app = express();
 /* const uri = 'mongodb://localhost:27017/myapp'; */
 //hola
 //Conexion DB nubr
-const uri = 'token mongo';
+const uri = 'mongodb+srv://CS222:DF4SQd50dElND5Ir@cluster.hvfa1qy.mongodb.net/contrus222';
 const options = {useNewUrlParser: true};
 // Or using promises
 mongoose.connect(uri, options).then(
@@ -23,6 +23,10 @@ app.use(morgan('tiny'));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use('/api', require('./routes/solicitudes'));
+app.use('/api', require('./routes/temas'));
+app.use('/api', require('./routes/usuarios'));
 
 // Middleware para Vue.js router modo history
 const history = require('connect-history-api-fallback');

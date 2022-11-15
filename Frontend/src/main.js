@@ -10,6 +10,7 @@ import vuetify from './plugins/vuetify'
 Vue.use(VueAxios, axios)
 
 Vue.config.productionTip = false
+
 // Agregamos la URL base de nuestra API
 axios.defaults.baseURL = 'http://localhost:3000/api';
 
@@ -20,3 +21,4 @@ new Vue({
   vuetify,
   render: h => h(App)
 }).$mount('#app')
+
