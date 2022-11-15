@@ -84,6 +84,8 @@ export default {
           if (ref == "Cerrar sesion") {
               if (this.$route.path !== "/Alumno" || this.$route.path !== "/solicitudTemas") {
                   localStorage.clear();
+                  this.$store.state.nombre=null
+                    this.$store.state.img=null
                   this.$router.push({ path: "/" })
               }
           }else if(ref == "Solicitud"){
