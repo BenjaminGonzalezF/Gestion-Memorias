@@ -22,6 +22,8 @@ export default new Vuex.Store({
     esdirector: false,
     escomite: false,
     nombre:null,
+    img:null,
+    id_tema_solicitar:null,//Variable que solo sirve para los alumnos
   },
   getters: {
   },
@@ -42,6 +44,8 @@ export default new Vuex.Store({
                 this.state.esprofe=usuario_sesion.esprofe
                 this.state.escomite=usuario_sesion.escomite
                 this.state.nombre=usuario_sesion.nombre
+                this.state.img=usuario_sesion.img
+                console.log("alo"+this.state.img)
                 if (usuario_sesion.esdirector) {
                   router.push({ path: "/directora" })
                 } else if (usuario_sesion.escomite) {

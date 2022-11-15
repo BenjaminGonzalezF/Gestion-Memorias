@@ -39,11 +39,13 @@
       <loading></loading>
       <v-main v-if="!this.$store.state.loading">
         <vistaSolicitud v-if="vista==1"></vistaSolicitud>
+        <vistasolicitar v-if="vista==3"></vistaSolicitar>
       </v-main>
     </v-app>
   </template>
 <script>
 import vistaSolicitud from "./VistaSolicitudAlumno.vue"
+import vistaSolicitar from "./Vistasolicitar.vue"
 import Loading from '@/components/loading.vue';
 export default {
     data() {
@@ -67,7 +69,8 @@ export default {
     },
     components:{
         vistaSolicitud,
-        Loading
+        Loading,
+        vistaSolicitar
     },
     methods: {
         redirigir(ref) {

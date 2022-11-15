@@ -29,27 +29,27 @@
                     </v-list>
                     </v-menu>
                 </v-layout>
-                <div v-for="(project, index) in solicitudes" :key="index">
+                <div v-for="project in temas" :key="project._id">
                      <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2">
                         
                         <v-layout row wrap :class="`pa-3 project ${project.status}`">
                             <v-flex xs8 md2>
                             <div class="caption grey--text">Titulo proyecto</div>
-                            <div>{{ project.title }}</div>
+                            <div>{{ project.nombre }}</div>
                             </v-flex>
                             <v-flex xs6 md3>
                             <div class="caption grey--text">Descripcion general proyecto</div>
-                            <div>{{ project.descripcionGeneral }}</div>
+                            <div>{{ project.descripcion }}</div>
                             </v-flex>
                             <v-flex xs2 sm1 md2>
-                            <div class="caption grey--text">Profesor</div>
-                            <div>{{ project.profesor }}</div>
+                            <div class="caption grey--text">Creador</div>
+                            <div>{{ project.nombrecreador }}</div>
                             </v-flex>
 
                             <v-flex xs2 sm3 md2>
                             <!-- <div class="caption grey--text">Durum</div> -->
                             <div class="my-1 text-center">
-                                <v-btn @click="verSolicitud(project.id, project.title, project.descripcion, project.estudiante, project.fecha)" >
+                                <v-btn @click="verSolicitud(project._id, project.nombre, project.descripcion, project.idCreador, project.fecha)" >
                                     Ver descripcion tema
                                 </v-btn>
                             </div>
@@ -59,7 +59,7 @@
                         </v-layout>
                      </v-card>
                     <v-dialog v-model="drawerSolicitud" max-width="900">
-                        <v-container class="grey lighten-5">
+                        <v-container class="grey lighten-5" >
                             <v-row>
                                 <v-col cols="12" sm="12" md="6">
                                     <v-card>
@@ -80,20 +80,10 @@
                                         </v-card-text>
 
                                     </v-card>
+                                    <v-btn @click="enviarSolicitud(project._id)" color="#f5a42a" >
+                                        Enviar Solicitud
+                                    </v-btn>
                                 </v-col>
-                                <v-col cols="12" sm="12" md="6">
-                                <v-card>
-                                    <v-card-text>
-                                        <v-container>
-                                            <div class="my-1 text-center">
-                                <v-btn @click="enviarSolicitud(project.id, project.title, project.descripcion, project.estudiante, project.fecha)" color="#f5a42a" >
-                                    Enviar Solicitud
-                                </v-btn>
-                            </div>
-                                        </v-container>
-                                    </v-card-text>
-                                </v-card>
-                            </v-col>
                             </v-row>
                         </v-container>  
                     </v-dialog>
@@ -116,7 +106,8 @@
             tituloProyecto: null,
             descripcionProyecto: null,
             profesor: null,
-            estudiante: null,   
+            estudiante: null,
+            temas:[],   
             solicitudes:[{
                 id: 1,
                 title: 'proyecto 1',
@@ -159,15 +150,36 @@
 
         };
     },
+    created() {
+        this.cargar_temas()
+    },
     methods: {
+        cargar_temas(){
+            this.axios.get("todos_temas")
+                .then((respT) => {
+                    this.axios.get("todos_usuarios").then((respU)=>{
+                        const usuario = respU.data
+                        this.temas=respT.data
+                        for(var i=0; i<this.temas.length;i++){
+                            const creador = usuario.filter(u => u._id==this.temas[i].idCreador)
+                            this.temas[i].nombrecreador=creador[0].nombre
+                        }
+                    })
+                })
+                .catch((e) => {
+                    console.log(e)
+                })
+        },
         verSolicitud(id, titulo, descripcion, estudiante, fecha) {
             this.drawerSolicitud = true;
             this.tituloProyecto = titulo;
             this.descripcionProyecto = descripcion;
             this.estudiante = estudiante;
         },
-        enviarSolicitud(){
+        enviarSolicitud(id){
             if (this.$route.path == "/alumno") {
+                this.$store.state.id_tema_solicitar=id
+                console.log( this.$store.state.id_tema_solicitar)
                 this.$router.push({ path: "/solicitudmemoria" })
             }
         }

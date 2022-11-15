@@ -5,7 +5,7 @@
         <v-layout column class="text-center">
           <v-flex class="mt-6">
             <v-avatar size="150">
-              <img src="@/assets/rey.jpg" />
+              <img :src="this.$store.state.img" />
             </v-avatar>
             <p class="white--text subheading-1 text-weight-bold mt-2">
               {{this.$store.state.nombre}}
