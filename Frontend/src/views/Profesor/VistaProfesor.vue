@@ -23,6 +23,13 @@
               }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <!-- Aca intentar meter un boton -->
+          <v-row
+          justify="center"
+          class="mt-6"
+          >
+            <v-btn class="white--text" color="#FF0182"><v-icon>mdi-plus</v-icon>Agregar tema</v-btn>
+          </v-row>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
@@ -77,6 +84,7 @@ export default {
               }
           }else if(ref == "Solicitud"){
               this.vista=1
+
           }
       }
   }
