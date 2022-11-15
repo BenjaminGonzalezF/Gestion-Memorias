@@ -15,6 +15,8 @@
           <p class="white--text subheading-1 text-weight-bold mt-2">
             {{this.$store.state.nombre}}
           </p>
+        </v-flex>
+        <v-flex class="mt-3 mb-3">
           <cambiarRol></cambiarRol>
         </v-flex>        
       </v-layout>

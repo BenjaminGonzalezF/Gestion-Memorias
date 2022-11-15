@@ -39,22 +39,17 @@
                         <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2">
 
                             <v-layout row wrap :class="`pa-3 project ${project.status}`">
-                                <v-flex xs8 md2>
+                                <v-flex xs8 md3>
                                     <div class="caption grey--text">Titulo proyecto</div>
                                     <div>{{ project.title }}</div>
                                 </v-flex>
-                                <v-flex xs6 md3>
+                                <v-flex xs6 md5>
                                     <div class="caption grey--text">Descripcion general proyecto</div>
                                     <div>{{ project.descripcion }}</div>
                                 </v-flex>
                                 <v-flex xs2 sm1 md2>
                                     <div class="caption grey--text">Estudiante</div>
                                     <div>{{ project.estudiante }}</div>
-                                </v-flex>
-
-                                <v-flex xs6 sm4 md1>
-                                    <div class="caption grey--text">fecha</div>
-                                    <div>{{ project.fecha }}</div>
                                 </v-flex>
                                 <v-flex xs2 sm3 md2>
                                     <!-- <div class="caption grey--text">Durum</div> -->
@@ -65,18 +60,7 @@
                                         </v-btn>
                                     </div>
                                 </v-flex>
-                                <v-flex xs6 sm1 md1>
-                                    <v-btn fab text small color="blue accent-2" class="mt-1"
-                                        @click="aceptarProyecto(project.id)">
-                                        <v-icon>mdi-check</v-icon>
-                                    </v-btn>
-                                </v-flex>
-                                <v-flex xs6 sm1 md1>
-                                    <v-btn fab text small color="red accent-2" class="mt-1"
-                                        @click="deleteProject(project.id)">
-                                        <v-icon>mdi-delete</v-icon>
-                                    </v-btn>
-                                </v-flex>
+                                
                             </v-layout>
                         </v-card>
                         <v-dialog v-model="drawerSolicitud" max-width="900">
