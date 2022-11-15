@@ -11,6 +11,9 @@
             Patrick Bateman
           </p>
         </v-flex>
+        <v-flex class="mt-3 mb-3">
+          <cambiarRol></cambiarRol>
+        </v-flex>
       </v-layout>
       <v-list>
         <v-list-item-group>
@@ -35,7 +38,6 @@
 
     <v-app-bar flat app color= "rgb(0, 204, 255)">
       <v-img max-height="40" max-width="50" src="@/assets/utal.png" >
-        
       </v-img>
       <v-app-bar-nav-icon right absolute class="grey--text" @click="drawer = !drawer">
       </v-app-bar-nav-icon>
@@ -45,7 +47,11 @@
 </template>
 
 <script>
-export default {
+import cambiarRol from '@/components/cambiarRol.vue';
+export default {  
+  components:{
+      cambiarRol,
+  },
   data() {
     return {
       drawer: true,
@@ -61,5 +67,10 @@ export default {
       ],
     }
   },
+  methods:{
+    cambiarRol(){
+      
+    }
+  }
 }
 </script>

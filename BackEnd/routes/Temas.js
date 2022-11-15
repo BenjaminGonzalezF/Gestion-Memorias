@@ -2,7 +2,7 @@ import express from 'express';
 const router = express.Router();
 
 // importar el modelo nota
-import Tema from '../models/Temas';
+import Tema from '../models/temas';
 
 // Agregar una nota
 router.post('/nuevo_tema', async(req, res) => {
@@ -31,6 +31,20 @@ router.get('/tema/:id', async(req, res) => {
     })
   }
 });
+router.get('/tema_creador/:id', async(req, res) => {
+  const _id = req.params.id;
+  try {
+    const notaDB = await Tema.find();
+    const filter = notaDB.filter(v => v.idCreador==_id)
+    res.json(filter);
+  } catch (error) {
+    return res.status(400).json({
+      mensaje: 'Ocurrio un error',
+      error
+    })
+  }
+});
+
 
 // Get con todos los documentos
 router.get('/todos_temas', async(req, res) => {
@@ -74,37 +88,8 @@ router.put('/tema_ac/:id', async(req, res) => {
       _id,
       body,
       {new: true});
+    console.log("tema actualizado")
     res.json(notaDb);  
-  } catch (error) {
-    return res.status(400).json({
-      mensaje: 'Ocurrio un error',
-      error
-    })
-  }
-});
-
-// ENLACE (tema creador_profe => devuelve todos los temas de un profesor)
-router.get('/tema_enlProf/:idcreador', async(req, res) => {
-  const _idcreador = req.params.idcreador;
-  try {
-    const notaBD = await Tema.find();
-    const enl_profcreador = notaBD.filter(v => v.idCreador==_idcreador)
-    res.json(enl_profcreador);
-  } catch (error) {
-    return res.status(400).json({
-      mensaje: 'Ocurrio un error',
-      error
-    })
-  }
-});
-
-// ENLACE (tema creador_profe => devuelve todos los temas de un alumno)
-router.get('/tema_enlAlum/:idcreador', async(req, res) => {
-  const _idcreador = req.params.idcreador;
-  try {
-    const notaBD = await Tema.find();
-    const enl_alumcreador = notaBD.filter(v => v.idCreador==_idcreador)
-    res.json(enl_alumcreador);
   } catch (error) {
     return res.status(400).json({
       mensaje: 'Ocurrio un error',

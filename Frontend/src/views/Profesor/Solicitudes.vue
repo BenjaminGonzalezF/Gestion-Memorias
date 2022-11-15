@@ -1,6 +1,6 @@
 <template>
     <div class="Solicitudes">
-        <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
+        <v-sheet height="1000" class="overflow-hidden" style="position: relative;" v-if="!this.$store.state.loading">
         <headerProfe></headerProfe>
         <div>
             <v-container class="my-3">
@@ -48,7 +48,7 @@
                      <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2">
                         
                         <v-layout row wrap :class="`pa-3 project ${project.status}`">
-                            <v-flex xs8 md2>
+                            <v-flex xs8 md3>
                             <div class="caption grey--text">Titulo proyecto</div>
                             <div>{{ project.title }}</div>
                             </v-flex>
@@ -73,70 +73,65 @@
                                 </v-btn>
                             </div>
                             </v-flex>
-                            <v-flex xs6 sm1 md1>
-                                <v-btn fab text small color="blue accent-2"
-                                    class="mt-1"
-                                    @click="aceptarProyecto(project.id)">
-                                    <v-icon>mdi-check</v-icon>
-                                </v-btn>
-                            </v-flex>
-                            <v-flex xs6 sm1 md1>
-                                <v-btn fab text small color="red accent-2" class="mt-1"
-                                    @click="deleteProject(project.id)">
-                                    <v-icon>mdi-delete</v-icon>
-                                </v-btn>
-                            </v-flex>
                         </v-layout>
                      </v-card>
                     <v-dialog v-model="drawerSolicitud" max-width="900">
-                        <v-container class="grey lighten-5">
-                            <v-row>
-                                <v-col cols="12" sm="12" md="6">
-                                    <v-card>
-                                        <v-card-title>
-                                            <span class="text-h5">Datos proyecto</span>
-                                        </v-card-title>
-                                        <v-card-text>
-                                            <v-container>
-                                                <v-flex>
-                                                <div class="caption grey--text">Titulo proyecto</div>
-                                                <div>{{ tituloProyecto }}</div>
-                                                </v-flex>
-                                                <v-flex>
-                                                <div class="caption grey--text">Descripcion general proyecto</div>
-                                                <div>{{ descripcionProyecto }}</div>
-                                                </v-flex>
-                                                <v-flex>
-                                                <div class="caption grey--text">Estudiante</div>
-                                                <div>{{ estudiante }}</div>
-                                                </v-flex>
+                        <v-card>
+                            <v-container class="grey lighten-5">
+                                <v-row>
+                                    <v-col cols="12" sm="12" md="6">
+                                        <v-card>
+                                            <v-card-title>
+                                                <span class="text-h5">Datos proyecto</span>
+                                            </v-card-title>
+                                            <v-card-text>
+                                                <v-container>
+                                                    <v-flex>
+                                                    <div class="caption grey--text">Titulo proyecto</div>
+                                                    <div>{{ tituloProyecto }}</div>
+                                                    </v-flex>
+                                                    <v-flex>
+                                                    <div class="caption grey--text">Descripcion general proyecto</div>
+                                                    <div>{{ descripcionProyecto }}</div>
+                                                    </v-flex>
+                                                    <v-flex>
+                                                    <div class="caption grey--text">Estudiante</div>
+                                                    <div>{{ estudiante }}</div>
+                                                    </v-flex>
 
-                                                <v-flex>
-                                                <div class="caption grey--text">fecha</div>
-                                                <div>{{ fecha }}</div>
-                                                </v-flex>
-                                            </v-container>
-                                        </v-card-text>
+                                                    <v-flex>
+                                                    <div class="caption grey--text">fecha</div>
+                                                    <div>{{ fecha }}</div>
+                                                    </v-flex>
+                                                </v-container>
+                                            </v-card-text>
 
-                                    </v-card>
-                                </v-col>
-                            <v-col cols="12" sm="12" md="6">
-                                <v-card>
-                                    <v-card-title>
-                                        <span class="text-h5">Datos estudiante</span>
-                                    </v-card-title>
-                                    <v-card-text>
-                                        <v-container>
-                                            
-                                        </v-container>
-                                    </v-card-text>
-                                </v-card>
-                            </v-col>
-                            </v-row>
-                        </v-container>  
+                                        </v-card>
+                                    </v-col>
+                                    <v-col cols="12" sm="12" md="6">
+                                        <v-card>
+                                            <v-card-title>
+                                                <span class="text-h5">Datos estudiante</span>
+                                            </v-card-title>
+                                            <v-card-text>
+                                                <v-container>
+                                                    
+                                                </v-container>
+                                            </v-card-text>
+                                        </v-card>
+                                    </v-col>                                
+                                </v-row>
+                            </v-container>
+                                <v-form class="px-3 pb-3" ref="form">
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="#FF0182" dark> Aceptar </v-btn>
+                                        <v-btn color="grey" text @click="dialog = false"> Rechazar </v-btn>                        
+                                    </v-card-actions>
+                                </v-form>
+                        </v-card>
                     </v-dialog>
                 </div>
-                
             </v-container>
         </div>
         </v-sheet>
@@ -146,10 +141,12 @@
   
 <script>
 import headerProfe from '@/components/headerProfe.vue';
+import loading from '@/components/loading.vue';
 export default {
     name: 'Solicitudes',
     components:{
         headerProfe,
+        loading,
     },
     data() {
         return {

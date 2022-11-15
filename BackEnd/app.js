@@ -10,7 +10,7 @@ const app = express();
 /* const uri = 'mongodb://localhost:27017/myapp'; */
 //hola
 //Conexion DB nubr
-const uri = 'mongodb+srv://CS222:DF4SQd50dElND5Ir@cluster.hvfa1qy.mongodb.net/cs222';
+const uri = 'mongodb+srv://CS222:DF4SQd50dElND5Ir@cluster.hvfa1qy.mongodb.net/contrus222';
 const options = {useNewUrlParser: true};
 // Or using promises
 mongoose.connect(uri, options).then(
@@ -24,12 +24,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/api', require('./routes/Alumnos'));
-app.use('/api', require('./routes/Profesores'));
-app.use('/api', require('./routes/Solicitudes'));
-app.use('/api', require('./routes/Temas'));
-app.use('/api', require('./routes/Comite'));
-app.use('/api', require('./routes/Escuela'));
+app.use('/api', require('./routes/solicitudes'));
+app.use('/api', require('./routes/temas'));
+app.use('/api', require('./routes/usuarios'));
 
 // Middleware para Vue.js router modo history
 const history = require('connect-history-api-fallback');

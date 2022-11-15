@@ -2,14 +2,17 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const notaSchema = new Schema({
-  idCreador:{type: Schema.Types.ObjectId, ref: 'Escuela'},
-  idCreador:{type: Schema.Types.ObjectId, ref: 'Alumnos'},
+  idCreador:{type: Schema.Types.ObjectId, ref: 'usuarios'},
   nombre:String,
   estado:Boolean,
   requisitos:Array,
-  descripcion:String
+  descripcion:String,
+  votos:[{
+    refcomite:String,
+    voto:Boolean
+  }]
 });
 
 // Convertir a modelo
-const Nota = mongoose.model('Temas', notaSchema);
+const Nota = mongoose.model('temas', notaSchema);
 export default Nota;

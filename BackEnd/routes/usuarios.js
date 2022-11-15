@@ -2,13 +2,13 @@ import express from 'express';
 const router = express.Router();
 
 // importar el modelo nota
-import Alumno from '../models/Alumno';
+import Usuario from '../models/usuarios';
 
 // Agregar una nota
-router.post('/nuevo_alumno', async(req, res) => {
+router.post('/nuevo_usuario', async(req, res) => {
   const body = req.body;  
   try {
-    const notaDB = await Alumno.create(body);
+    const notaDB = await Usuario.create(body);
     res.status(200).json(notaDB); 
   } catch (error) {
     return res.status(500).json({
@@ -19,10 +19,10 @@ router.post('/nuevo_alumno', async(req, res) => {
 });
 
 // Get con parámetros
-router.get('/alumno/:id', async(req, res) => {
+router.get('/usuario/:id', async(req, res) => {
   const _id = req.params.id;
   try {
-    const notaDB = await Alumno.findOne({_id});
+    const notaDB = await Usuario.findOne({_id});
     res.json(notaDB);
   } catch (error) {
     return res.status(400).json({
@@ -33,9 +33,9 @@ router.get('/alumno/:id', async(req, res) => {
 });
 
 // Get con todos los documentos
-router.get('/todos_alumnos', async(req, res) => {
+router.get('/todos_usuarios', async(req, res) => {
   try {
-    const notaDb = await Alumno.find();
+    const notaDb = await Usuario.find();
     res.json(notaDb);
   } catch (error) {
     return res.status(400).json({
@@ -46,10 +46,10 @@ router.get('/todos_alumnos', async(req, res) => {
 });
 
 // Delete eliminar una nota
-router.delete('/alumno_el/:id', async(req, res) => {
+router.delete('/usuario_el/:id', async(req, res) => {
   const _id = req.params.id;
   try {
-    const notaDb = await Alumno.findByIdAndDelete({_id});
+    const notaDb = await Usuario.findByIdAndDelete({_id});
     if(!notaDb){
       return res.status(400).json({
         mensaje: 'No se encontró el id indicado',
@@ -66,11 +66,11 @@ router.delete('/alumno_el/:id', async(req, res) => {
 });
 
 // Put actualizar una nota
-router.put('/alumno_ac/:id', async(req, res) => {
+router.put('/usuario_ac/:id', async(req, res) => {
   const _id = req.params.id;
   const body = req.body;
   try {
-    const notaDb = await Alumno.findByIdAndUpdate(
+    const notaDb = await Usuario.findByIdAndUpdate(
       _id,
       body,
       {new: true});
