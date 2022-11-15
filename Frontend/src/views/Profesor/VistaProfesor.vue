@@ -1,7 +1,6 @@
 <template>
   <v-app>
     <v-navigation-drawer right app v-model="drawer" color="rgb(0, 204, 255)">
-
       <v-layout column class="text-center">
         <v-flex class="mt-6">
           <v-avatar size="150">
@@ -14,7 +13,7 @@
             </v-img>
           </v-avatar>
           <p class="white--text subheading-1 text-weight-bold mt-2">
-            {{ this.$store.state.nombre }}
+            {{this.$store.state.nombre}}
           </p>
         </v-flex>
       </v-layout>
@@ -44,55 +43,55 @@
     </v-app-bar>
     <loading></loading>
     <v-main v-if="!this.$store.state.loading">
-      <vistaSolicitud v-if="vista == 1"></vistaSolicitud>
+      <vistaSolicitud v-if="vista==1"></vistaSolicitud>
     </v-main>
   </v-app>
 </template>
-  
+
 <script>
-import vistaSolicitud from "./VistaSolicitudComite.vue"
 import Loading from '@/components/loading.vue';
+import vistaSolicitud from './VistaSolicitudProfesor.vue'
 export default {
   data() {
-    return {
-      drawer: null,
-      items: [
-        { title: "Solicitudes", route: '/solicitudTemas', icon: "mdi-folder" },
-        { title: "Cerrar sesion", icon: "mdi-forum" },
-      ],
-      hover: "red",
-      vista: 1,
-    }
+      return {
+          drawer: null,
+          items: [
+              { title: "Solicitudes", icon: "mdi-folder" },
+              { title: "Cerrar sesion", icon: "mdi-forum" },
+          ],
+          hover: "red",
+          vista:1,
+      }
   },
   destroyed() {
-    console.log("Login eliminado");
+      console.log("Login eliminado");
   },
   beforeCreate() {
-    this.$store.state.loading = true
-    this.$store.commit('cargar_datos')
+      this.$store.state.loading = true
+      this.$store.commit('cargar_datos')
   },
-  components: {
-    vistaSolicitud,
-    Loading
+  components:{
+      Loading,
+      vistaSolicitud
   },
   methods: {
-    redirigir(ref) {
-      if (ref == "Cerrar sesion") {
-        if (this.$route.path !== "/Alumno" || this.$route.path !== "/solicitudTemas") {
-          localStorage.clear();
-          this.$router.push({ path: "/" })
-        }
-      } else if (ref == "Solicitud") {
-        this.vista = 1
+      redirigir(ref) {
+          if (ref == "Cerrar sesion") {
+              if (this.$route.path !== "/Alumno" || this.$route.path !== "/solicitudTemas") {
+                  localStorage.clear();
+                  this.$router.push({ path: "/" })
+              }
+          }else if(ref == "Solicitud"){
+              this.vista=1
+          }
       }
-    }
   }
 }
 
 </script> 
- 
+
 <style>
 .v-list-item:hover {
-  background: #FF0182;
+   background: #FF0182;
 }
 </style>

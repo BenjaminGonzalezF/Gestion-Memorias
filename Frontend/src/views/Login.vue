@@ -1,24 +1,6 @@
 <template>
   <v-app>
     <loading></loading>
-    <v-card color="#00CCCC" v-if="!this.$store.state.ingresoUsuario && !this.$store.state.loading">
-      <v-card-text height="100%">
-        <v-hover v-slot="{ hover }">
-          <v-btn plain class="white--text" :style="{ 'background-color': hover ? '#FF0182' : '#00CCCC' }">Alumno</v-btn>
-        </v-hover>
-        <v-hover v-slot="{ hover }">
-          <v-btn plain class="white--text" :style="{ 'background-color': hover ? '#FF0182' : '#00CCCC' }">Profesor
-          </v-btn>
-        </v-hover>
-        <v-hover v-slot="{ hover }">
-          <v-btn plain class="white--text" :style="{ 'background-color': hover ? '#FF0182' : '#00CCCC' }">Directora
-          </v-btn>
-        </v-hover>
-        <v-hover v-slot="{ hover }">
-          <v-btn plain class="white--text" :style="{ 'background-color': hover ? '#FF0182' : '#00CCCC' }">Comité</v-btn>
-        </v-hover>
-      </v-card-text>
-    </v-card>
     <v-main v-if="!this.$store.state.ingresoUsuario && !this.$store.state.loading">
       <v-container class="fondo" fluid>
         <div class="mt-5">
@@ -89,11 +71,11 @@ export default {
               if (usuario[0].esdirector) {
                   this.$router.push({ path: "/directora" })
                 } else if (usuario[0].escomite) {
-                  this.$router.push({ path: "/VistaComite" })
+                  this.$router.push({ path: "/comite" })
                 } else if (usuario[0].esprofe) {
-                  this.$router.push({ path: "/profesor/Solicitudes" })
+                  this.$router.push({ path: "/profesor" })
                 } else {
-                  this.$router.push({ path: "/Alumno" })
+                  this.$router.push({ path: "/alumno" })
                 }
               console.log("ingreso correcto")
             }else{

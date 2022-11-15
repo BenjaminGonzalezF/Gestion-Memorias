@@ -141,7 +141,6 @@
 </template>
 
 <script>
-import headerAlumno from '@/components/headerAlumno.vue';
  export default {
     name: 'Alumno',
     data() {

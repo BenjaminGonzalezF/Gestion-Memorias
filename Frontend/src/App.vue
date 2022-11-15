@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <v-main>
-      <router-view/>
-    </v-main>
+    <router-view/>
+  </v-main>
     <v-footer color="272727" padless>
       <v-col class="grey py-4 text-center white--text" cols="12">
         {{ new Date().getFullYear() }} — <strong>Utal</strong>
@@ -12,7 +12,9 @@
 </template>
 
 <script>
+import loading from './components/loading.vue';
 export default {
+  components: { loading },
   data: () => ({
     directora:[],
     comite:[],
@@ -23,6 +25,7 @@ export default {
     console.log("App eliminado");
   },
   beforeMount() {
+    this.$store.state.loading = true
     this.$store.commit('cargar_datos')
   },
 };

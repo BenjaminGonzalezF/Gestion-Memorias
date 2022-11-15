@@ -21,7 +21,9 @@ export default new Vuex.Store({
     esalumno: false,
     esdirector: false,
     escomite: false,
-    rol:false,
+    nombre:null,
+    img:null,
+    id_tema_solicitar:null,//Variable que solo sirve para los alumnos
   },
   getters: {
   },
@@ -41,18 +43,17 @@ export default new Vuex.Store({
                 this.state.esalumno=usuario_sesion.esalumno
                 this.state.esprofe=usuario_sesion.esprofe
                 this.state.escomite=usuario_sesion.escomite
+                this.state.nombre=usuario_sesion.nombre
+                this.state.img=usuario_sesion.img
+                console.log("alo"+this.state.img)
                 if (usuario_sesion.esdirector) {
-                  this.state.rol="director"
                   router.push({ path: "/directora" })
                 } else if (usuario_sesion.escomite) {
-                  this.state.rol="comite"
-                  router.push({ path: "/VistaComite" })
+                  router.push({ path: "/comite" })
                 } else if (usuario_sesion.esprofe) {
-                  this.state.rol="profesor"
-                  router.push({ path: "/profesor/Solicitudes" })
+                  router.push({ path: "/profesor" })
                 } else {
-                  this.state.rol="alumno"
-                  router.push({ path: "/Alumno" })
+                  router.push({ path: "/alumno" })
                 }
               }, 1000)
               this.interval = setTimeout(() => {
