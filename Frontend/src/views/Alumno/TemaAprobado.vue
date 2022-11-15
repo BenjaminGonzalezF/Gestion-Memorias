@@ -39,7 +39,7 @@ export default {
     data() {
         return {
             idTema: "",
-            tema: { "Nombre Alumno": "Fernando Gonzalez", "Nombre del tema": "Ejemplo proyecto 2", "Profesor Guía": "Rodrigo Pavez", "Detalles del tema": "Gloria trevi se caso con maluma" },
+            tema: { "Nombre Alumno": "Fernando Gonzalez", "Nombre del tema": "Ejemplo proyecto 2", "Profesor Guía": "Rodrigo Pavez", "Detalles del tema": "Se realizará un estudio exhaustivo de los métodos actualmente existentes utilizados para el reconocimiento de patrones, tanto desde el punto de vista estadístico como de redes neuronales.Se analizarán ventajas y desventajas de cada uno de ellos, a través del diseño de un experimento estándar. Se dará especial énfasis a aquellos basados en redes neuronales con buena capacidad de aprendizaje. El tema finalizará con la sugerencia del mejor método para clasificar el origen de los vinos chilenos." },
         }
     },
     created() {
@@ -53,6 +53,7 @@ export default {
 
             var img = new Image;
             var img2 = new Image;
+
             img.onload = function () {
                 pdf.addImage(this, 10, 10, 25, 25);
             };
