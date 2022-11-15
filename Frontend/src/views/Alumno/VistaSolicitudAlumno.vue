@@ -1,94 +1,95 @@
 <template>
-    <v-app>
-        <div class="Oferta de temas">
-            <div>
-                <v-container class="my-3">
-                    <v-layout row class="mx-1">
-                        <v-spacer></v-spacer>
-                        <v-menu offset-y>
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn depressed color="#f5a42a" class="mb-5" dark small v-bind="attrs" v-on="on">
-                                    Ordenar
-                                    <v-icon right small>mdi-sort</v-icon>
+      <v-app>
+    <div class="Oferta de temas">
+        <div>
+            <v-container class="my-3">
+                <v-layout row class="mx-1">
+                    <v-spacer></v-spacer>
+                    <v-menu offset-y>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                        depressed
+                        color="#f5a42a"
+                        class="mb-5"
+                        dark
+                        small
+                        v-bind="attrs"
+                        v-on="on"
+                        >
+                        Ordenar
+                        <v-icon right small>mdi-sort</v-icon>
+                        </v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item v-for="(item, index) in itemsOrdenar" :key="index" link>
+                        <v-list-item-title @click="sortBy(item.prop)">{{
+                            item.title
+                        }}</v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                    </v-menu>
+                </v-layout>
+                <div v-for="project in temas" :key="project._id">
+                     <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2">
+                        
+                        <v-layout row wrap :class="`pa-3 project ${project.status}`">
+                            <v-flex xs8 md3>
+                            <div class="caption grey--text">Titulo proyecto</div>
+                            <div>{{ project.nombre }}</div>
+                            </v-flex>
+                            <v-flex xs6 md5>
+                            <div class="caption grey--text">Descripcion general proyecto</div>
+                            <div>{{ project.descripcion }}</div>
+                            </v-flex>
+                            <v-flex xs2 sm1 md2>
+                            <div class="caption grey--text">Creador</div>
+                            <div>{{ project.nombrecreador }}</div>
+                            </v-flex>
+
+                            <v-flex xs2 sm3 md2>
+                            <!-- <div class="caption grey--text">Durum</div> -->
+                            <div class="my-1 text-center">
+                                <v-btn @click="verSolicitud(project._id, project.nombre, project.descripcion, project.idCreador, project.fecha)" >
+                                    Ver descripcion tema
                                 </v-btn>
-                            </template>
-                            <v-list>
-                                <v-list-item v-for="(item, index) in itemsOrdenar" :key="index" link>
-                                    <v-list-item-title @click="sortBy(item.prop)">{{
-                                            item.title
-                                    }}</v-list-item-title>
-                                </v-list-item>
-                            </v-list>
-                        </v-menu>
-                    </v-layout>
-                    <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;
-            top:20%;
-            left: 50%;" v-if="temas.length == 0">
-                    </v-progress-circular>
-                    <div v-for="project in temas" :key="project._id">
-                        <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2">
+                            </div>
+                            </v-flex>
+                            <v-flex xs6 sm1 md1>
+                            </v-flex>
+                        </v-layout>
+                     </v-card>
+                    <v-dialog v-model="drawerSolicitud" max-width="1000">
+                        <v-container class="grey lighten-5" >
+                            <v-row>
+                                    <v-card >
+                                        <v-card-title>
+                                            <span class="text-h5">Datos proyecto</span>
+                                        </v-card-title>
+                                        <v-card-text>
+                                            <v-container>
+                                                <v-flex>
+                                                <div class="caption grey--text">Proyecto:</div>
+                                                <div>{{ tituloProyecto }}</div>
+                                                </v-flex>
+                                                <v-flex>
+                                                <div class="caption grey--text">Descripción:</div>
+                                                <div>{{ descripcionProyecto }}</div>
+                                                </v-flex>
+                                            </v-container>
+                                        </v-card-text>
+                                    <v-divider></v-divider>
+                                    <v-card-actions class="justify-center">
+                                        <v-btn @click="enviarSolicitud(project._id)" color="#f5a42a" >
+                                        Enviar Solicitud
+                                    </v-btn>
+                                    </v-card-actions>
 
-                            <v-layout row wrap :class="`pa-3 project ${project.status}`">
-                                <v-flex xs8 md2>
-                                    <div class="caption grey--text">Titulo proyecto</div>
-                                    <div>{{ project.nombre }}</div>
-                                </v-flex>
-                                <v-flex xs6 md3>
-                                    <div class="caption grey--text">Descripcion general proyecto</div>
-                                    <div>{{ project.descripcion }}</div>
-                                </v-flex>
-                                <v-flex xs2 sm1 md2>
-                                    <div class="caption grey--text">Creador</div>
-                                    <div>{{ project.nombrecreador }}</div>
-                                </v-flex>
-
-                                <v-flex xs2 sm3 md2>
-                                    <!-- <div class="caption grey--text">Durum</div> -->
-                                    <div class="my-1 text-center">
-                                        <v-btn
-                                            @click="verSolicitud(project._id, project.nombre, project.descripcion, project.idCreador, project.fecha)">
-                                            Ver descripcion tema
-                                        </v-btn>
-                                    </div>
-                                </v-flex>
-                                <v-flex xs6 sm1 md1>
-                                </v-flex>
-                            </v-layout>
-                        </v-card>
-                        <v-dialog v-model="drawerSolicitud" max-width="900">
-                            <v-container class="grey lighten-5">
-                                <v-row>
-                                    <v-col cols="12" sm="12" md="6">
-                                        <v-card>
-                                            <v-card-title>
-                                                <span class="text-h5">Datos proyecto</span>
-                                            </v-card-title>
-                                            <v-card-text>
-                                                <v-container>
-                                                    <v-flex>
-                                                        <div class="caption grey--text">Proyecto:</div>
-                                                        <div>{{ tituloProyecto }}</div>
-                                                    </v-flex>
-                                                    <v-flex>
-                                                        <div class="caption grey--text">Descripción:</div>
-                                                        <div>{{ descripcionProyecto }}</div>
-                                                    </v-flex>
-                                                </v-container>
-                                            </v-card-text>
-
-                                        </v-card>
-                                        <v-btn @click="enviarSolicitud(project._id)" color="#f5a42a">
-                                            Enviar Solicitud
-                                        </v-btn>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
-                        </v-dialog>
-                    </div>
-                </v-container>
-            </div>
-
-
+                                    </v-card>
+                            </v-row>
+                        </v-container>  
+                    </v-dialog>
+                </div>
+            </v-container>
         </div>
     </v-app>
 </template>
