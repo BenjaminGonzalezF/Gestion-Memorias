@@ -125,7 +125,7 @@
                                 <v-form class="px-3 pb-3" ref="form">
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
-                                        <v-btn color="#FF0182" dark @click="submit"> Aceptar </v-btn>
+                                        <v-btn color="#FF0182" dark> Aceptar </v-btn>
                                         <v-btn color="grey" text @click="dialog = false"> Rechazar </v-btn>                        
                                     </v-card-actions>
                                 </v-form>

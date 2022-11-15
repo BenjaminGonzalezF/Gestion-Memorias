@@ -43,16 +43,24 @@ export default new Vuex.Store({
                 this.state.escomite=usuario_sesion.escomite
                 if (usuario_sesion.esdirector) {
                   this.state.rol="director"
-                  router.push({ path: "/directora" })
+                  if(router.history.current.path!=="/directora"){
+                    router.push({ path: "/directora" })
+                  }
                 } else if (usuario_sesion.escomite) {
                   this.state.rol="comite"
-                  router.push({ path: "/VistaComite" })
+                  if(router.history.current.path!=="/VistaComite"){
+                    router.push({ path: "/VistaComite" })
+                  }
                 } else if (usuario_sesion.esprofe) {
                   this.state.rol="profesor"
-                  router.push({ path: "/profesor/Solicitudes" })
+                  if(router.history.current.path!=="/profesor/Solicitudes"){
+                    router.push({ path: "/profesor/Solicitudes" })
+                  }
                 } else {
                   this.state.rol="alumno"
-                  router.push({ path: "/Alumno" })
+                  if(router.history.current.path!=="/Alumno"){
+                    router.push({ path: "/Alumno" })
+                  }
                 }
               }, 1000)
               this.interval = setTimeout(() => {

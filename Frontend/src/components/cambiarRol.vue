@@ -21,7 +21,7 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="green accent-3" dark @click="submit"> Guardar </v-btn>
+                        <v-btn color="green accent-3" dark> Guardar </v-btn>
                         <v-btn color="grey" text @click="dialog = false"> Rechazar </v-btn>                        
                     </v-card-actions>
                 </v-form>
