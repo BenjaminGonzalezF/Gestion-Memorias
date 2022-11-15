@@ -1,7 +1,6 @@
 <template>
     <div class="Solicitudes">
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
-        <headerComite></headerComite>
         <div>
             <v-container class="my-3">
                 <v-layout row class="mx-1">
@@ -158,7 +157,6 @@
 <script>
 import jsPDF from 'jspdf'
 import Swal from 'sweetalert2'
-import headerComite from '@/components/headerComite.vue';
 export default {
     name: 'Solicitudes',
     components:{
