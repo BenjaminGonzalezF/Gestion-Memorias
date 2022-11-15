@@ -5,7 +5,13 @@
         <v-layout column class="text-center">
           <v-flex class="mt-6">
             <v-avatar size="150">
-              <img src="@/assets/rey.jpg" />
+              <v-img :src="this.$store.state.img">
+              <template v-slot:placeholder>
+                <v-row class="fill-height ma-0" align="center" justify="center">
+                  <v-progress-circular indeterminate color="white"></v-progress-circular>
+                </v-row>
+              </template>
+            </v-img>
             </v-avatar>
             <p class="white--text subheading-1 text-weight-bold mt-2">
               {{this.$store.state.nombre}}
