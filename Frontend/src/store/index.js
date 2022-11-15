@@ -21,6 +21,7 @@ export default new Vuex.Store({
     esalumno: false,
     esdirector: false,
     escomite: false,
+    nombre:null,
   },
   getters: {
   },
@@ -40,6 +41,7 @@ export default new Vuex.Store({
                 this.state.esalumno=usuario_sesion.esalumno
                 this.state.esprofe=usuario_sesion.esprofe
                 this.state.escomite=usuario_sesion.escomite
+                this.state.nombre=usuario_sesion.nombre
                 if (usuario_sesion.esdirector) {
                   router.push({ path: "/directora" })
                 } else if (usuario_sesion.escomite) {

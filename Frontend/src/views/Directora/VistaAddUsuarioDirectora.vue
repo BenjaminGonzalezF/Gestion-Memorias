@@ -135,33 +135,6 @@ export default ({
                 { text: 'correo', value: '2' },
                 { text: 'contraseña', value: '3' },
             ],
-            alumnos: [{
-                nombre: "Elisenda Rodriguez",
-                matricula: 2018407021,
-                correo: "elrodriguez18@alumnos.utalca.cl",
-                contrasena: "XRW45gVa",
-                trabaja: "",
-                modulosfaltantes: ["Electricidad y Magnetismo", "Programación Avanzada"],
-                avatar: "/avatar.png"
-            },
-            {
-                nombre: "Elisenda Rodriguez",
-                matricula: 2018407021,
-                correo: "elrodriguez18@alumnos.utalca.cl",
-                contrasena: "XRW45gVa",
-                trabaja: "",
-                modulosfaltantes: ["Electricidad y Magnetismo", "Programación Avanzada"],
-                avatar: "/avatar.png"
-            },
-            {
-                nombre: "Elisenda Rodriguez",
-                matricula: 2018407021,
-                correo: "elrodriguez18@alumnos.utalca.cl",
-                contrasena: "XRW45gVa",
-                trabaja: "",
-                modulosfaltantes: ["Electricidad y Magnetismo", "Programación Avanzada"],
-                avatar: "/avatar.png"
-            }]
         }
     },
     components: {

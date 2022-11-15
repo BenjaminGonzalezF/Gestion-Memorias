@@ -8,7 +8,7 @@
               <img src="@/assets/rey.jpg" />
             </v-avatar>
             <p class="white--text subheading-1 text-weight-bold mt-2">
-              Huevito rey
+              {{this.$store.state.nombre}}
             </p>
           </v-flex>
         </v-layout>

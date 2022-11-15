@@ -1,24 +1,6 @@
 <template>
   <v-app>
     <loading></loading>
-    <v-card color="#00CCCC" v-if="!this.$store.state.ingresoUsuario && !this.$store.state.loading">
-      <v-card-text height="100%">
-        <v-hover v-slot="{ hover }">
-          <v-btn plain class="white--text" :style="{ 'background-color': hover ? '#FF0182' : '#00CCCC' }">Alumno</v-btn>
-        </v-hover>
-        <v-hover v-slot="{ hover }">
-          <v-btn plain class="white--text" :style="{ 'background-color': hover ? '#FF0182' : '#00CCCC' }">Profesor
-          </v-btn>
-        </v-hover>
-        <v-hover v-slot="{ hover }">
-          <v-btn plain class="white--text" :style="{ 'background-color': hover ? '#FF0182' : '#00CCCC' }">Directora
-          </v-btn>
-        </v-hover>
-        <v-hover v-slot="{ hover }">
-          <v-btn plain class="white--text" :style="{ 'background-color': hover ? '#FF0182' : '#00CCCC' }">Comité</v-btn>
-        </v-hover>
-      </v-card-text>
-    </v-card>
     <v-main v-if="!this.$store.state.ingresoUsuario && !this.$store.state.loading">
       <v-container class="fondo" fluid>
         <div class="mt-5">

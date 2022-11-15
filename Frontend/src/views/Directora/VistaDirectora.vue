@@ -1,14 +1,13 @@
 <template>
     <v-app>
       <v-navigation-drawer right app v-model="drawer" color="rgb(0, 204, 255)">
-  
         <v-layout column class="text-center">
           <v-flex class="mt-6">
             <v-avatar size="150">
               <img src="@/assets/rey.jpg" />
             </v-avatar>
             <p class="white--text subheading-1 text-weight-bold mt-2">
-              Huevito rey
+              {{this.$store.state.nombre}}
             </p>
           </v-flex>
         </v-layout>
@@ -27,7 +26,6 @@
           </v-list-item-group>
         </v-list>
       </v-navigation-drawer>
-  
       <v-app-bar flat app color="rgb(0, 204, 255)">
         <v-img max-height="40" max-width="50" src="@/assets/utal.png">
   
