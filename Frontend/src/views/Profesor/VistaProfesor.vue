@@ -15,7 +15,8 @@
           <p class="white--text subheading-1 text-weight-bold mt-2">
             {{this.$store.state.nombre}}
           </p>
-        </v-flex>
+          <cambiarRol></cambiarRol>
+        </v-flex>        
       </v-layout>
       <v-list>
         <v-list-item-group>
@@ -51,6 +52,7 @@
 <script>
 import Loading from '@/components/loading.vue';
 import vistaSolicitud from './VistaSolicitudProfesor.vue'
+import cambiarRol from '@/components/cambiarRol.vue';
 export default {
   data() {
       return {
@@ -72,7 +74,8 @@ export default {
   },
   components:{
       Loading,
-      vistaSolicitud
+      vistaSolicitud,
+      cambiarRol
   },
   methods: {
       redirigir(ref) {
