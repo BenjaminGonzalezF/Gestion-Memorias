@@ -47,6 +47,7 @@
     <loading></loading>
     <v-main v-if="!this.$store.state.loading">
       <vistaSolicitud v-if="vista==1"></vistaSolicitud>
+      <vistaTemas v-if = "vista==2"></vistaTemas>
     </v-main>
   </v-app>
 </template>
@@ -54,6 +55,7 @@
 <script>
 import Loading from '@/components/loading.vue';
 import vistaSolicitud from './VistaSolicitudProfesor.vue'
+import vistaTemas from './VistaTemas.vue'
 import cambiarRol from '@/components/cambiarRol.vue';
 export default {
   data() {
@@ -61,6 +63,7 @@ export default {
           drawer: null,
           items: [
               { title: "Solicitudes", icon: "mdi-folder" },
+              {title: "Mis temas", icon: "mdi-folder"},
               { title: "Cerrar sesion", icon: "mdi-forum" },
           ],
           hover: "red",
@@ -77,6 +80,7 @@ export default {
   components:{
       Loading,
       vistaSolicitud,
+      vistaTemas,
       cambiarRol
   },
   methods: {
@@ -86,8 +90,11 @@ export default {
                   localStorage.clear();
                   this.$router.push({ path: "/" })
               }
-          }else if(ref == "Solicitud"){
+          }else if(ref == "Solicitudes"){
               this.vista=1
+          }
+          else if(ref == "Mis temas"){
+              this.vista=2
           }
       }
   }

@@ -80,7 +80,7 @@
                                     <v-card-actions class="justify-center">
                                         <v-btn @click="enviarSolicitud(project._id)" color="#f5a42a" >
                                         Enviar Solicitud
-                                    </v-btn>
+                                        </v-btn>
                                     </v-card-actions>
 
                                     </v-card>
