@@ -2,13 +2,12 @@
     <v-app>
         <headerAlumno></headerAlumno>
         <div align="center">
-            
             <v-col lass="px-4">
                 <h1>
                     Cursos pendientes
                 </h1>
                 <v-card
-                    height="300" width="80%" outlined class="overflow-y-auto" max-height="350" color="#00CCFF"
+                    height="250" width="80%" outlined class="overflow-y-auto" max-height="350" color="#00CCFF"
                 >
                 <v-col >
                 <v-expansion-panels accordion >
@@ -45,6 +44,18 @@
                 <v-col>
                 
                 </v-col>
+                <v-col>
+                    <h1>
+                    Datos de interes
+                    </h1>
+                    <v-card height="50" width="80%" color="#FFFFFF">                
+                        <v-select
+                            :items="estado"
+                            label="¿Esta trabajando?"
+                        ></v-select>
+                    </v-card>  
+                </v-col>
+                
                 <h1>
                     Información
                 </h1>
@@ -53,25 +64,214 @@
                 height="250" width="80%" color="#F4F4F4"
                 >
                     <v-col>
-                        <p>
-                            Nombre: nombrecompleto
-                        </p>
-                        <p>
-                            Tema: nombretema
-                        </p>
-                        <p>
-                            Profesor Guia: nombre profesor
-                        </p>
-                        <p>
-                        Cursos pendientes {{nocursados}}
-                        </p>
+
                     </v-col>
-                    <v-btn color="#f5a42a">
+                    <v-row justify="space-around">
+                        <v-card height="180" width="40%">
+                            <v-col>
+                                <p>
+                                    Nombre: nombrecompleto
+                                </p>
+                                <p>
+                                    Tema: nombretema
+                                </p>
+                                <p>
+                                    Profesor Guia: nombre profesor
+                                </p>
+                                <p>
+                                Cursos pendientes {{nocursados}}
+                                </p>
+                            </v-col>
+                        </v-card>
+
+                      
+                            <v-card  height="180" width="40%">
+                                <div v-show="!estadofoto">
+                                <v-col >
+                                    <p> Verificación </p>
+                                    <p>Ingresar imagen para validar identificación</p>
+                                    <v-btn @click="AgregarImagen()" color="#f5a42a" >Agregar Imagen </v-btn>
+                                </v-col>
+                                </div>
+                                <div v-show="estadofoto">
+                                    <v-col >
+                                    <p> Verificación </p>
+                                    <v-img
+                                    max-height="100"
+                                    max-width="120"
+                                    src="https://previews.123rf.com/images/xmarchant/xmarchant0612/xmarchant061200005/695441-retrato-hombre-frente-a-la-c%C3%A1mara.jpg"
+                                    ></v-img>
+                                </v-col>
+                                </div>
+                            </v-card>
+                    
+                    </v-row>
+                    <v-col>
+
+                    </v-col>
+                    <v-btn color="#f5a42a" @click="enviardatos(nombrecompleto,nombretema,nombreprofesor,nocursados,estado,link)">
                         Enviar Solicitud
                     </v-btn> 
                 </v-card>
                 
             </v-col>
+            <v-dialog v-model="drawerSolicitud" max-width="1000">
+                <v-stepper v-model="e1">
+                    <v-stepper-header>
+                    <v-stepper-step
+                        :complete="e1 > 1"
+                        step="1"
+                        color="#00CCFF"
+                    >
+                        1. Verificación
+                    </v-stepper-step>
+
+                    <v-divider></v-divider>
+
+                    <v-stepper-step
+                        :complete="e1 > 2"
+                        step="2"
+                        color="#00CCFF"
+                        
+                    >
+                        2. Subir imagen
+                    </v-stepper-step>
+
+                    <v-divider></v-divider>
+                    
+
+                    <v-stepper-step step="3" color="#00CCFF">
+                        3. Completado
+                    </v-stepper-step>
+                    </v-stepper-header>
+
+                    <v-stepper-items>
+                    <v-stepper-content step="1">
+                        <v-card
+                        height="300px"
+                        color="#F4F4F4"
+                        >
+                        <div align="center">
+                            <v-col></v-col>
+                        <v-row justify="space-around">
+                                <v-card height="250" width="45%" >
+                                <v-col></v-col>
+                                <p class="mt-10" >
+                                    Para continuar con la solicitud es necesario ingresar una foto (estilo cédula de identidad)
+                                </p>
+                               
+                            </v-card>
+                         
+                            
+                        
+                            <v-card height="250" width="45%" >
+                                <v-col>
+                                    <v-col></v-col>
+                                    <p>Ejemplo de foto:</p>
+                                    <v-img
+                                        max-height="150"
+                                        max-width="250"
+                                        src="https://previews.123rf.com/images/xmarchant/xmarchant0612/xmarchant061200005/695441-retrato-hombre-frente-a-la-c%C3%A1mara.jpg"
+                                    ></v-img>
+                                </v-col>
+                            </v-card>
+                        </v-row>
+                        </div>
+                        
+                        
+                        </v-card>
+                 
+                        <v-btn
+                        color="#f5a42a"
+                        @click="e1 = 2"
+                        >
+                        Continuar
+                        </v-btn>
+
+                        <v-btn text @click="cerrarint()" >
+                        Cancelar
+                        </v-btn>
+                    </v-stepper-content>
+
+                    <v-stepper-content step="2">
+                        <v-card
+                        height="300px"
+                        color="#F4F4F4"
+                        >
+                        <div align="center">
+                            <v-col></v-col>
+                            <v-row justify="space-around">
+                            <v-card height="250" width="45%" >
+                                <v-col></v-col>
+                                <p class="mt-10" >
+                                    A continuación se tiene que subir su imagen en alguna plataforma de almacenacimento de datos
+                                    (Google Drive, Mega, One drive) y luego subir el link de la imagen
+                                </p>
+                            </v-card>
+                            <v-card height="250" width="45%">
+                                <v-col>
+                                    <p class="center">Subir imagen</p>
+                                    <v-text-field
+                                    v-model="link"
+                                    :rules="linkrules"
+                                    label="Link Imagen"
+                                    required
+                                    ></v-text-field>
+                                    <v-btn
+                                    color="#f5a42a"
+                                    @click="subirlink(link)" :disabled="estadofoto"
+                                    >
+                                    Enviar link
+                                    </v-btn>
+                                </v-col>
+                            </v-card>
+                        </v-row>
+                            
+                        </div>
+                        
+                        </v-card>
+
+                        <v-btn
+                        color="#f5a42a"
+                        @click="e1 = 3"
+                        >
+                        Continuar
+                        </v-btn>
+
+                        <v-btn text @click="cerrarint()">
+                        Cancelar
+                        </v-btn>
+                    </v-stepper-content>
+
+                    <v-stepper-content step="3">
+                        <v-card
+                        height="300px"
+                        color="#F4F4F4"
+                        >
+                        <div align="center">
+                            <v-col></v-col>
+                            <v-col></v-col>
+                            <v-col></v-col>
+                            <v-col></v-col>
+                            <p class="mt-5" >Aceptado correctamente  </p>
+                        </div>
+                        
+                        </v-card>
+
+                        <v-btn
+                        color="#f5a42a" @click="cerrarint1()"
+                        >
+                        Finalizar
+                        </v-btn>
+
+                        <v-btn text @click="cerrarint()" >
+                        Cancelar
+                        </v-btn>
+                    </v-stepper-content>
+                    </v-stepper-items>
+                </v-stepper>         
+                        
+            </v-dialog>
         </div>
     </v-app>
 </template>
@@ -399,6 +599,23 @@ let Semestres= [
     return{
         semestres: [],
         nocursados: [],
+        rules: [
+            value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
+        ],
+        drawerSolicitud: false,
+        e1: 1,
+        estado: ['Trabaja', 'No trabaja'],
+        estadofoto: false,
+        estadofoto1: false,
+        link: null,
+        linkrules: [
+        v => !!v || 'Link es obligatorio',
+        //v => (v && v.length <= 10) || 'Name must be less than 10 characters',
+        ],
+        nombrecompleto: null,
+        nombretema: null,
+        nombreprofesor: null,
+        linkimagen: null,
         };
     },
     created() {
@@ -416,7 +633,7 @@ let Semestres= [
             }
         },
        
-      agregar(nombre){
+        agregar(nombre){
             var x=0;
             var b=true
             //console.log("Tamaño: "+this.nocursados.length)
@@ -463,6 +680,42 @@ let Semestres= [
             }
             
         },
+        AgregarImagen(){
+            this.drawerSolicitud = true;
+            
+
+        },
+        cerrarint(){
+            this.drawerSolicitud = false;
+            this.e1=1   
+        },
+        cerrarint1(){
+            this.drawerSolicitud = false;
+            this.estadofoto =true;
+              
+        },
+        subirlink(value){
+            console.log("valor vaule: "+value)
+            //guardar value que es el link en la vase de datos
+            //si se guarda correctamente
+            if(true){
+                this.linkimagen="https://previews.123rf.com/images/xmarchant/xmarchant0612/xmarchant061200005/695441-retrato-hombre-frente-a-la-c%C3%A1mara.jpg"
+                console.log(this.linkimagen)
+                this.estadofoto =true;
+                
+            }else{
+                //error 
+            }
+        },
+        enviardatos(nombre, nombreproyecto, nombreprofesor,cursospendientes,estadotrabajo,linkfoto){
+            console.log("valor nombre: "+nombre)
+            console.log("valor nombre proyecto: "+nombreproyecto)
+            console.log("valor nombre profesor: "+nombreprofesor)
+            console.log("valor cursos pendientes : "+cursospendientes)
+            //como se cual esta activo?
+            console.log("valor trabaja?: "+estadotrabajo)
+            console.log("valor link foto: "+linkfoto)    
+        },  
 
     },
     }
