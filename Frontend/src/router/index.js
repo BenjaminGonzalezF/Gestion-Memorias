@@ -20,19 +20,14 @@ const routes = [
     component: () => import('../views/Profesor/VistaProfesor.vue')
   },
   {
-    path: '/alumno',
+    path: '/Alumno',
     name: 'VistaAlumno',
-    component: () => import('../views/Alumno/VistaAlumno.vue')
+    component: () => import('../views/Alumno/VistaMainAlumno.vue')
   },
   {
     path: '/directora',
     name: 'directora',
     component: () => import('../views/Directora/VistaDirectora.vue')
-  },
-  {
-    path: '/solicitudmemoria',
-    name: 'directora',
-    component: () => import('../views/Alumno/Vistasolicitar.vue')
   },
 ]
 

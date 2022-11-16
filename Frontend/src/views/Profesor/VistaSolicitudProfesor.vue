@@ -46,7 +46,7 @@
                                     <!-- <div class="caption grey--text">Durum</div> -->
                                     <div class="my-1 text-center">
                                         <v-btn
-                                            @click="verSolicitud(project.id, project.title, project.descripcion, project.estudiante, project.fecha)">
+                                            @click="verSolicitud(project.title, project.descripcion, project.estudiante, project.fecha, project.matricula, project.img)">
                                             Ver solicitud
                                         </v-btn>
                                     </div>
@@ -54,42 +54,61 @@
                                 
                             </v-layout>
                         </v-card>
-                        <v-dialog v-model="drawerSolicitud" max-width="900">
+                        <v-dialog v-model="drawerSolicitud" max-width="700">
                             <v-card>
                                 <v-container class="grey lighten-5">
                                     <v-row>
                                         <v-col cols="12" sm="12" md="6">
-                                            <v-card>
+                                            <v-card max-height="400">
                                                 <v-card-title>
                                                     <span class="text-h5">Datos proyecto</span>
                                                 </v-card-title>
                                                 <v-card-text>
                                                     <v-container>
                                                         <v-flex>
-                                                            <div class="caption grey--text">Titulo proyecto</div>
+                                                            <div class="caption black--text">Titulo proyecto:</div>
                                                             <div>{{ tituloProyecto }}</div>
                                                         </v-flex>
                                                         <v-flex>
-                                                            <div class="caption grey--text">Descripcion general proyecto
+                                                            <div class="caption black--text">Descripcion general proyecto:
                                                             </div>
                                                             <div>{{ descripcionProyecto }}</div>
                                                         </v-flex>
                                                         <v-flex>
-                                                            <div class="caption grey--text">Estudiante</div>
+                                                            <div class="caption black--text">Estudiante:</div>
                                                             <div>{{ estudiante }}</div>
                                                         </v-flex>
                                                     </v-container>
                                                 </v-card-text>
-
                                             </v-card>
                                         </v-col>
                                         <v-col cols="12" sm="12" md="6">
-                                            <v-card>
+                                            <v-card max-height="400" class ="justify-center">
                                                 <v-card-title>
                                                     <span class="text-h5">Datos estudiante</span>
                                                 </v-card-title>
-                                                <v-card-text>
+                                                <v-card-text >
                                                     <v-container>
+                                                        <v-flex>
+                                                            <v-avatar size="140">
+                                                                <v-img :src="imagenEstudiante">
+                                                                <template v-slot:placeholder>
+                                                                    <v-row class="fill-height ma-0" align="center" justify="center">
+                                                                    <v-progress-circular indeterminate color="white"></v-progress-circular>
+                                                                    </v-row>
+                                                                </template>
+                                                                </v-img>
+                                                            </v-avatar>
+                                                        </v-flex>
+                                                        <v-flex>
+                                                            <div class="caption black--text">Nombre estudiante:</div>
+                                                            <div>{{ estudiante }}</div>
+                                                        </v-flex>
+                                                        <v-flex>
+                                                            <div class="caption black--text">Matricula:
+                                                            </div>
+                                                            <div>{{ matricula }}</div>
+                                                        </v-flex>                                                  
                                                     </v-container>
                                                 </v-card-text>
                                             </v-card>
@@ -112,7 +131,7 @@
                         <v-card-text>
                             <v-container>
                                 <v-flex>
-                                    <v-textarea :rules="rules" counter="300">
+                                    <v-textarea counter="300">
                                         <template v-slot:label>
                                             <div>
                                             Deje sus comentarios 
@@ -123,10 +142,10 @@
                             </v-container>
                         </v-card-text>
                         <v-card-actions class="justify-center">
-                            <v-btn @click="aprobarSolicitud()">
+                            <v-btn >
                                 Aceptar solicitud
                             </v-btn>
-                            <v-btn @click="rechazarSolicitud()">
+                            <v-btn>
                                 Rechazar solicitud
                             </v-btn>
 
@@ -154,10 +173,11 @@ export default {
             tituloProyecto: null,
             descripcionProyecto: null,
             estudiante: null,
+            matricula: null,
+            imagenEstudiante: null,
             fecha: null,
             toggle: null,
             solicitudes: [],
-            rules: [v => v.length >=40 || 'Debe ingresar minimo 40 caracteres'],
             itemsOrdenar: [
                 { title: 'Por titulo', prop: 'title' },
                 {
@@ -191,13 +211,18 @@ export default {
                                         estudiante:alumno[0].nombre,
                                         alumnoid:this.solicitudes[i].alumnoid,
                                         temaid:this.solicitudes[i].temaid,
-                                        profeguiaid:this.solicitudes[i].profeguiaid
+                                        profeguiaid:this.solicitudes[i].profeguiaid,
+                                        img:alumno[0].img,
+                                        matricula:alumno[0].matricula
                                     })
                                 }
                                 this.solicitudes[i].title=tema[0].nombre
                                 this.solicitudes[i].descripcion=tema[0].descripcion
                                 this.solicitudes[i].fecha=tema[0].fecha
                                 this.solicitudes[i].estudiante=alumno[0].nombre
+                                this.solicitudes[i].matricula=alumno[0].matricula
+                                this.solicitudes[i].img=alumno[0].img
+                                
                             }
                             this.solicitudes=solicitud_profesor
                         })
@@ -210,12 +235,14 @@ export default {
         sortBy(prop) {
             this.solicitudes.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
         },
-        verSolicitud(id, titulo, descripcion, estudiante, fecha) {
+        verSolicitud(titulo, descripcion, estudiante, fecha, matricula, imagen) {
             this.drawerSolicitud = true
             this.tituloProyecto = titulo
             this.descripcionProyecto = descripcion
             this.estudiante = estudiante
             this.fecha = fecha
+            this.matricula = matricula
+            this.imagenEstudiante = imagen
         },
         feedback(){
             this.drawerFeedback = true

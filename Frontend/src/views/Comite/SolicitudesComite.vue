@@ -200,7 +200,7 @@ export default {
             }
             ],
             itemsOrdenar: [
-                { title: 'Por titulo', prop: 'title' },
+                { title: 'Por titulo', prop: 'nombre' },
                 {
                 title: 'Por estudiante',
                 prop: 'estudiante', },
@@ -244,8 +244,6 @@ export default {
     doc.text("Hello World", 10, 10);
     doc.save(pdfName + '.pdf');
   },
-
-
     sortBy(prop) {
         this.solicitudes.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
     },

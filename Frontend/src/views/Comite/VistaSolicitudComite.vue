@@ -5,15 +5,6 @@
                 <v-container class="my-3">
                     <v-layout row class="mx-1">
                         <v-spacer></v-spacer>
-                        <v-btn-toggle v-model="toggle" dense class="mr-2" style="max-height: 20px !important">
-                            <v-btn small color="rgb(0, 204, 255)" :disabled="toggle === 0">
-                                <v-icon class="white--text">mdi-view-agenda</v-icon>
-                            </v-btn>
-
-                            <v-btn small color="rgb(0, 204, 255)" :disabled="toggle === 1">
-                                <v-icon class="white--text">mdi-view-grid</v-icon>
-                            </v-btn>
-                        </v-btn-toggle>
                         <v-menu offset-y>
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn depressed color="rgb(0, 204, 255)" class="mb-5" dark small v-bind="attrs"
@@ -79,14 +70,14 @@
                                         </template>
                                         <span v-if="voto.voto===true">{{voto.nombrecomite}} = Aceptado</span>
                                         <span v-if="voto.voto===false">{{voto.nombrecomite}} = Rechazado</span>
+                                        
                                     </v-tooltip>
+                                    <v-btn class="ml-6 white--text" color ="#FF0182" @click="exportPDF(project.nombre,project.nombreCreador)">PDF</v-btn>
                                 </v-flex>
                             </v-layout>
                         </v-card>
                         <v-dialog v-model="drawerSolicitud" max-width="900">
-                            <v-container class="grey lighten-5">
-                                <v-row>
-                                    <v-col cols="12" sm="12" md="6">
+                            <v-container class="grey lighten-5">                         
                                         <v-card>
                                             <v-card-title>
                                                 <span class="text-h5">Datos proyecto</span>
@@ -94,39 +85,26 @@
                                             <v-card-text>
                                                 <v-container>
                                                     <v-flex>
-                                                        <div class="caption grey--text">Titulo proyecto</div>
+                                                        <div class="caption black--text">Titulo proyecto:</div>
                                                         <div>{{ tituloProyecto }}</div>
                                                     </v-flex>
                                                     <v-flex>
-                                                        <div class="caption grey--text">Descripcion general proyecto
+                                                        <div class="caption black--text">Descripcion general proyecto:
                                                         </div>
                                                         <div>{{ descripcionProyecto }}</div>
                                                     </v-flex>
                                                     <v-flex>
-                                                        <div class="caption grey--text">Creador</div>
+                                                        <div class="caption black--text">Creador:</div>
                                                         <div>{{ estudiante }}</div>
                                                     </v-flex>
 
                                                     <v-flex>
-                                                        <div class="caption grey--text">fecha</div>
+                                                        <div class="caption black--text">fecha:</div>
                                                         <div>{{ fecha }}</div>
                                                     </v-flex>
                                                 </v-container>
                                             </v-card-text>
                                         </v-card>
-                                    </v-col>
-                                    <v-col cols="12" sm="12" md="6">
-                                        <v-card>
-                                            <v-card-title>
-                                                <span class="text-h5">Datos estudiante</span>
-                                            </v-card-title>
-                                            <v-card-text>
-                                                <v-container>
-                                                </v-container>
-                                            </v-card-text>
-                                        </v-card>
-                                    </v-col>
-                                </v-row>
                             </v-container>
                         </v-dialog>
                     </div>
@@ -139,6 +117,7 @@
 <script>
 import Swal from 'sweetalert2'
 import loading from '@/components/loading.vue';
+import jsPDF from 'jspdf'
 export default {
     name: 'Solicitudes',
     components: {
@@ -157,19 +136,13 @@ export default {
             itemsOrdenar: [
                 { title: 'Por titulo', prop: 'title' },
                 {
-                    title: 'Por estudiante',
-                    prop: 'estudiante',
+                    title: 'Por creador',
+                    prop: 'creador',
                 },
                 {
                     title: 'Por fecha',
                     prop: 'fecha',
                 },
-            ],
-            items: [
-                { title: "Mis solicitudes", icon: "mdi-folder" },
-                { title: "Mis proyectos", icon: "mdi-folder" },
-                { title: "Estudiantes", icon: "mdi-account-multiple" },
-                { title: "Cerrar sesion", icon: "mdi-forum" },
             ],
         };
     },
@@ -200,6 +173,53 @@ export default {
                 .catch((e) => {
                     console.log(e)
                 })
+        },
+        exportPDF(titulo,estudiante) {
+            let pdfName = 'Acta';
+
+            const doc = new jsPDF({
+                orientation: "portrait",
+                unit: "in",
+                format: "letter"
+            });
+
+            doc.setFontSize(18).text("Acta Veredicto Del Consejo", 0.5, 1.0);
+            doc.setLineWidth(0.01).line(0.5,1.1,8.0,1.1);
+            doc
+                .setFont("helvetica")
+                .setFontSize(12)
+                .text( "Luego de una exhaustiva reunión de los integrantes del comtité en la cual se ha logrado llegar a una conclusión, "+
+                        " se presentan los resultados de la votación de la solicitud del tema "
+                        +titulo+" propuesto por "+estudiante+
+                         ". ", 0.5,2.0,{align:"left",maxWidth:"7.5"});
+            doc
+                .setFont("helvetica")
+                .setFontSize(12)
+                .text("Por consiguiente se muestran los intregantes del comité que votaron:",0.5,2.7,{align:"left",maxWidth:"7.5"});
+            doc
+                .setFont("helvetica")
+                .setFontSize(12)
+                .text( "1.-" ,0.5,3.4,{align:"left",maxWidth:"7.5"});
+            doc
+                .setFont("helvetica")
+                .setFontSize(12)
+                .text( "2.-" ,0.5,4.1,{align:"left",maxWidth:"7.5"});
+            doc
+                .setFont("helvetica")
+                .setFontSize(12)
+                .text( "3.-" ,0.5,4.8,{align:"left",maxWidth:"7.5"});
+                doc
+                .setFont("helvetica")
+                .setFontSize(12)
+                .text( "Dando asi como resultado que la propuesta es " + ". " ,0.5,5.5,{align:"left",maxWidth:"7.5"});
+
+            doc
+                .setFont("times")
+                .setFontSize(10)
+                .text("Documento validado y verificado por la Universidad de Talca.",
+                0.5,
+                doc.internal.pageSize.height - 0.5)
+            doc.save(pdfName + '.pdf');
         },
         confirmacion(id, voto) {
             Swal.fire({

@@ -17,6 +17,7 @@
               {{this.$store.state.nombre}}
             </p>
           </v-flex>
+          
         </v-layout>
         <v-list>
           <v-list-item-group>
@@ -44,22 +45,25 @@
       </v-app-bar>
       <loading></loading>
       <v-main v-if="!this.$store.state.loading">
-        <vistaSolicitud v-if="vista==1"></vistaSolicitud>
-        <vistasolicitar v-if="vista==3"></vistaSolicitar>
+        <vistaSolicitud v-if="this.$store.state.vistaSeleccionada==1"></vistaSolicitud>
+        <Estadosolicitud v-if="this.$store.state.vistaSeleccionada==2"></Estadosolicitud>
+        <vistaSolicitar v-if=" this.$store.state.vistaSeleccionada==3"></vistaSolicitar>
       </v-main>
     </v-app>
   </template>
 <script>
-import vistaSolicitud from "./VistaSolicitudAlumno.vue"
-import vistaSolicitar from "./Vistasolicitar.vue"
+import vistaSolicitud from "./VistaOfertaTemasAlumno.vue"
+import vistaSolicitar from "./VistaSolicitarTema.vue"
+import Estadosolicitud from "./VistaEstadoSolicitudTema.vue"
+
 import Loading from '@/components/loading.vue';
 export default {
     data() {
         return {
             drawer: null,
             items: [
-                { title: "Solicitud", route: '/solicitudTemas', icon: "mdi-folder" },
-                { title: "Oferta Temas", route: '/solicitudTemas', icon: "mdi-folder" },
+                { title: "Oferta de Temas", icon: "mdi-folder" },
+                { title: "Estado de Solicitud", icon: "mdi-folder" },
                 { title: "Cerrar sesion", icon: "mdi-forum" },
             ],
             hover: "red",
@@ -76,7 +80,8 @@ export default {
     components:{
         vistaSolicitud,
         Loading,
-        vistaSolicitar
+        vistaSolicitar,
+        Estadosolicitud,
     },
     methods: {
         redirigir(ref) {
@@ -87,10 +92,10 @@ export default {
                     this.$store.state.img=null
                     this.$router.push({ path: "/" })
                 }
-            }else if(ref == "Solicitud"){
-                this.vista=1
-            }else if(ref == "Oferta Temas"){
-                this.vista=2
+            }else if(ref == "Oferta de Temas"){
+              this.$store.state.vistaSeleccionada=1
+            }else if(ref == "Estado de Solicitud"){
+              this.$store.state.vistaSeleccionada=2
             }
         }
     }
