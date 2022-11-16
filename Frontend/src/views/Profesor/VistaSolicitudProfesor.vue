@@ -9,15 +9,6 @@
                 <v-container class="my-3">
                     <v-layout row class="mx-1">
                         <v-spacer></v-spacer>
-                        <v-btn-toggle v-model="toggle" dense class="mr-2" style="max-height: 20px !important">
-                            <v-btn small color="rgb(0, 204, 255)" :disabled="toggle === 0">
-                                <v-icon class="white--text">mdi-view-agenda</v-icon>
-                            </v-btn>
-
-                            <v-btn small color="rgb(0, 204, 255)" :disabled="toggle === 1">
-                                <v-icon class="white--text">mdi-view-grid</v-icon>
-                            </v-btn>
-                        </v-btn-toggle>
                         <v-menu offset-y>
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn depressed color="rgb(0, 204, 255)" class="mb-5" dark small v-bind="attrs"
@@ -64,56 +55,84 @@
                             </v-layout>
                         </v-card>
                         <v-dialog v-model="drawerSolicitud" max-width="900">
-                            <v-container class="grey lighten-5">
-                                <v-row>
-                                    <v-col cols="12" sm="12" md="6">
-                                        <v-card>
-                                            <v-card-title>
-                                                <span class="text-h5">Datos proyecto</span>
-                                            </v-card-title>
-                                            <v-card-text>
-                                                <v-container>
-                                                    <v-flex>
-                                                        <div class="caption grey--text">Titulo proyecto</div>
-                                                        <div>{{ tituloProyecto }}</div>
-                                                    </v-flex>
-                                                    <v-flex>
-                                                        <div class="caption grey--text">Descripcion general proyecto
-                                                        </div>
-                                                        <div>{{ descripcionProyecto }}</div>
-                                                    </v-flex>
-                                                    <v-flex>
-                                                        <div class="caption grey--text">Estudiante</div>
-                                                        <div>{{ estudiante }}</div>
-                                                    </v-flex>
+                            <v-card>
+                                <v-container class="grey lighten-5">
+                                    <v-row>
+                                        <v-col cols="12" sm="12" md="6">
+                                            <v-card>
+                                                <v-card-title>
+                                                    <span class="text-h5">Datos proyecto</span>
+                                                </v-card-title>
+                                                <v-card-text>
+                                                    <v-container>
+                                                        <v-flex>
+                                                            <div class="caption grey--text">Titulo proyecto</div>
+                                                            <div>{{ tituloProyecto }}</div>
+                                                        </v-flex>
+                                                        <v-flex>
+                                                            <div class="caption grey--text">Descripcion general proyecto
+                                                            </div>
+                                                            <div>{{ descripcionProyecto }}</div>
+                                                        </v-flex>
+                                                        <v-flex>
+                                                            <div class="caption grey--text">Estudiante</div>
+                                                            <div>{{ estudiante }}</div>
+                                                        </v-flex>
+                                                    </v-container>
+                                                </v-card-text>
 
-                                                    <v-flex>
-                                                        <div class="caption grey--text">fecha</div>
-                                                        <div>{{ fecha }}</div>
-                                                    </v-flex>
-                                                </v-container>
-                                            </v-card-text>
-
-                                        </v-card>
-                                    </v-col>
-                                    <v-col cols="12" sm="12" md="6">
-                                        <v-card>
-                                            <v-card-title>
-                                                <span class="text-h5">Datos estudiante</span>
-                                            </v-card-title>
-                                            <v-card-text>
-                                                <v-container>
-
-                                                </v-container>
-                                            </v-card-text>
-                                        </v-card>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
+                                            </v-card>
+                                        </v-col>
+                                        <v-col cols="12" sm="12" md="6">
+                                            <v-card>
+                                                <v-card-title>
+                                                    <span class="text-h5">Datos estudiante</span>
+                                                </v-card-title>
+                                                <v-card-text>
+                                                    <v-container>
+                                                    </v-container>
+                                                </v-card-text>
+                                            </v-card>
+                                        </v-col>
+                                    </v-row>
+                                    <v-card-actions class="justify-center">
+                                        <v-btn color="#FF0182" @click="feedback()" dark> Aceptar o rechazar </v-btn>                
+                                    </v-card-actions>                                    
+                                </v-container>
+                            </v-card>
                         </v-dialog>
                     </div>
 
                 </v-container>
+                <v-dialog v-model="drawerFeedback" max-width="600">
+                    <v-card>
+                        <v-card-title>
+                            <span class="text-h5">Feedback solicitud</span>
+                        </v-card-title>
+                        <v-card-text>
+                            <v-container>
+                                <v-flex>
+                                    <v-textarea :rules="rules" counter="300">
+                                        <template v-slot:label>
+                                            <div>
+                                            Deje sus comentarios 
+                                            </div>
+                                        </template>
+                                        </v-textarea>
+                                </v-flex>
+                            </v-container>
+                        </v-card-text>
+                        <v-card-actions class="justify-center">
+                            <v-btn @click="aprobarSolicitud()">
+                                Aceptar solicitud
+                            </v-btn>
+                            <v-btn @click="rechazarSolicitud()">
+                                Rechazar solicitud
+                            </v-btn>
+
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
             </div>
         </v-sheet>
 
@@ -121,7 +140,9 @@
 </template>
   
 <script>
+
 export default {
+    
     name: 'Solicitudes',
     components: {
     },
@@ -129,28 +150,20 @@ export default {
         return {
             drawer: null,
             drawerSolicitud: false,
+            drawerFeedback: false,
             tituloProyecto: null,
             descripcionProyecto: null,
             estudiante: null,
             fecha: null,
             toggle: null,
             solicitudes: [],
+            rules: [v => v.length >=40 || 'Debe ingresar minimo 40 caracteres'],
             itemsOrdenar: [
                 { title: 'Por titulo', prop: 'title' },
                 {
                     title: 'Por estudiante',
                     prop: 'estudiante',
                 },
-                {
-                    title: 'Por fecha',
-                    prop: 'fecha',
-                },
-            ],
-            items: [
-                { title: "Mis solicitudes", icon: "mdi-folder" },
-                { title: "Mis proyectos", icon: "mdi-folder" },
-                { title: "Estudiantes", icon: "mdi-account-multiple" },
-                { title: "Cerrar sesion", icon: "mdi-forum" },
             ],
         };
     },
@@ -203,6 +216,10 @@ export default {
             this.descripcionProyecto = descripcion
             this.estudiante = estudiante
             this.fecha = fecha
+        },
+        feedback(){
+            this.drawerFeedback = true
+            this.drawerSolicitud = false
         },
         getChipColor(color) {
             if (color == 'completado') return 'green accent-3'

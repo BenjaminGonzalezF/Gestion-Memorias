@@ -24,6 +24,8 @@ export default new Vuex.Store({
     rol:false,
     img: null,
     nombre:null,
+    //PARCHE,
+    vistaSeleccionada:1,
   },
   getters: {
   },
@@ -44,23 +46,20 @@ export default new Vuex.Store({
                 this.state.escomite=usuario_sesion.escomite
                 this.state.nombre=usuario_sesion.nombre 
                 this.state.img=usuario_sesion.img 
-                if (usuario_sesion.esdirector) {
-                  this.state.rol="director"
+                this.state.rol=usuario_sesion.rolActivo
+                if (usuario_sesion.rolActivo=="Director") {
                   if(router.history.current.path!=="/directora"){
                     router.push({ path: "/directora" })
                   }
-                } else if (usuario_sesion.escomite) {
-                  this.state.rol="comite"
+                } else if (usuario_sesion.rolActivo=="Comite") {
                   if(router.history.current.path!=="/comite"){
                     router.push({ path: "/comite" })
                   }
-                } else if (usuario_sesion.esprofe) {
-                  this.state.rol="profesor"
+                } else if (usuario_sesion.rolActivo=="Profesor") {
                   if(router.history.current.path!=="/profesor"){
                     router.push({ path: "/profesor" })
                   }
                 } else {
-                  this.state.rol="alumno"
                   if(router.history.current.path!=="/alumno"){
                     router.push({ path: "/alumno" })
                   }

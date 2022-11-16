@@ -80,7 +80,7 @@
                                     <v-card-actions class="justify-center">
                                         <v-btn @click="enviarSolicitud(project._id)" color="#f5a42a" >
                                         Enviar Solicitud
-                                    </v-btn>
+                                        </v-btn>
                                     </v-card-actions>
 
                                     </v-card>
@@ -174,11 +174,8 @@ export default {
             this.estudiante = estudiante;
         },
         enviarSolicitud(id) {
-            if (this.$route.path == "/alumno") {
-                this.$store.state.id_tema_solicitar = id
-                console.log(this.$store.state.id_tema_solicitar)
-                this.$router.push({ path: "/solicitudmemoria" })
-            }
+            this.$store.state.id_tema_solicitar = id
+            this.$store.state.vistaSeleccionada=3
         }
 
 
