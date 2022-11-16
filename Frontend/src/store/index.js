@@ -21,9 +21,9 @@ export default new Vuex.Store({
     esalumno: false,
     esdirector: false,
     escomite: false,
+    rol:false,
+    img: null,
     nombre:null,
-    img:null,
-    id_tema_solicitar:null,//Variable que solo sirve para los alumnos
   },
   getters: {
   },
@@ -37,23 +37,33 @@ export default new Vuex.Store({
           .then((response) => {
             usuario_sesion = response.data
             if (usuario_sesion.length !== 0) {
-              console.log("Token encontrado")
               this.interval = setTimeout(() => {
                 this.state.esdirector=usuario_sesion.esdirector
                 this.state.esalumno=usuario_sesion.esalumno
                 this.state.esprofe=usuario_sesion.esprofe
                 this.state.escomite=usuario_sesion.escomite
-                this.state.nombre=usuario_sesion.nombre
-                this.state.img=usuario_sesion.img
-                console.log("alo"+this.state.img)
+                this.state.nombre=usuario_sesion.nombre 
+                this.state.img=usuario_sesion.img 
                 if (usuario_sesion.esdirector) {
-                  router.push({ path: "/directora" })
+                  this.state.rol="director"
+                  if(router.history.current.path!=="/directora"){
+                    router.push({ path: "/directora" })
+                  }
                 } else if (usuario_sesion.escomite) {
-                  router.push({ path: "/comite" })
+                  this.state.rol="comite"
+                  if(router.history.current.path!=="/comite"){
+                    router.push({ path: "/comite" })
+                  }
                 } else if (usuario_sesion.esprofe) {
-                  router.push({ path: "/profesor" })
+                  this.state.rol="profesor"
+                  if(router.history.current.path!=="/profesor"){
+                    router.push({ path: "/profesor" })
+                  }
                 } else {
-                  router.push({ path: "/alumno" })
+                  this.state.rol="alumno"
+                  if(router.history.current.path!=="/alumno"){
+                    router.push({ path: "/alumno" })
+                  }
                 }
               }, 1000)
               this.interval = setTimeout(() => {

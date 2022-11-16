@@ -16,6 +16,9 @@
             {{this.$store.state.nombre}}
           </p>
         </v-flex>
+        <v-flex class="mt-3 mb-3">
+          <cambiarRol></cambiarRol>
+        </v-flex>        
       </v-layout>
       <v-list>
         <v-list-item-group>
@@ -51,6 +54,7 @@
 <script>
 import Loading from '@/components/loading.vue';
 import vistaSolicitud from './VistaSolicitudProfesor.vue'
+import cambiarRol from '@/components/cambiarRol.vue';
 export default {
   data() {
       return {
@@ -72,13 +76,16 @@ export default {
   },
   components:{
       Loading,
-      vistaSolicitud
+      vistaSolicitud,
+      cambiarRol
   },
   methods: {
       redirigir(ref) {
           if (ref == "Cerrar sesion") {
               if (this.$route.path !== "/Alumno" || this.$route.path !== "/solicitudTemas") {
                   localStorage.clear();
+                  this.$store.state.nombre=null
+                    this.$store.state.img=null
                   this.$router.push({ path: "/" })
               }
           }else if(ref == "Solicitud"){

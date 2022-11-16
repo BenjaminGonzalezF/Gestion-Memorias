@@ -1,7 +1,6 @@
 <template>
       <v-app>
-    <div class="Oferta de temas">
-        <div>
+        <div class="Oferta de temas">
             <v-container class="my-3">
                 <v-layout row class="mx-1">
                     <v-spacer></v-spacer>
@@ -33,11 +32,11 @@
                      <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2">
                         
                         <v-layout row wrap :class="`pa-3 project ${project.status}`">
-                            <v-flex xs8 md2>
+                            <v-flex xs8 md3>
                             <div class="caption grey--text">Titulo proyecto</div>
                             <div>{{ project.nombre }}</div>
                             </v-flex>
-                            <v-flex xs6 md3>
+                            <v-flex xs6 md5>
                             <div class="caption grey--text">Descripcion general proyecto</div>
                             <div>{{ project.descripcion }}</div>
                             </v-flex>
@@ -58,11 +57,10 @@
                             </v-flex>
                         </v-layout>
                      </v-card>
-                    <v-dialog v-model="drawerSolicitud" max-width="900">
+                    <v-dialog v-model="drawerSolicitud" max-width="1000">
                         <v-container class="grey lighten-5" >
                             <v-row>
-                                <v-col cols="12" sm="12" md="6">
-                                    <v-card>
+                                    <v-card >
                                         <v-card-title>
                                             <span class="text-h5">Datos proyecto</span>
                                         </v-card-title>
@@ -78,26 +76,25 @@
                                                 </v-flex>
                                             </v-container>
                                         </v-card-text>
-
-                                    </v-card>
-                                    <v-btn @click="enviarSolicitud(project._id)" color="#f5a42a" >
+                                    <v-divider></v-divider>
+                                    <v-card-actions class="justify-center">
+                                        <v-btn @click="enviarSolicitud(project._id)" color="#f5a42a" >
                                         Enviar Solicitud
                                     </v-btn>
-                                </v-col>
+                                    </v-card-actions>
+
+                                    </v-card>
                             </v-row>
                         </v-container>  
                     </v-dialog>
                 </div>
             </v-container>
         </div>
-    
-    
-    </div>
-</v-app>
+    </v-app>
 </template>
 
 <script>
- export default {
+export default {
     name: "Alumno",
     data() {
         return {
@@ -107,33 +104,33 @@
             descripcionProyecto: null,
             profesor: null,
             estudiante: null,
-            temas:[],   
-            solicitudes:[{
+            temas: [],
+            solicitudes: [{
                 id: 1,
                 title: 'proyecto 1',
                 person: 'Manuel',
-                descripcionGeneral:'EL proyecto 1 se tratara sobre blablabla',
+                descripcionGeneral: 'EL proyecto 1 se tratara sobre blablabla',
                 profesor: 'Daniel Moreno',
-                status:'completado',
-                descripcion:'Esto es una descripcion 1'
+                status: 'completado',
+                descripcion: 'Esto es una descripcion 1'
             },
             {
                 id: 2,
                 title: 'proyecto 2',
                 person: 'Joselito',
-                descripcionGeneral:'EL proyecto 2 se tratara sobre blablabla',
+                descripcionGeneral: 'EL proyecto 2 se tratara sobre blablabla',
                 profesor: 'Rodrigo Pavez',
-                status:'en progreso',
-                descripcion:'Esto es una descripcion 2'
+                status: 'en progreso',
+                descripcion: 'Esto es una descripcion 2'
             },
             {
                 id: 3,
                 title: 'proyecto 3',
                 person: 'Manuel Gonzalez',
-                descripcionGeneral:'EL proyecto 3 se tratara sobre blablabla',
+                descripcionGeneral: 'EL proyecto 3 se tratara sobre blablabla',
                 profesor: 'Luis Silvestre',
-                status:'atrasado',
-                descripcion:'Esto es una descripcion 3'
+                status: 'atrasado',
+                descripcion: 'Esto es una descripcion 3'
             }
             ],
             itemsOrdenar: [
@@ -154,15 +151,15 @@
         this.cargar_temas()
     },
     methods: {
-        cargar_temas(){
+        cargar_temas() {
             this.axios.get("todos_temas")
                 .then((respT) => {
-                    this.axios.get("todos_usuarios").then((respU)=>{
+                    this.axios.get("todos_usuarios").then((respU) => {
                         const usuario = respU.data
-                        this.temas=respT.data
-                        for(var i=0; i<this.temas.length;i++){
-                            const creador = usuario.filter(u => u._id==this.temas[i].idCreador)
-                            this.temas[i].nombrecreador=creador[0].nombre
+                        this.temas = respT.data
+                        for (var i = 0; i < this.temas.length; i++) {
+                            const creador = usuario.filter(u => u._id == this.temas[i].idCreador)
+                            this.temas[i].nombrecreador = creador[0].nombre
                         }
                     })
                 })
@@ -176,21 +173,21 @@
             this.descripcionProyecto = descripcion;
             this.estudiante = estudiante;
         },
-        enviarSolicitud(id){
+        enviarSolicitud(id) {
             if (this.$route.path == "/alumno") {
-                this.$store.state.id_tema_solicitar=id
-                console.log( this.$store.state.id_tema_solicitar)
+                this.$store.state.id_tema_solicitar = id
+                console.log(this.$store.state.id_tema_solicitar)
                 this.$router.push({ path: "/solicitudmemoria" })
             }
         }
 
-       
+
     },
 }
 </script>
 
-<style> 
-    .v-list-item:hover { 
-        background: #f5a42a; 
-    } 
+<style>
+.v-list-item:hover {
+     background: #f5a42a;
+ }
 </style>
