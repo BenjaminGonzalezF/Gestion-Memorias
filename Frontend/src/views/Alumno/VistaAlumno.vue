@@ -17,6 +17,7 @@
               {{this.$store.state.nombre}}
             </p>
           </v-flex>
+          
         </v-layout>
         <v-list>
           <v-list-item-group>
@@ -44,8 +45,8 @@
       </v-app-bar>
       <loading></loading>
       <v-main v-if="!this.$store.state.loading">
-        <vistaSolicitud v-if="vista==1"></vistaSolicitud>
-        <vistasolicitar v-if="vista==3"></vistaSolicitar>
+        <vistaSolicitud v-if="this.$store.state.vistaSeleccionada==1"></vistaSolicitud>
+        <vistaSolicitar v-if=" this.$store.state.vistaSeleccionada==3"></vistaSolicitar>
       </v-main>
     </v-app>
   </template>
@@ -76,7 +77,7 @@ export default {
     components:{
         vistaSolicitud,
         Loading,
-        vistaSolicitar
+        vistaSolicitar,
     },
     methods: {
         redirigir(ref) {
@@ -88,9 +89,9 @@ export default {
                     this.$router.push({ path: "/" })
                 }
             }else if(ref == "Solicitud"){
-                this.vista=1
+              this.$store.state.vistaSeleccionada=1
             }else if(ref == "Oferta Temas"){
-                this.vista=2
+              this.$store.state.vistaSeleccionada=2
             }
         }
     }

@@ -1,6 +1,5 @@
 <template>
     <v-app>
-        <headerAlumno></headerAlumno>
         <div align="center">
             <v-col lass="px-4">
                 <h1>

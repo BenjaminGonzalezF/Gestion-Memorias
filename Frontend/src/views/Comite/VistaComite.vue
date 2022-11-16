@@ -17,6 +17,9 @@
             {{ this.$store.state.nombre }}
           </p>
         </v-flex>
+        <v-flex class="mt-3 mb-3">
+          <cambiarRol></cambiarRol>
+        </v-flex>    
       </v-layout>
       <v-list>
         <v-list-item-group>
@@ -52,6 +55,7 @@
 <script>
 import vistaSolicitud from "./VistaSolicitudComite.vue"
 import Loading from '@/components/loading.vue';
+import cambiarRol from '@/components/cambiarRol.vue';
 export default {
   data() {
     return {
@@ -73,7 +77,8 @@ export default {
   },
   components: {
     vistaSolicitud,
-    Loading
+    Loading,
+    cambiarRol
   },
   methods: {
     redirigir(ref) {

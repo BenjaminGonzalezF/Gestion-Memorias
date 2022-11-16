@@ -174,11 +174,8 @@ export default {
             this.estudiante = estudiante;
         },
         enviarSolicitud(id) {
-            if (this.$route.path == "/alumno") {
-                this.$store.state.id_tema_solicitar = id
-                console.log(this.$store.state.id_tema_solicitar)
-                this.$router.push({ path: "/solicitudmemoria" })
-            }
+            this.$store.state.id_tema_solicitar = id
+            this.$store.state.vistaSeleccionada=3
         }
 
 
