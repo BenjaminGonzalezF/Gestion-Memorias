@@ -597,7 +597,7 @@ export default {
                         this.nombrecompleto = this.$store.state.nombre
                         this.nombretema = this.temas[0].nombre
                         this.nombreprofesor = creador[0].nombre
-                        if(this.$store.state.img !=null&& this.$store.state.img !=usuario_sesion.img){
+                        if(this.$store.state.img !=null && this.$store.state.img !="https://i.ibb.co/T2J4034/download.png"){ ///this.$store.state.img !=usuario_sesion.img VER VALIDACION PARA LA IMGAGEN POR DEFECTO
                             this.imagenAlumno=this.$store.state.img  
                             this.estadofoto = true;
                         }
