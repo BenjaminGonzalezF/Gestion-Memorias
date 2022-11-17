@@ -88,7 +88,7 @@
                                 <v-col>
                                     <p> Verificación </p>
                                     <v-img max-height="100" max-width="120"
-                                        :src="imagenAlumno">
+                                        :src="this.imagenAlumno">
                                     </v-img>
                                 </v-col>
                             </div>
@@ -196,7 +196,7 @@
 
                             </v-card>
 
-                            <v-btn color="#f5a42a" @click="e1 = 3">
+                            <v-btn color="#f5a42a" @click="e1 = 3" :disabled="!estadofoto">
                                 Continuar
                             </v-btn>
 
@@ -574,7 +574,8 @@ export default {
             linkimagen: null,
             temas:[],
             estadoselect: null,
-            imagenAlumno: null
+            imagenAlumno: null,
+            urlvalida: null
         };
     },
     created() {
@@ -596,6 +597,10 @@ export default {
                         this.nombrecompleto = this.$store.state.nombre
                         this.nombretema = this.temas[0].nombre
                         this.nombreprofesor = creador[0].nombre
+                        if(this.$store.state.img !=null&& this.$store.state.img !=usuario_sesion.img){
+                            this.imagenAlumno=this.$store.state.img  
+                            this.estadofoto = true;
+                        }
                     })
 
                 })
@@ -672,19 +677,27 @@ export default {
             this.estadofoto = true;
 
         },
-        subirlink(value) {
-            console.log("valor vaule: " + value)
+        subirlink(url) {
+            console.log("valor vaule: " + url)
             //guardar value que es el link en la vase de datos
             //si se guarda correctamente
-            if (true) {
+            var validUrl= /^(ht|f)tps?:\/\/\w+([\.\-\w]+)?\.[a-z]{2,10}(:\d{2,5})?(\/.*)?$/i
+            if(validUrl.test(url)){
+               this.urlvalida=true 
+            }else{
+                this.urlvalida=false
+            }
+            console.log("validaurl : "+this.urlvalida)
+            if (this.urlvalida) {
                 this.linkimagen = "https://previews.123rf.com/images/xmarchant/xmarchant0612/xmarchant061200005/695441-retrato-hombre-frente-a-la-c%C3%A1mara.jpg"
-                this.imagenAlumno = value
+                this.imagenAlumno = url
                 console.log("link: "+this.linkimagen)
                 console.log("valur "+this.imagenAlumno)
                 this.estadofoto = true;
 
             } else {
                 //error 
+                console.log("url invalida ingresa otra")
             }
         },
         enviardatos(nombre, nombreproyecto, nombreprofesor, cursospendientes, estadotrabajo, linkfoto) {
