@@ -60,8 +60,8 @@ export default new Vuex.Store({
                     router.push({ path: "/profesor" })
                   }
                 } else {
-                  if(router.history.current.path!=="/alumno"){
-                    router.push({ path: "/alumno" })
+                  if(router.history.current.path!=="/Alumno"){
+                    router.push({ path: "/Alumno" })
                   }
                 }
               }, 1000)

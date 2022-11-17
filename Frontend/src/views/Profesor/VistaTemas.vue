@@ -1,16 +1,16 @@
 <template>
-
+    
     <div class="Temas">
         <div>
-            <v-container class="my-3">
-                <v-layout row class="mx-1">
-                    <v-btn depressed color="rgb(0, 204, 255)" dark small @click="agregar_temas()">
-                        Agregar tema
-                        <v-icon right small>mdi-note-plus</v-icon>
-                    </v-btn>
-                    <v-spacer></v-spacer>
-                    <v-menu offset-y>
-                        <template v-slot:activator="{ on, attrs }">
+                <v-container class="my-3">
+                    <v-layout row class="mx-1">
+                                <v-btn depressed color="rgb(0, 204, 255)" dark small @click="agregar_temas()">
+                                    Agregar tema
+                                    <v-icon right small>mdi-note-plus</v-icon>
+                                </v-btn>
+                        <v-spacer></v-spacer>
+                        <v-menu offset-y>
+                            <template v-slot:activator="{ on, attrs }">
                             <v-btn depressed color="rgb(0, 204, 255)" class="mb-5" dark small v-bind="attrs" v-on="on">
                                 Ordenar
                                 <v-icon right small>mdi-sort</v-icon>
@@ -42,24 +42,24 @@
                                 <div>{{ project.descripcion }}</div>
                             </v-flex>
                             <v-flex xs2 sm1 md2>
-                                <div class="caption grey--text">Requisitos</div>
+                                    <div class="caption grey--text">Requisitos</div>
                                 <div v-for="(requisitos, index) in project.requisitos" :key="index"> - {{ requisitos }}
                                 </div>
-                            </v-flex>
-                        </v-layout>
-                    </v-card>
-                </div>
-                <v-dialog v-model="crearTema" max-width="1000">
-                    <v-card>
-                        <v-container class="grey lighten-5">
-                            <v-card-title class="justify-center">
-                                <span class="text-h5">Crear temas</span>
-                            </v-card-title>
-                        </v-container>
-                    </v-card>
-                </v-dialog>
-            </v-container>
-        </div>
+                                </v-flex>                                
+                            </v-layout>
+                        </v-card>                
+                    </div>
+                    <v-dialog v-model="crearTema" max-width="1000">
+                        <v-card>
+                            <v-container class="grey lighten-5">
+                                <v-card-title class="justify-center">
+                                    <span class="text-h5">Crear temas</span>
+                                </v-card-title>
+                            </v-container>
+                        </v-card>
+                    </v-dialog>
+                </v-container>
+            </div>
     </div>
 </template>
 <script>

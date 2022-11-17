@@ -45,7 +45,7 @@
                         Datos de interes
                     </h1>
                     <v-card height="50" width="80%" color="#FFFFFF">
-                        <v-select :items="estado" label="¿Esta trabajando?"></v-select>
+                        <v-select v-model="estadoselect" :items="estado" label="¿Esta trabajando?"></v-select>
                     </v-card>
                 </v-col>
 
@@ -88,7 +88,7 @@
                                 <v-col>
                                     <p> Verificación </p>
                                     <v-img max-height="100" max-width="120"
-                                        src="https://previews.123rf.com/images/xmarchant/xmarchant0612/xmarchant061200005/695441-retrato-hombre-frente-a-la-c%C3%A1mara.jpg">
+                                        :src="imagenAlumno">
                                     </v-img>
                                 </v-col>
                             </div>
@@ -573,6 +573,8 @@ export default {
             nombreprofesor: null,
             linkimagen: null,
             temas:[],
+            estadoselect: null,
+            imagenAlumno: null
         };
     },
     created() {
@@ -676,7 +678,9 @@ export default {
             //si se guarda correctamente
             if (true) {
                 this.linkimagen = "https://previews.123rf.com/images/xmarchant/xmarchant0612/xmarchant061200005/695441-retrato-hombre-frente-a-la-c%C3%A1mara.jpg"
-                console.log(this.linkimagen)
+                this.imagenAlumno = value
+                console.log("link: "+this.linkimagen)
+                console.log("valur "+this.imagenAlumno)
                 this.estadofoto = true;
 
             } else {
@@ -689,8 +693,9 @@ export default {
             console.log("valor nombre profesor: " + nombreprofesor)
             console.log("valor cursos pendientes : " + cursospendientes)
             //como se cual esta activo?
-            console.log("valor trabaja?: " + estadotrabajo)
+            console.log("valor trabaja?: " + this.estadoselect)
             console.log("valor link foto: " + linkfoto)
+            console.log("valor link foto2: " + this.imagenAlumno)
         },
 
     },
