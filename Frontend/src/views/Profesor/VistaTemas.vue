@@ -1,6 +1,7 @@
 <template>
     
     <div class="Temas">
+        <h1>Docentes: Mis Temas</h1>
         <div>
                 <v-container class="my-3">
                     <v-layout row class="mx-1">

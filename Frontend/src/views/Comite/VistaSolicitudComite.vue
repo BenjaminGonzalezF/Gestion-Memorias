@@ -1,6 +1,7 @@
 <template>
     <div class="Solicitudes">
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
+            <h1>Comité Curricular: Solicitudes de memoria</h1> 
             <div>
                 <v-container class="my-3">
                     <v-layout row class="mx-1">

@@ -3,44 +3,7 @@
     <div class="Oferta de temas">
        
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
-            <v-app-bar  
-            color="#00CCFF" 
-        >    
-            <v-img 
-                max-height="40" 
-                max-width="50" 
-                src="@/assets/utal.png"   
-            ></v-img> 
-            <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon> 
-             
-        </v-app-bar> 
-        <v-navigation-drawer v-model="drawer" absolute temporary color="#00CCFF"> 
-            <v-list-item> 
-            <v-list-item-avatar> 
-                <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img> 
-            </v-list-item-avatar> 
-             
-            <v-list-item-content> 
-                <v-list-item-title>John Leider</v-list-item-title> 
-            </v-list-item-content> 
-            </v-list-item> 
- 
-            <v-divider></v-divider> 
- 
-            <v-list dense> 
-            <v-list-item v-for="item in items" :key="item.title" :to="item.link" link> 
-                <v-list-item-icon> 
-                    <v-icon>{{ item.icon }}</v-icon> 
-                </v-list-item-icon> 
- 
-                <v-list-item-content> 
-                    <v-list-item-title>{{ item.title }}</v-list-item-title> 
-                </v-list-item-content> 
-            </v-list-item> 
-            </v-list> 
-        </v-navigation-drawer>    
-      
-       
+            <h1>Alumnos: Estado de Solicitudes</h1> 
         <div>
          
             <v-container class="my-3">
@@ -94,7 +57,7 @@
                                 <div class="box">
                                     
                                     <v-btn @click="verSolicitud(project.id, project.title, project.descripcion, project.estudiante, project.fecha)" >
-                                        Ver descripcion tema
+                                        Ver descripcion
                                     </v-btn>
                                     
                                     

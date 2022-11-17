@@ -1,6 +1,7 @@
 <template>
     <div>
         <loading></loading>
+        <h1>Direccción de escuela: Añadir estudiantes</h1>
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
             <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;
             top:20%;

@@ -1,6 +1,8 @@
 <template>
       <v-app>
         <div class="Oferta de temas">
+            <h1>Alumnos: Ofertas de Temas para Memoria</h1> 
+
             <v-container class="my-3">
                 <v-layout row class="mx-1">
                     <v-spacer></v-spacer>

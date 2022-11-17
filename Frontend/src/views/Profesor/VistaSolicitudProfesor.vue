@@ -1,5 +1,6 @@
 <template>
     <div class="Solicitudes">
+        <h1>Docentes: solicitudes de memoria</h1>
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
             <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;
             top:20%;
