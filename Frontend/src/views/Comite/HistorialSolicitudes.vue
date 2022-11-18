@@ -1,6 +1,8 @@
 <template>
     <div class="Solicitudes">
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
+            <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;top:20%;left: 50%;" v-if="cargando_temas == true">
+            </v-progress-circular>
             <div>
                 <v-container class="my-3">
                     <v-layout row class="mx-1">
@@ -23,7 +25,7 @@
                         </v-menu>
                     </v-layout>
                     <div v-for="project in temas" :key="project._id">
-                        <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2" v-if="project.votado===true">
+                        <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2" v-if="project.resultado_comite!=null">
                             <v-layout row wrap :class="`pa- project ${project.estadovalido}`">
                                 <v-flex xs8 md2>
                                     <div class="caption grey--text">Titulo proyecto</div>
@@ -100,6 +102,18 @@
                     </div>
                 </v-container>
             </div>
+            <div class="text-center" v-if="cargando_temas == false && temas.length == 0">
+                <h1> No tienes temas en el Historial</h1>
+                <v-avatar size="150">
+                    <v-img src="https://media.tenor.com/-wrmUJrUbeoAAAAM/emoji-disintergrating.gif">
+                        <template v-slot:placeholder>
+                            <v-row class="fill-height ma-0" align="center" justify="center">
+                                <v-progress-circular indeterminate color="white"></v-progress-circular>
+                            </v-row>
+                        </template>
+                    </v-img>
+                </v-avatar>
+            </div>
         </v-sheet>
     </div>
 </template>
@@ -123,6 +137,7 @@ export default {
             fecha: null,
             toggle: null,
             temas: [],
+            cargando_temas:true,
             itemsOrdenar: [
                 { title: 'Por titulo', prop: 'title' },
                 {
@@ -180,6 +195,7 @@ export default {
                                 this.temas[i].votado=false
                             }
                         }
+                        this.cargando_temas=false
                     })
                 })
                 .catch((e) => {

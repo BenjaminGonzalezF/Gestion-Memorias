@@ -24,7 +24,7 @@
                 </v-progress-circular>
 
                 <div v-for="project in temas" :key="project._id">
-                    <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2" v-if="project.colaborador==null">
+                    <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2" v-if="project.colaborador==null && project.resultado_comite==true && project.resultado_comite==true">
 
                         <v-layout row wrap :class="`pa-3 project ${project.status}`">
                             <v-flex xs8 md3>
@@ -84,7 +84,7 @@
                         </v-container>
                     </v-dialog>
                 </div>
-                <div class="text-center" v-if="cargando_temas == false && temas.length == 0">
+                <div class="text-center" v-if="cargando_temas == false && oferta_temas == 0">
                 <h1> No hay oferta de temas</h1>
                 <v-avatar size="150">
                     <v-img src="https://media.tenor.com/-wrmUJrUbeoAAAAM/emoji-disintergrating.gif">
@@ -114,6 +114,7 @@ export default {
             estudiante: null,
             cargando_temas: true,
             temas: [],
+            oferta_temas:0,
             itemsOrdenar: [
                 { title: "Por titulo", prop: "title" },
                 {

@@ -49,10 +49,8 @@ export default {
                 var usuarios = respU.data
                 usuarios = usuarios.filter(u => u._id == localStorage.getItem("key_user"))
                 usuarios[0].rolActivo = this.select
-                console.log(usuarios[0])
                 this.axios.put(`/usuario_ac/${usuarios[0]._id}`, usuarios[0])
                     .then((response) => {
-                        console.log(response.data)
                         this.$store.state.loading = true
                         this.$store.commit('cargar_datos')
                     })

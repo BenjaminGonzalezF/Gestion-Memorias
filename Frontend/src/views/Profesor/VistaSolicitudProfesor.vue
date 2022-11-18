@@ -1,11 +1,9 @@
 <template>
     <div class="Solicitudes">
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
-            <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;
-            top:20%;
-            left: 50%;" v-if="cargando_solicitudes == true">
+            <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;top:20%;left: 50%;" v-if="cargando_solicitudes == true">
             </v-progress-circular>
-
+            
             <div>
                 <v-container class="my-3">
                     <v-layout row class="mx-1">
@@ -28,7 +26,7 @@
                         </v-menu>
                     </v-layout>
                     <div v-for="(project, index) in solicitudes" :key="index">
-                        <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2">
+                        <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2" v-if="project.resultado_comite && project.resultado_directora && !project.resultado_profesor">
 
                             <v-layout row wrap :class="`pa-3 project ${project.status}`">
                                 <v-flex xs8 md3>
