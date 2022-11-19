@@ -1,9 +1,10 @@
 <template>
     <div class="Solicitudes">
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
-            <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;top:20%;left: 50%;" v-if="cargando_solicitudes == true">
+            <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;top:20%;left: 50%;"
+                v-if="cargando_temas == true">
             </v-progress-circular>
-            
+
             <div>
                 <v-container class="my-3">
                     <v-layout row class="mx-1">
@@ -25,13 +26,14 @@
                             </v-list>
                         </v-menu>
                     </v-layout>
-                    <div v-for="(project, index) in solicitudes" :key="index">
-                        <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2" v-if="project.resultado_comite && project.resultado_directora && !project.resultado_profesor">
+                    <div v-for="(project, index) in temas" :key="index">
+                        <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2"
+                            v-if="project.resultado_comite && project.resultado_directora && project.resultado_profesor==null">
 
                             <v-layout row wrap :class="`pa-3 project ${project.status}`">
                                 <v-flex xs8 md3>
                                     <div class="caption grey--text">Titulo proyecto</div>
-                                    <div>{{ project.title }}</div>
+                                    <div>{{ project.nombre }}</div>
                                 </v-flex>
                                 <v-flex xs6 md5>
                                     <div class="caption grey--text">Descripcion general proyecto</div>
@@ -45,7 +47,7 @@
                                     <!-- <div class="caption grey--text">Durum</div> -->
                                     <div class="my-1 text-center">
                                         <v-btn
-                                            @click="verSolicitud(project.title, project.descripcion, project.estudiante, project.fecha, project.matricula, project.img)">
+                                            @click="verSolicitud(project.nombre, project.descripcion, project.estudiante, project.fecha, project.matricula, project.img)">
                                             Ver solicitud
                                         </v-btn>
                                     </div>
@@ -96,7 +98,7 @@
                                                                         <v-row class="fill-height ma-0" align="center"
                                                                             justify="center">
                                                                             <v-progress-circular indeterminate
-                                                                                color="white"></v-progress-circular>
+                                                                                color="rgb(0, 204, 255)"></v-progress-circular>
                                                                         </v-row>
                                                                     </template>
                                                                 </v-img>
@@ -117,7 +119,8 @@
                                         </v-col>
                                     </v-row>
                                     <v-card-actions class="justify-center">
-                                        <v-btn color="#FF0182" @click="feedback()" dark> Aceptar o rechazar </v-btn>
+                                        <v-btn color="#FF0182" dark @click="votar_tema(true,project)"> Aceptar</v-btn>
+                                        <v-btn color="#FF0182" @click="feedback(project)" dark> Rechazar </v-btn>
                                     </v-card-actions>
                                 </v-container>
                             </v-card>
@@ -133,7 +136,7 @@
                         <v-card-text>
                             <v-container>
                                 <v-flex>
-                                    <v-textarea counter="300">
+                                    <v-textarea v-model="feedbacktext" counter="300">
                                         <template v-slot:label>
                                             <div>
                                                 Deje sus comentarios
@@ -144,10 +147,7 @@
                             </v-container>
                         </v-card-text>
                         <v-card-actions class="justify-center">
-                            <v-btn>
-                                Aceptar solicitud
-                            </v-btn>
-                            <v-btn>
+                            <v-btn @click="votar_tema(false,null)">
                                 Rechazar solicitud
                             </v-btn>
 
@@ -155,7 +155,7 @@
                     </v-card>
                 </v-dialog>
             </div>
-            <div class="text-center" v-if="cargando_solicitudes == false && solicitudes_pendientes == 0">
+            <div class="text-center" v-if="cargando_temas == false && temas_pendientes == 0">
                 <h1> No hay Solicitudes</h1>
                 <v-avatar size="150">
                     <v-img src="https://media.tenor.com/-wrmUJrUbeoAAAAM/emoji-disintergrating.gif">
@@ -175,7 +175,6 @@
 
 export default {
 
-    name: 'Solicitudes',
     components: {
     },
     data() {
@@ -183,6 +182,7 @@ export default {
             drawer: null,
             drawerSolicitud: false,
             drawerFeedback: false,
+            feedbacktext:null,
             tituloProyecto: null,
             descripcionProyecto: null,
             estudiante: null,
@@ -190,9 +190,10 @@ export default {
             imagenEstudiante: null,
             fecha: null,
             toggle: null,
-            solicitudes: [],
-            solicitudes_pendientes:0,
-            cargando_solicitudes: true,
+            temas: [],
+            tema_seleccionado:null,
+            temas_pendientes: 0,
+            cargando_temas: true,
             itemsOrdenar: [
                 { title: 'Por titulo', prop: 'title' },
                 {
@@ -203,56 +204,66 @@ export default {
         };
     },
     created() {
-        this.cargar_solicitudes()
+        this.cargar_temas()
     },
     methods: {
-        cargar_solicitudes() {
-            this.axios.get("todos_solicitudes")
-                .then((respS) => {
-                    this.axios.get("todos_usuarios").then((respU) => {
-                        this.axios.get("todos_temas").then((respT) => {
-                            this.solicitudes = respS.data
-                            const temas = respT.data
-                            const usuarios = respU.data
-                            const solicitud_profesor = []
-                            for (var i = 0; i < this.solicitudes.length; i++) {
-                                let alumno = usuarios.filter(u => u._id == this.solicitudes[i].alumnoid)
-                                let tema = temas.filter(t => t._id == this.solicitudes[i].temaid)
-                                if (this.solicitudes[i].profeguiaid === localStorage.getItem("key_user")) {
-                                    solicitud_profesor.push({
-                                        title: tema[0].nombre,
-                                        descripcion: tema[0].descripcion,
-                                        fecha: tema[0].fecha,
-                                        estudiante: alumno[0].nombre,
-                                        alumnoid: this.solicitudes[i].alumnoid,
-                                        temaid: this.solicitudes[i].temaid,
-                                        profeguiaid: this.solicitudes[i].profeguiaid,
-                                        img: alumno[0].img,
-                                        matricula: alumno[0].matricula
-                                    })
-                                }
-                                if(tema[0].resultado_comite && tema[0].resultado_directora && !tema[0].resultado_profesor){
-                                    this.solicitudes_pendientes++
-                                }
-                                this.solicitudes[i].title = tema[0].nombre
-                                this.solicitudes[i].descripcion = tema[0].descripcion
-                                this.solicitudes[i].fecha = tema[0].fecha
-                                this.solicitudes[i].estudiante = alumno[0].nombre
-                                this.solicitudes[i].matricula = alumno[0].matricula
-                                this.solicitudes[i].img = alumno[0].img
-
+        cargar_temas() {
+                this.axios.get("todos_temas").then((respT) => {
+                    this.axios.get("todos_usuarios").then((respU)=>{
+                        this.temas = respT.data
+                        const usuario = respU.data
+                        this.temas = this.temas.filter(t=>t.colaborador==localStorage.getItem("key_user"))
+                        for(var i=0; i<this.temas.length;i++){
+                            var creador = usuario.filter(u=>u._id == this.temas[i].idCreador)
+                            this.temas[i].img=creador[0].img
+                            this.temas[i].estudiante=creador[0].nombre
+                            this.temas[i].matricula=creador[0].matricula
+                            if(this.temas[i].resultado_comite && this.temas[i].resultado_directora && this.temas[i].resultado_profesor==null){
+                                this.temas_pendientes++;
                             }
-                            this.cargando_solicitudes = false
-                            this.solicitudes = solicitud_profesor
-                        })
+                        }
+                        this.cargando_temas = false
                     })
                 })
-                .catch((e) => {
-                    console.log(e)
-                })
+        },
+        votar_tema(voto,tema){
+            if(voto){
+                this.tema_seleccionado=tema
+                // Se agrega la razon xdxdd
+                console.log(this.feedbacktext)
+            }
+            this.tema_seleccionado.resultado_profesor=voto
+            this.axios.put(`tema_ac/${this.tema_seleccionado._id}`, this.tema_seleccionado).then((resp)=>{
+                if(this.tema_seleccionado.resultado_comite && this.tema_seleccionado.resultado_directora && this.tema_seleccionado.resultado_profesor){
+                    this.axios.get("todos_usuarios").then((respU)=>{
+                        var solicitud_crear={
+                            profeguiaid:null,
+                            alumnoid:null,
+                            temaid:null,
+                            estado:null,
+                            razon:null,
+                        }
+                        solicitud_crear.razon=this.feedbacktext
+                        solicitud_crear.temaid=this.tema_seleccionado._id
+                        const usuarios = respU.data
+                        var creador = usuarios.filter(u=> u._id==this.tema_seleccionado.idCreador)
+                        var colaborador = usuarios.filter(u=> u._id == this.tema_seleccionado.colaborador)
+                        if(creador[0].esprofe){
+                            solicitud_crear.profeguiaid=creador[0]._id
+                            solicitud_crear.alumnoid=colaborador[0]._id
+                        }else{
+                            solicitud_crear.profeguiaid=colaborador[0]._id
+                            solicitud_crear.alumnoid=creador[0]._id
+                        }
+                        this.axios.post("nuevo_solicitud",solicitud_crear)
+                    })
+                }
+            })
+            this.$store.state.loading=true
+            this.$store.commit('cargar_datos')
         },
         sortBy(prop) {
-            this.solicitudes.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
+            this.temas.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
         },
         verSolicitud(titulo, descripcion, estudiante, fecha, matricula, imagen) {
             this.drawerSolicitud = true
@@ -263,7 +274,8 @@ export default {
             this.matricula = matricula
             this.imagenEstudiante = imagen
         },
-        feedback() {
+        feedback(tema) {
+            this.tema_seleccionado=tema
             this.drawerFeedback = true
             this.drawerSolicitud = false
         },

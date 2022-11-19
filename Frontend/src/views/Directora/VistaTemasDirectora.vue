@@ -65,8 +65,8 @@
                                                     <v-spacer></v-spacer>
                                                     <v-card-actions>
                                                         <!-- <v-container class="mx-auto mb-n5"> <strong> {{ oferta.alumno }}</strong></v-container> -->
-                                                        <v-btn color="green darken-1">aceptar</v-btn>
-                                                        <v-btn color="red lighten-2">rechazar</v-btn>
+                                                        <v-btn class="white--text" color="green darken-1" small @click="votar_solicitud(true,project)">aceptar</v-btn>
+                                                        <v-btn class="white--text" color="red lighten-2" small @click="votar_solicitud(false,project)">rechazar</v-btn>
                                                     </v-card-actions>
                                                 </div>
                                             </div>
@@ -156,6 +156,13 @@ export default {
                 }).catch((e) => {
                     console.log(e)
                 })
+        },
+        votar_solicitud(voto,tema){
+            tema.resultado_directora=voto
+            this.axios.put(`tema_ac/${tema._id}`, tema).then((resp)=>{
+            })
+            this.$store.state.loading=true
+            this.$store.commit('cargar_datos')
         },
         verSolicitud(id, titulo, descripcion, estudiante, fecha) {
             this.drawerSolicitud = true

@@ -142,6 +142,9 @@ export default {
                         for (var i = 0; i < this.temas.length; i++) {
                             const creador = usuario.filter(u => u._id == this.temas[i].idCreador)
                             this.temas[i].nombrecreador = creador[0].nombre
+                            if(this.temas[i].resultado_comite && this.temas[i].resultado_directora && this.temas[i].colaborador==null){
+                                this.oferta_temas++;
+                            }
                         }
                         this.cargando_temas = false
                     })
