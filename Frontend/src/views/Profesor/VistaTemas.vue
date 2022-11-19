@@ -193,12 +193,13 @@ export default {
                     tema_crear.requisitos=this.requisitos_temacrear
                     tema_crear.idCreador=localStorage.getItem("key_user")
                     tema_crear.fechacambio=Date.now()
-                    this.axios.post("nuevo_tema",tema_crear)
+                    this.axios.post("nuevo_tema",tema_crear).then((resp)=>{
+                        this.nombre_temacrear=null
+                        this.descripcion_temacrear=null
+                        this.requisitos_temacrear=null
+                        this.$store.state.loading = true
+                    })
                 })
-                this.nombre_temacrear=null
-                this.descripcion_temacrear=null
-                this.requisitos_temacrear=null
-                this.$store.state.loading = true
                 this.$store.commit('cargar_datos')
             }
         },

@@ -41,7 +41,8 @@
                                 </v-flex>
                                 <v-flex xs6 sm4 md1>
                                     <div class="caption grey--text">Estado</div>
-                                    <div>{{ project.estadoVotacion }}</div>
+                                    <div v-if="project.resultado_comite">Aprobado</div>
+                                    <div v-else>Rechazado</div>
                                 </v-flex>
                                 <v-flex xs2 sm3 md2>
                                     <!-- <div class="caption grey--text">Durum</div> -->
@@ -122,6 +123,7 @@
 import Swal from 'sweetalert2'
 import loading from '@/components/loading.vue';
 import jsPDF from 'jspdf'
+import html2canvas from 'html2canvas';
 export default {
     name: 'Solicitudes',
     components: {
@@ -164,35 +166,13 @@ export default {
                         for(var i=0; i<this.temas.length;i++){
                             let creador = usuarios.filter(u => u._id === this.temas[i].idCreador)
                             this.temas[i].nombreCreador=creador[0].nombre
-                            let n_votos=0
-                            var votado=[]
-                            var aprueba=0
-                            var rechaza=0
                             for(var j=0; j<this.temas[i].votos.length;j++){
                                 if(this.temas[i].votos[j].refcomite===localStorage.getItem("key_user")){
                                     this.temas[i].voto_usuario_sesion=this.temas[i].votos[j].voto
                                 }
-                                if(this.temas[i].votos[j].voto!==null){
-                                    if(this.temas[i].votos[j].voto==true){
-                                        aprueba++
-                                    }else{
-                                        rechaza++
-                                    }
-                                    n_votos++
-                                }
                                 let comite = usuarios.filter(u => u._id === this.temas[i].votos[j].refcomite)
                                 this.temas[i].votos[j].nombrecomite=comite[0].nombre
                                 this.temas[i].votos[j].imgcomite=comite[0].img
-                            }
-                            if(n_votos==3){
-                                this.temas[i].votado=true
-                                if(aprueba>rechaza){
-                                    this.temas[i].estadoVotacion="Aprobado"
-                                }else{
-                                    this.temas[i].estadoVotacion="Rechazado"
-                                }
-                            }else{
-                                this.temas[i].votado=false
                             }
                         }
                         this.cargando_temas=false
@@ -205,49 +185,68 @@ export default {
         exportPDF(titulo,estudiante) {
             let pdfName = 'Acta';
 
-            const doc = new jsPDF({
-                orientation: "portrait",
-                unit: "in",
+            var pdf = new jsPDF({
+                orientation: "p",
+                unit:"cm",
                 format: "letter"
             });
+            var img = new Image;
+            var img2 = new Image;
+            
+            img.onload = function () {
+                pdf.addImage(this, 3, 1, 2, 2);
+            };
 
-            doc.setFontSize(18).text("Acta Veredicto Del Consejo", 0.5, 1.0);
-            doc.setLineWidth(0.01).line(0.5,1.1,8.0,1.1);
-            doc
+            img2.onload = function () {
+                pdf.addImage(this, 15, 1, 3, 3);
+                pdf.save(pdfName + '.pdf');
+            };
+
+            img.crossOrigin = "";
+            img.src = "//i.imgur.com/2QXaKmk.png";
+            img2.src = "//i.imgur.com/KEhaByh.jpg";
+            pdf.setFontSize(18).text("Acta Veredicto Del Consejo", 1, 5.0);
+            pdf.setLineWidth(0.01).line(0.5,5.1,20.0,5.1);
+            pdf
                 .setFont("helvetica")
                 .setFontSize(12)
                 .text( "Luego de una exhaustiva reunión de los integrantes del comtité en la cual se ha logrado llegar a una conclusión, "+
                         " se presentan los resultados de la votación de la solicitud del tema "
                         +titulo+" propuesto por "+estudiante+
-                         ". ", 0.5,2.0,{align:"left",maxWidth:"7.5"});
-            doc
+                         ". ", 0.5,6.5,{maxWidth:"20.5"});
+            pdf
                 .setFont("helvetica")
                 .setFontSize(12)
-                .text("Por consiguiente se muestran los intregantes del comité que votaron:",0.5,2.7,{align:"left",maxWidth:"7.5"});
-            doc
+                .text("Por consiguiente se muestran los intregantes del comité que votaron:",0.6,8.5,{align:"left",maxWidth:"20.5"});
+            pdf
                 .setFont("helvetica")
                 .setFontSize(12)
-                .text( "1.-" ,0.5,3.4,{align:"left",maxWidth:"7.5"});
-            doc
+                
+                .text( "1.-" ,0.5,10,{align:"left",maxWidth:"20.5"});
+            pdf
                 .setFont("helvetica")
                 .setFontSize(12)
-                .text( "2.-" ,0.5,4.1,{align:"left",maxWidth:"7.5"});
-            doc
+                
+                .text( "2.-" ,0.5,11,{align:"left",maxWidth:"20.5"});
+            pdf
                 .setFont("helvetica")
                 .setFontSize(12)
-                .text( "3.-" ,0.5,4.8,{align:"left",maxWidth:"7.5"});
-                doc
+                
+                .text( "3.-" ,0.5,12,{align:"left",maxWidth:"20.5"});
+                pdf
                 .setFont("helvetica")
                 .setFontSize(12)
-                .text( "Dando asi como resultado que la propuesta es " + ". " ,0.5,5.5,{align:"left",maxWidth:"7.5"});
+                
+                .text( "Dando asi como resultado que la propuesta es " + ". " ,0.5,13,{align:"left",maxWidth:"20.5"});
 
-            doc
+            pdf
                 .setFont("times")
                 .setFontSize(10)
+                
                 .text("Documento validado y verificado por la Universidad de Talca.",
                 0.5,
-                doc.internal.pageSize.height - 0.5)
-            doc.save(pdfName + '.pdf');
+                pdf.internal.pageSize.height - 0.5)
+            //doc.save(pdfName + '.pdf');
         },
         sortBy(prop) {
             this.solicitudes.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))

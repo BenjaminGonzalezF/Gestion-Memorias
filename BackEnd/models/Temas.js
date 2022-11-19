@@ -14,6 +14,8 @@ const notaSchema = new Schema({
   resultado_comite:Boolean,
   resultado_directora:Boolean,
   resultado_profesor:Boolean,
+  fechacambio:Date,
+  colaborador:{type: Schema.Types.ObjectId, ref: 'usuarios'},
 });
 
 // Convertir a modelo

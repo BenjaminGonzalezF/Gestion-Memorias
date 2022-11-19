@@ -51,11 +51,13 @@
       <v-main v-if="!this.$store.state.loading">
         <vistaSolicitud v-if="vista==1"></vistaSolicitud>
         <Estudiantes v-if="vista==2"></Estudiantes>
+        <vistaMemoria v-if="vista==3"></vistaMemoria>
       </v-main>
     </v-app>
   </template>
 <script>
-import vistaSolicitud from "./VistaSolicitudDirectora.vue"
+import vistaSolicitud from "./VistaTemasDirectora.vue"
+import vistaMemoria from "./VistaMemoriaDirectora.vue"
 import Estudiantes from './VistaAddUsuarioDirectora.vue';
 import Loading from '@/components/loading.vue';
 import cambiarRol from '@/components/cambiarRol.vue';
@@ -64,8 +66,9 @@ export default {
         return {
             drawer: null,
             items: [
+                { title: "Solicitud de temas", route: '/solicitudTemas', icon: "mdi-folder" },
+                { title: "Añadir usuarios", route: '/solicitudTemas', icon: "mdi-folder" },
                 { title: "Solicitud de memorias", route: '/solicitudTemas', icon: "mdi-folder" },
-                { title: "Añadir Usuarios", route: '/solicitudTemas', icon: "mdi-folder" },
                 { title: "Cerrar sesion", icon: "mdi-forum" },
             ],
             hover: "red",
@@ -81,6 +84,7 @@ export default {
     },
     components:{
         vistaSolicitud,
+        vistaMemoria,
         Estudiantes,
         Loading,
         cambiarRol
@@ -94,10 +98,12 @@ export default {
                     this.$store.state.img=null
                     this.$router.push({ path: "/" })
                 }
-            }else if(ref == "Añadir Usuarios"){
+            }else if(ref == "Añadir usuarios"){
                 this.vista=2
-            }else if(ref == "Solicitud de memorias"){
+            }else if(ref == "Solicitud de temas"){
                 this.vista=1
+            }else if(ref == "Solicitud de memorias"){
+                this.vista=3
             }
         }
     }
