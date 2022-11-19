@@ -24,7 +24,7 @@
                 </v-progress-circular>
 
                 <div v-for="project in temas" :key="project._id">
-                    <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2" v-if="project.colaborador==null && project.resultado_comite==true && project.resultado_comite==true">
+                    <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2" v-if="project.resultado_comite==true && project.resultado_directora==true && project.colaborador==null">
 
                         <v-layout row wrap :class="`pa-3 project ${project.status}`">
                             <v-flex xs8 md3>

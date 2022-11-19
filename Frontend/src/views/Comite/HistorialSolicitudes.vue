@@ -41,7 +41,8 @@
                                 </v-flex>
                                 <v-flex xs6 sm4 md1>
                                     <div class="caption grey--text">Estado</div>
-                                    <div>{{ project.estadoVotacion }}</div>
+                                    <div v-if="project.resultado_comite">Aprobado</div>
+                                    <div v-else>Rechazado</div>
                                 </v-flex>
                                 <v-flex xs2 sm3 md2>
                                     <!-- <div class="caption grey--text">Durum</div> -->
@@ -164,35 +165,13 @@ export default {
                         for(var i=0; i<this.temas.length;i++){
                             let creador = usuarios.filter(u => u._id === this.temas[i].idCreador)
                             this.temas[i].nombreCreador=creador[0].nombre
-                            let n_votos=0
-                            var votado=[]
-                            var aprueba=0
-                            var rechaza=0
                             for(var j=0; j<this.temas[i].votos.length;j++){
                                 if(this.temas[i].votos[j].refcomite===localStorage.getItem("key_user")){
                                     this.temas[i].voto_usuario_sesion=this.temas[i].votos[j].voto
                                 }
-                                if(this.temas[i].votos[j].voto!==null){
-                                    if(this.temas[i].votos[j].voto==true){
-                                        aprueba++
-                                    }else{
-                                        rechaza++
-                                    }
-                                    n_votos++
-                                }
                                 let comite = usuarios.filter(u => u._id === this.temas[i].votos[j].refcomite)
                                 this.temas[i].votos[j].nombrecomite=comite[0].nombre
                                 this.temas[i].votos[j].imgcomite=comite[0].img
-                            }
-                            if(n_votos==3){
-                                this.temas[i].votado=true
-                                if(aprueba>rechaza){
-                                    this.temas[i].estadoVotacion="Aprobado"
-                                }else{
-                                    this.temas[i].estadoVotacion="Rechazado"
-                                }
-                            }else{
-                                this.temas[i].votado=false
                             }
                         }
                         this.cargando_temas=false

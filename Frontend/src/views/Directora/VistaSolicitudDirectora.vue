@@ -2,7 +2,7 @@
     <div class="Solicitudes">
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;"
             v-if="!this.$store.state.loading && this.$store.state.ingresoUsuario && this.$store.state.esdirector">
-            <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;top:20%;left: 50%;" v-if="solicitudes.length == 0">
+            <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;top:20%;left: 50%;" v-if="temas.length == 0">
             </v-progress-circular>
             <div>
                 <v-container class="my-3">
@@ -33,26 +33,26 @@
                             </v-list>
                         </v-menu>
                     </v-layout>
-                    <div v-for="(project, index) in solicitudes" :key="index">
-                        <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2" v-if="project.resultado_comite && project.resultado_directora==null">
+                    <div v-for="(project, index) in temas" :key="index">
+                        <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2" v-if="project.resultado_comite!=null && project.resultado_directora==null">
 
                             <v-layout row wrap :class="`pa-3 project ${project.status}`">
                                 <v-flex xs8 md2>
                                     <div class="caption grey--text">Titulo proyecto</div>
-                                    <div>{{ project.title }}</div>
+                                    <div>{{ project.nombre }}</div>
                                 </v-flex>
                                 <v-flex xs6 md3>
                                     <div class="caption grey--text">Descripcion general proyecto</div>
                                     <div>{{ project.descripcion }}</div>
                                 </v-flex>
                                 <v-flex xs2 sm1 md2>
-                                    <div class="caption grey--text">Estudiante</div>
-                                    <div>{{ project.estudiante }}</div>
+                                    <div class="caption grey--text">Creador</div>
+                                    <div>{{ project.nombrecreador }}</div>
                                 </v-flex>
 
                                 <v-flex xs6 sm4 md1>
                                     <div class="caption grey--text">fecha</div>
-                                    <div>{{ project.fecha }}</div>
+                                    <div>{{ project.fechacambio }}</div>
                                 </v-flex>
                                 <v-flex xs2 sm3 md2>
                                     <!-- <div class="caption grey--text">Durum</div> -->
@@ -79,7 +79,7 @@
                     </div>
                 </v-container>
             </div>
-            <div class="text-center" v-if="cargando_solicitudes == false && solicitudes_pendientes == 0">
+            <div class="text-center" v-if="cargando_tema == false && temas_pendientes == 0">
                 <h1> No tienes Solicitudes pendientes</h1>
                 <v-avatar size="150">
                     <v-img src="https://media.tenor.com/-wrmUJrUbeoAAAAM/emoji-disintergrating.gif">
@@ -109,9 +109,9 @@ export default {
             descripcionProyecto: null,
             estudiante: null,
             fecha: null,
-            cargando_solicitudes:true,
-            solicitudes: [],
-            solicitudes_pendientes:0,
+            cargando_tema:true,
+            temas: [],
+            temas_pendientes:0,
             itemsOrdenar: [
                 { title: 'Por titulo', prop: 'title' },
                 {
@@ -134,45 +134,28 @@ export default {
         loading
     },
     created() {
-        this.cargar_solicitudes()
+        this.cargar_temas()
     },
     methods: {
-        cargar_solicitudes() {
-            this.axios.get("todos_solicitudes").then((respS) => {
+        cargar_temas() {
                 this.axios.get("todos_usuarios").then((respU) => {
                     this.axios.get("todos_temas").then((respT) => {
-                        this.solicitudes = respS.data
                         const usuarios = respU.data
-                        const temas = respT.data
-
-                        for (var i = 0; i < this.solicitudes.length; i++) {
-                            var alumnoid = this.solicitudes[i].alumnoid
-                            var temaid = this.solicitudes[i].temaid
-                            var profesorguiaid = this.solicitudes[i].profeguiaid
-
-                            let datos_alumno = usuarios.filter(u => u._id == alumnoid)
-                            let datos_profesor = usuarios.filter(u => u._id == profesorguiaid)
-                            let datos_tema = temas.filter(u => u._id == temaid)
-
-                            this.solicitudes[i].title = datos_tema[0].nombre
-                            this.solicitudes[i].descripcion = datos_tema[0].descripcion
-                            this.solicitudes[i].fecha = datos_tema[0].fecha
-                            this.solicitudes[i].estudiante = datos_alumno[0].nombre
-                            this.solicitudes[i].profesor = datos_profesor[0].nombre
-                            if(datos_tema[0].resultado_comite && !datos_tema[0].resultado_directora){
-                                this.solicitudes_pendientes++
+                        this.temas = respT.data
+                        for (var i = 0; i < this.temas.length; i++) {
+                            var creador = usuarios.filter(u=> u._id==this.temas[i].idCreador)
+                            this.temas[i].nombrecreador=creador[0].nombre
+                            if(this.temas[i].resultado_comite!=null && this.temas[i].resultado_directora==null){
+                                this.temas_pendientes++
                             }
                         }
-                        this.cargando_solicitudes=false
+                        this.cargando_tema=false
                     }).catch((e) => {
                         console.log(e)
                     })
                 }).catch((e) => {
                     console.log(e)
                 })
-            }).catch((e) => {
-                console.log(e)
-            })
         },
         verSolicitud(id, titulo, descripcion, estudiante, fecha) {
             this.drawerSolicitud = true

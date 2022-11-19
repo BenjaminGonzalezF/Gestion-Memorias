@@ -262,10 +262,19 @@ export default {
             }).then((result) => {
                 if (result.isConfirmed) {
                     var tema_voto = this.temas.filter(v => v._id==id)
+                    var votos_totales=tema_voto[0].votos.length
+                    var votos_hechos=0
+                    var voto_apruebo=0
                     if(voto=="aceptar"){
                         for(var i =0; i<tema_voto[0].votos.length; i++){
                             if(tema_voto[0].votos[i].refcomite==localStorage.getItem("key_user")){
                                 tema_voto[0].votos[i].voto = true
+                            }
+                            if(tema_voto[0].votos[i].voto==true){
+                                votos_hechos++
+                                voto_apruebo++
+                            }else if(tema_voto[0].votos[i].voto==false){
+                                votos_hechos++
                             }
                         }
                     }else{
@@ -273,6 +282,19 @@ export default {
                             if(tema_voto[0].votos[i].refcomite==localStorage.getItem("key_user")){
                                 tema_voto[0].votos[i].voto = false
                             }
+                            if(tema_voto[0].votos[i].voto==true){
+                                votos_hechos++
+                                voto_apruebo++
+                            }else if(tema_voto[0].votos[i].voto==false){
+                                votos_hechos++
+                            }
+                        }
+                    }
+                    if(votos_hechos==votos_totales){
+                        if(voto_apruebo>(votos_hechos/2)){
+                            tema_voto[0].resultado_comite=true
+                        }else{
+                            tema_voto[0].resultado_comite=false
                         }
                     }
                     tema_voto[0].fechacambio=Date.now()

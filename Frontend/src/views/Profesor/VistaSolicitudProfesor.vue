@@ -155,7 +155,7 @@
                     </v-card>
                 </v-dialog>
             </div>
-            <div class="text-center" v-if="cargando_solicitudes == false && solicitudes.length == 0">
+            <div class="text-center" v-if="cargando_solicitudes == false && solicitudes_pendientes == 0">
                 <h1> No hay Solicitudes</h1>
                 <v-avatar size="150">
                     <v-img src="https://media.tenor.com/-wrmUJrUbeoAAAAM/emoji-disintergrating.gif">
@@ -191,6 +191,7 @@ export default {
             fecha: null,
             toggle: null,
             solicitudes: [],
+            solicitudes_pendientes:0,
             cargando_solicitudes: true,
             itemsOrdenar: [
                 { title: 'Por titulo', prop: 'title' },
@@ -229,6 +230,9 @@ export default {
                                         img: alumno[0].img,
                                         matricula: alumno[0].matricula
                                     })
+                                }
+                                if(tema[0].resultado_comite && tema[0].resultado_directora && !tema[0].resultado_profesor){
+                                    this.solicitudes_pendientes++
                                 }
                                 this.solicitudes[i].title = tema[0].nombre
                                 this.solicitudes[i].descripcion = tema[0].descripcion
