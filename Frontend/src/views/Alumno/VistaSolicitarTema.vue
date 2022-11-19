@@ -61,7 +61,7 @@
                         <v-card height="180" width="40%">
                             <v-col>
                                 <p>
-                                    Nombre: {{nombrecompleto}}
+                                    Alumno: {{nombrecompleto}}
                                 </p>
                                 <p>
                                     Tema: {{nombretema}}
@@ -575,24 +575,25 @@ export default {
             temas:[],
             estadoselect: null,
             imagenAlumno: null,
-            urlvalida: null
+            urlvalida: null,
+            estadotrabajo: null
         };
     },
     created() {
         this.cargar_datos()
         this.listarsemestres();
     },
-    components: {
-        headerAlumno,
-    },
     methods: {
         cargar_datos() {
-            this.axios.get("todos_temas")
+            if(this.$store.state.id_tema_solicitar!= "nuevo tema"){
+                this.axios.get("todos_temas")
                 .then((respT) => {
                     this.axios.get("todos_usuarios").then((respU)=>{
                         const usuarios = respU.data
                         this.temas = respT.data
+                        console.log("idtema: "+this.$store.state.id_tema_solicitar)
                         this.temas = this.temas.filter(t=>t._id ==this.$store.state.id_tema_solicitar)
+                        
                         const creador = usuarios.filter(u=> u._id ===this.temas[0].idCreador)
                         this.nombrecompleto = this.$store.state.nombre
                         this.nombretema = this.temas[0].nombre
@@ -607,6 +608,15 @@ export default {
                 .catch((e) => {
                     console.log(e)
                 })
+            }else{
+                this.nombrecompleto = this.$store.state.nombre
+                if(this.$store.state.img !=null && this.$store.state.img !="https://i.ibb.co/T2J4034/download.png"){ ///this.$store.state.img !=usuario_sesion.img VER VALIDACION PARA LA IMGAGEN POR DEFECTO
+                    this.imagenAlumno=this.$store.state.img  
+                    this.estadofoto = true;
+                }
+                console.log("nuevo tema")
+            }
+            
         },
         listarsemestres() {
             //console.log("Tamaño semestres"+semestres1.length) verificar ingreso
@@ -709,6 +719,46 @@ export default {
             console.log("valor trabaja?: " + this.estadoselect)
             console.log("valor link foto: " + linkfoto)
             console.log("valor link foto2: " + this.imagenAlumno)
+                /*
+                ejemplo para editar
+                if (this.name == '' || this.tipo == '' || this.marca == '' || this.stock == [] || this.color == '' || this.precio == '' || this.imagen == '') {
+                    console.log("Datos vacios")
+                } else {
+                    this.productoEditar = {
+                        nombre: null,
+                        marca: null,
+                        tipo: null,
+                        precio: null,
+                        stock: null,
+                        color: null,
+                        imagen: null,
+                        _id: null,
+                    }
+                    this.productoEditar.nombre = this.name
+                    this.productoEditar.marca = this.marca
+                    this.productoEditar.stock = this.stock
+                    this.productoEditar.tipo = this.tipo
+                    this.productoEditar.color = this.color
+                    this.productoEditar.precio = this.precio
+                    this.productoEditar.imagen = this.imagen
+                    this.productoEditar._id = this._id
+                    this.axios.put(`Producto-ac/${this.productoEditar._id}`, this.productoEditar)
+                        .then(res => {
+                            const index = this.zapatillas.findIndex(zapatillaB => zapatillaB._id === this.productoEditar._id);
+                            this.zapatillas[index].nombre = this.productoEditar.nombre
+                            this.zapatillas[index].marca = this.productoEditar.marca
+                            this.zapatillas[index].stock = this.productoEditar.stock
+                            this.zapatillas[index].tipo = this.productoEditar.tipo
+                            this.zapatillas[index].color = this.productoEditar.color
+                            this.zapatillas[index].precio = this.productoEditar.precio
+                            this.zapatillas[index].imagen = this.productoEditar.imagen
+                        })
+                        .catch(e => {
+                            console.log(e);
+                        })
+                    this.editarBool=false
+                }
+                */
         },
 
     },

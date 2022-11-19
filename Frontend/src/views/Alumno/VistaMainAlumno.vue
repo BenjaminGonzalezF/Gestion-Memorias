@@ -45,16 +45,18 @@
       </v-app-bar>
       <loading></loading>
       <v-main v-if="!this.$store.state.loading">
-        <vistaSolicitud v-if="this.$store.state.vistaSeleccionada==1"></vistaSolicitud>
-        <Estadosolicitud v-if="this.$store.state.vistaSeleccionada==2"></Estadosolicitud>
-        <vistaSolicitar v-if=" this.$store.state.vistaSeleccionada==3"></vistaSolicitar>
+        <VofertaTemas v-if="this.$store.state.vistaSeleccionada==1"></VofertaTemas>
+        <VestadoTema v-if="this.$store.state.vistaSeleccionada==2"></VestadoTema>
+        <VsolicitarTema v-if=" this.$store.state.vistaSeleccionada==3"></VsolicitarTema>
+        <VagregarTema  v-if=" this.$store.state.vistaSeleccionada==4"> </VagregarTema>
       </v-main>
     </v-app>
   </template>
 <script>
-import vistaSolicitud from "./VistaOfertaTemasAlumno.vue"
-import vistaSolicitar from "./VistaSolicitarTema.vue"
-import Estadosolicitud from "./VistaEstadoSolicitudTema.vue"
+import VofertaTemas from "./VistaOfertaTemasAlumno.vue"
+import VsolicitarTema from "./VistaSolicitarTema.vue"
+import VestadoTema from "./VistaEstadoSolicitudTema.vue"
+import VagregarTema from "./VistaAgregarTemaAlumno.vue";
 
 import Loading from '@/components/loading.vue';
 export default {
@@ -62,6 +64,7 @@ export default {
         return {
             drawer: null,
             items: [
+                { title: "Crear Tema", icon: "mdi-folder" },
                 { title: "Oferta de Temas", icon: "mdi-folder" },
                 { title: "Estado de Solicitud", icon: "mdi-folder" },
                 { title: "Cerrar sesion", icon: "mdi-forum" },
@@ -78,10 +81,11 @@ export default {
         this.$store.commit('cargar_datos')
     },
     components:{
-        vistaSolicitud,
         Loading,
-        vistaSolicitar,
-        Estadosolicitud,
+        VofertaTemas,
+        VsolicitarTema,
+        VestadoTema,
+        VagregarTema,
     },
     methods: {
         redirigir(ref) {
@@ -96,6 +100,8 @@ export default {
               this.$store.state.vistaSeleccionada=1
             }else if(ref == "Estado de Solicitud"){
               this.$store.state.vistaSeleccionada=2
+            }else if(ref == "Crear Tema"){
+              this.$store.state.vistaSeleccionada=4
             }
         }
     }
