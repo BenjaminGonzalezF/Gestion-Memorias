@@ -10,7 +10,10 @@ const notaSchema = new Schema({
   votos:[{
     refcomite:String,
     voto:Boolean
-  }]
+  }],
+  resultado_comite:Boolean,
+  resultado_directora:Boolean,
+  resultado_profesor:Boolean,
 });
 
 // Convertir a modelo
