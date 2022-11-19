@@ -38,7 +38,6 @@
                     </v-col>
                 </v-card>
                 <v-col>
-
                 </v-col>
                 <v-col>
                     <h1>
@@ -48,34 +47,29 @@
                         <v-select v-model="estadoselect" :items="estado" label="¿Esta trabajando?"></v-select>
                     </v-card>
                 </v-col>
-
                 <h1>
                     Información
                 </h1>
-
                 <v-card height="250" width="80%" color="#F4F4F4">
                     <v-col>
-
                     </v-col>
                     <v-row justify="space-around">
                         <v-card height="180" width="40%">
                             <v-col>
                                 <p>
-                                    Nombre: {{nombrecompleto}}
+                                    Nombre: {{ nombrecompleto }}
                                 </p>
                                 <p>
-                                    Tema: {{nombretema}}
+                                    Tema: {{ nombretema }}
                                 </p>
                                 <p>
-                                    Profesor Guia: {{nombreprofesor}}
+                                    Profesor Guia: {{ nombreprofesor }}
                                 </p>
                                 <p>
                                     Cursos pendientes {{ nocursados }}
                                 </p>
                             </v-col>
                         </v-card>
-
-
                         <v-card height="180" width="40%">
                             <div v-show="!estadofoto">
                                 <v-col>
@@ -87,23 +81,19 @@
                             <div v-show="estadofoto">
                                 <v-col>
                                     <p> Verificación </p>
-                                    <v-img max-height="100" max-width="120"
-                                        :src="imagenAlumno">
+                                    <v-img max-height="100" max-width="120" :src="imagenAlumno">
                                     </v-img>
                                 </v-col>
                             </div>
                         </v-card>
-
                     </v-row>
                     <v-col>
-
                     </v-col>
                     <v-btn color="#f5a42a"
                         @click="enviardatos(nombrecompleto, nombretema, nombreprofesor, nocursados, estado, link)">
                         Enviar Solicitud
                     </v-btn>
                 </v-card>
-
             </v-col>
             <v-dialog v-model="drawerSolicitud" max-width="1000">
                 <v-stepper v-model="e1">
@@ -111,21 +101,15 @@
                         <v-stepper-step :complete="e1 > 1" step="1" color="#00CCFF">
                             1. Verificación
                         </v-stepper-step>
-
                         <v-divider></v-divider>
-
                         <v-stepper-step :complete="e1 > 2" step="2" color="#00CCFF">
                             2. Subir imagen
                         </v-stepper-step>
-
                         <v-divider></v-divider>
-
-
                         <v-stepper-step step="3" color="#00CCFF">
                             3. Completado
                         </v-stepper-step>
                     </v-stepper-header>
-
                     <v-stepper-items>
                         <v-stepper-content step="1">
                             <v-card height="300px" color="#F4F4F4">
@@ -138,11 +122,7 @@
                                                 Para continuar con la solicitud es necesario ingresar una foto (estilo
                                                 cédula de identidad)
                                             </p>
-
                                         </v-card>
-
-
-
                                         <v-card height="250" width="45%">
                                             <v-col>
                                                 <v-col></v-col>
@@ -154,10 +134,7 @@
                                         </v-card>
                                     </v-row>
                                 </div>
-
-
                             </v-card>
-
                             <v-btn color="#f5a42a" @click="e1 = 2">
                                 Continuar
                             </v-btn>
@@ -166,7 +143,6 @@
                                 Cancelar
                             </v-btn>
                         </v-stepper-content>
-
                         <v-stepper-content step="2">
                             <v-card height="300px" color="#F4F4F4">
                                 <div align="center">
@@ -191,11 +167,8 @@
                                             </v-col>
                                         </v-card>
                                     </v-row>
-
                                 </div>
-
                             </v-card>
-
                             <v-btn color="#f5a42a" @click="e1 = 3">
                                 Continuar
                             </v-btn>
@@ -204,7 +177,6 @@
                                 Cancelar
                             </v-btn>
                         </v-stepper-content>
-
                         <v-stepper-content step="3">
                             <v-card height="300px" color="#F4F4F4">
                                 <div align="center">
@@ -214,20 +186,16 @@
                                     <v-col></v-col>
                                     <p class="mt-5">Aceptado correctamente </p>
                                 </div>
-
                             </v-card>
-
                             <v-btn color="#f5a42a" @click="cerrarint1()">
                                 Finalizar
                             </v-btn>
-
                             <v-btn text @click="cerrarint()">
                                 Cancelar
                             </v-btn>
                         </v-stepper-content>
                     </v-stepper-items>
                 </v-stepper>
-
             </v-dialog>
         </div>
     </v-app>
@@ -572,7 +540,7 @@ export default {
             nombretema: null,
             nombreprofesor: null,
             linkimagen: null,
-            temas:[],
+            temas: [],
             estadoselect: null,
             imagenAlumno: null
         };
@@ -588,11 +556,11 @@ export default {
         cargar_datos() {
             this.axios.get("todos_temas")
                 .then((respT) => {
-                    this.axios.get("todos_usuarios").then((respU)=>{
+                    this.axios.get("todos_usuarios").then((respU) => {
                         const usuarios = respU.data
                         this.temas = respT.data
-                        this.temas = this.temas.filter(t=>t._id ==this.$store.state.id_tema_solicitar)
-                        const creador = usuarios.filter(u=> u._id ===this.temas[0].idCreador)
+                        this.temas = this.temas.filter(t => t._id == this.$store.state.id_tema_solicitar)
+                        const creador = usuarios.filter(u => u._id === this.temas[0].idCreador)
                         this.nombrecompleto = this.$store.state.nombre
                         this.nombretema = this.temas[0].nombre
                         this.nombreprofesor = creador[0].nombre
@@ -679,8 +647,8 @@ export default {
             if (true) {
                 this.linkimagen = "https://previews.123rf.com/images/xmarchant/xmarchant0612/xmarchant061200005/695441-retrato-hombre-frente-a-la-c%C3%A1mara.jpg"
                 this.imagenAlumno = value
-                console.log("link: "+this.linkimagen)
-                console.log("valur "+this.imagenAlumno)
+                console.log("link: " + this.linkimagen)
+                console.log("valur " + this.imagenAlumno)
                 this.estadofoto = true;
 
             } else {

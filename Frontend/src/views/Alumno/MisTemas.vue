@@ -10,6 +10,8 @@
                     </v-btn>
                     <v-spacer></v-spacer>
                     <v-menu offset-y>
+                        <v-text-field class="pt-5" placeholder="Strawberries" outlined clearable></v-text-field>
+                        <v-btn dark x-large color="pink"> SEARCH </v-btn>
                         <template v-slot:activator="{ on, attrs }">
                             <v-btn depressed color="rgb(0, 204, 255)" class="mb-5" dark small v-bind="attrs" v-on="on">
                                 Ordenar
@@ -48,7 +50,7 @@
                         </v-layout>
                     </v-card>
                 </div>
-                <v-dialog v-model="crearTema" max-width="1000">
+                <v-dialog v-model="crearTema" max-width="600">
                     <v-card>
                         <v-container class="grey lighten-5">
                             <v-card-title class="justify-center">
@@ -60,7 +62,7 @@
             </v-container>
         </div>
         <!-- dialogo para agregar un tema -->
-        <v-dialog v-model="crearTema" max-width="1000">
+        <v-dialog v-model="crearTema" max-width="600">
             <v-card>
                 <v-container>
                     <v-card-title class="justify-center">
@@ -68,7 +70,7 @@
                     </v-card-title>
                     <v-card-text>
                         <v-text-field v-model="nombre_temacrear" label="Nombre del tema"></v-text-field>
-                        <v-text-field v-model="descripcion_temacrear" label="Descripcion del tema"></v-text-field>
+                        <v-textarea auto-grow v-model="descripcion_temacrear" label="Descripcion del tema"></v-textarea>
                         <v-select v-model="profesor_temacrear" label="Profesor guia" :items="profesores_guias"
                             :item-value="profesores_guias.value"></v-select>
                         <p>
@@ -224,7 +226,7 @@ export default {
                     tema_crear.colaborador = this.profesor_temacrear
                     tema_crear.fechacambio = Date.now()
                     console.log(tema_crear)
-                    this.axios.post("nuevo_tema", tema_crear).then((resp)=>{
+                    this.axios.post("nuevo_tema", tema_crear).then((resp) => {
                         this.nombre_temacrear = null
                         this.descripcion_temacrear = null
                         this.requisitos_temacrear = null

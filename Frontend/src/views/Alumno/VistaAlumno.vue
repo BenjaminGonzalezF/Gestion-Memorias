@@ -71,7 +71,7 @@ export default {
             items: [
                 { title: "Oferta de Temas", icon: "mdi-folder" },
                 { title: "Mis Temas", icon: "mdi-folder" },
-                { title: "Cerrar sesion", icon: "mdi-forum" },
+                { title: "Cerrar sesion", icon: "mdi-exit-to-app" },
             ],
             hover: "red",
             vista:1,

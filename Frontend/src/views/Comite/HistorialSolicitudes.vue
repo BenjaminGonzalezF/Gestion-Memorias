@@ -1,13 +1,19 @@
 <template>
     <div class="Solicitudes">
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
-            <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;top:20%;left: 50%;" v-if="cargando_temas == true">
+            <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;top:20%;left: 50%;"
+                v-if="cargando_temas == true">
             </v-progress-circular>
             <div>
                 <v-container class="my-3">
                     <v-layout row class="mx-1">
                         <v-spacer></v-spacer>
+                        <div class="search-wrapper panel-heading col-sm-12">
+                            <input type="text" v-model="search" placeholder="Search" /> <br> <br>
+                        </div>
                         <v-menu offset-y>
+                            <v-spacer></v-spacer>
+
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn depressed color="rgb(0, 204, 255)" class="mb-5" dark small v-bind="attrs"
                                     v-on="on">
@@ -25,7 +31,8 @@
                         </v-menu>
                     </v-layout>
                     <div v-for="project in temas" :key="project._id">
-                        <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2" v-if="project.resultado_comite!=null">
+                        <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2"
+                            v-if="project.resultado_comite != null">
                             <v-layout row wrap :class="`pa- project ${project.estadovalido}`">
                                 <v-flex xs8 md2>
                                     <div class="caption grey--text">Titulo proyecto</div>
@@ -55,52 +62,57 @@
                                 </v-flex>
                                 <v-flex xs2 sm1 md2>
                                     <div class="caption grey--text">Votos</div>
-                                    <v-tooltip bottom v-for="(voto , index) in project.votos" :key="index" >
-                                        <template v-slot:activator="{ on, attrs }" v-if="voto.voto!==null">
+                                    <v-tooltip bottom v-for="(voto, index) in project.votos" :key="index">
+                                        <template v-slot:activator="{ on, attrs }" v-if="voto.voto !== null">
                                             <v-avatar size="30" v-bind="attrs" v-on="on">
                                                 <img :src="voto.imgcomite" v-if="voto.voto !== null" />
                                             </v-avatar>
                                         </template>
-                                        <span v-if="voto.voto===true">{{voto.nombrecomite}} = Aceptado</span>
-                                        <span v-if="voto.voto===false">{{voto.nombrecomite}} = Rechazado</span>
-                                        
+                                        <span v-if="voto.voto === true">{{ voto.nombrecomite }} = Aceptado</span>
+                                        <span v-if="voto.voto === false">{{ voto.nombrecomite }} = Rechazado</span>
+
                                     </v-tooltip>
-                                    <v-btn class="ml-6 white--text" color ="#FF0182" @click="exportPDF(project.nombre,project.nombreCreador)">PDF</v-btn>
+
+                                </v-flex>
+                                <v-flex xs2 sm1 md2>
+                                    <v-btn class="ml-6 white--text" color="#FF0182"
+                                        @click="exportPDF(project.nombre, project.nombreCreador)">PDF
+                                    </v-btn>
                                 </v-flex>
                             </v-layout>
                         </v-card>
-                        <v-dialog v-model="drawerSolicitud" max-width="900">
-                            <v-container class="grey lighten-5">                         
-                                        <v-card>
-                                            <v-card-title>
-                                                <span class="text-h5">Datos proyecto</span>
-                                            </v-card-title>
-                                            <v-card-text>
-                                                <v-container>
-                                                    <v-flex>
-                                                        <div class="caption black--text">Titulo proyecto:</div>
-                                                        <div>{{ tituloProyecto }}</div>
-                                                    </v-flex>
-                                                    <v-flex>
-                                                        <div class="caption black--text">Descripcion general proyecto:
-                                                        </div>
-                                                        <div>{{ descripcionProyecto }}</div>
-                                                    </v-flex>
-                                                    <v-flex>
-                                                        <div class="caption black--text">Creador:</div>
-                                                        <div>{{ estudiante }}</div>
-                                                    </v-flex>
-
-                                                    <v-flex>
-                                                        <div class="caption black--text">fecha:</div>
-                                                        <div>{{ fecha }}</div>
-                                                    </v-flex>
-                                                </v-container>
-                                            </v-card-text>
-                                        </v-card>
-                            </v-container>
-                        </v-dialog>
                     </div>
+                    <v-dialog v-model="drawerSolicitud" max-width="900">
+                        <v-container class="grey lighten-5">
+                            <v-card>
+                                <v-card-title>
+                                    <span class="text-h5">Datos proyecto</span>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-container>
+                                        <v-flex>
+                                            <div class="caption black--text">Titulo proyecto:</div>
+                                            <div>{{ tituloProyecto }}</div>
+                                        </v-flex>
+                                        <v-flex>
+                                            <div class="caption black--text">Descripcion general proyecto:
+                                            </div>
+                                            <div>{{ descripcionProyecto }}</div>
+                                        </v-flex>
+                                        <v-flex>
+                                            <div class="caption black--text">Creador:</div>
+                                            <div>{{ estudiante }}</div>
+                                        </v-flex>
+
+                                        <v-flex>
+                                            <div class="caption black--text">fecha:</div>
+                                            <div>{{ fecha }}</div>
+                                        </v-flex>
+                                    </v-container>
+                                </v-card-text>
+                            </v-card>
+                        </v-container>
+                    </v-dialog>
                 </v-container>
             </div>
             <div class="text-center" v-if="cargando_temas == false && temas.length == 0">
@@ -132,6 +144,7 @@ export default {
     data() {
         return {
             drawer: null,
+            toggle: false,
             drawerSolicitud: false,
             tituloProyecto: null,
             descripcionProyecto: null,
@@ -139,7 +152,7 @@ export default {
             fecha: null,
             toggle: null,
             temas: [],
-            cargando_temas:true,
+            cargando_temas: true,
             itemsOrdenar: [
                 { title: 'Por titulo', prop: 'title' },
                 {
@@ -160,39 +173,39 @@ export default {
         cargar_temas() {
             this.axios.get("todos_temas")
                 .then((response) => {
-                    this.axios.get("todos_usuarios").then((resp)=>{
+                    this.axios.get("todos_usuarios").then((resp) => {
                         this.temas = response.data
                         const usuarios = resp.data
-                        for(var i=0; i<this.temas.length;i++){
+                        for (var i = 0; i < this.temas.length; i++) {
                             let creador = usuarios.filter(u => u._id === this.temas[i].idCreador)
-                            this.temas[i].nombreCreador=creador[0].nombre
-                            for(var j=0; j<this.temas[i].votos.length;j++){
-                                if(this.temas[i].votos[j].refcomite===localStorage.getItem("key_user")){
-                                    this.temas[i].voto_usuario_sesion=this.temas[i].votos[j].voto
+                            this.temas[i].nombreCreador = creador[0].nombre
+                            for (var j = 0; j < this.temas[i].votos.length; j++) {
+                                if (this.temas[i].votos[j].refcomite === localStorage.getItem("key_user")) {
+                                    this.temas[i].voto_usuario_sesion = this.temas[i].votos[j].voto
                                 }
                                 let comite = usuarios.filter(u => u._id === this.temas[i].votos[j].refcomite)
-                                this.temas[i].votos[j].nombrecomite=comite[0].nombre
-                                this.temas[i].votos[j].imgcomite=comite[0].img
+                                this.temas[i].votos[j].nombrecomite = comite[0].nombre
+                                this.temas[i].votos[j].imgcomite = comite[0].img
                             }
                         }
-                        this.cargando_temas=false
+                        this.cargando_temas = false
                     })
                 })
                 .catch((e) => {
                     console.log(e)
                 })
         },
-        exportPDF(titulo,estudiante) {
+        exportPDF(titulo, estudiante) {
             let pdfName = 'Acta';
 
             var pdf = new jsPDF({
                 orientation: "p",
-                unit:"cm",
+                unit: "cm",
                 format: "letter"
             });
             var img = new Image;
             var img2 = new Image;
-            
+
             img.onload = function () {
                 pdf.addImage(this, 3, 1, 2, 2);
             };
@@ -206,46 +219,46 @@ export default {
             img.src = "//i.imgur.com/2QXaKmk.png";
             img2.src = "//i.imgur.com/KEhaByh.jpg";
             pdf.setFontSize(18).text("Acta Veredicto Del Consejo", 1, 5.0);
-            pdf.setLineWidth(0.01).line(0.5,5.1,20.0,5.1);
+            pdf.setLineWidth(0.01).line(0.5, 5.1, 20.0, 5.1);
             pdf
                 .setFont("helvetica")
                 .setFontSize(12)
-                .text( "Luego de una exhaustiva reunión de los integrantes del comtité en la cual se ha logrado llegar a una conclusión, "+
-                        " se presentan los resultados de la votación de la solicitud del tema "
-                        +titulo+" propuesto por "+estudiante+
-                         ". ", 0.5,6.5,{maxWidth:"20.5"});
+                .text("Luego de una exhaustiva reunión de los integrantes del comtité en la cual se ha logrado llegar a una conclusión, " +
+                    " se presentan los resultados de la votación de la solicitud del tema "
+                    + titulo + " propuesto por " + estudiante +
+                    ". ", 0.5, 6.5, { maxWidth: "20.5" });
             pdf
                 .setFont("helvetica")
                 .setFontSize(12)
-                .text("Por consiguiente se muestran los intregantes del comité que votaron:",0.6,8.5,{align:"left",maxWidth:"20.5"});
+                .text("Por consiguiente se muestran los intregantes del comité que votaron:", 0.6, 8.5, { align: "left", maxWidth: "20.5" });
             pdf
                 .setFont("helvetica")
                 .setFontSize(12)
-                
-                .text( "1.-" ,0.5,10,{align:"left",maxWidth:"20.5"});
+
+                .text("1.-", 0.5, 10, { align: "left", maxWidth: "20.5" });
             pdf
                 .setFont("helvetica")
                 .setFontSize(12)
-                
-                .text( "2.-" ,0.5,11,{align:"left",maxWidth:"20.5"});
+
+                .text("2.-", 0.5, 11, { align: "left", maxWidth: "20.5" });
             pdf
                 .setFont("helvetica")
                 .setFontSize(12)
-                
-                .text( "3.-" ,0.5,12,{align:"left",maxWidth:"20.5"});
-                pdf
+
+                .text("3.-", 0.5, 12, { align: "left", maxWidth: "20.5" });
+            pdf
                 .setFont("helvetica")
                 .setFontSize(12)
-                
-                .text( "Dando asi como resultado que la propuesta es " + ". " ,0.5,13,{align:"left",maxWidth:"20.5"});
+
+                .text("Dando asi como resultado que la propuesta es " + ". ", 0.5, 13, { align: "left", maxWidth: "20.5" });
 
             pdf
                 .setFont("times")
                 .setFontSize(10)
-                
+
                 .text("Documento validado y verificado por la Universidad de Talca.",
-                0.5,
-                pdf.internal.pageSize.height - 0.5)
+                    0.5,
+                    pdf.internal.pageSize.height - 0.5)
             //doc.save(pdfName + '.pdf');
         },
         sortBy(prop) {
