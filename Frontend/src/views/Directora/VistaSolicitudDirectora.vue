@@ -2,9 +2,7 @@
     <div class="Solicitudes">
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;"
             v-if="!this.$store.state.loading && this.$store.state.ingresoUsuario && this.$store.state.esdirector">
-            <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;
-            top:20%;
-            left: 50%;" v-if="solicitudes.length == 0">
+            <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;top:20%;left: 50%;" v-if="solicitudes.length == 0">
             </v-progress-circular>
             <div>
                 <v-container class="my-3">
@@ -36,7 +34,7 @@
                         </v-menu>
                     </v-layout>
                     <div v-for="(project, index) in solicitudes" :key="index">
-                        <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2">
+                        <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2" v-if="project.resultado_comite && project.resultado_directora==null">
 
                             <v-layout row wrap :class="`pa-3 project ${project.status}`">
                                 <v-flex xs8 md2>
@@ -79,8 +77,19 @@
                             </v-layout>
                         </v-card>
                     </div>
-
                 </v-container>
+            </div>
+            <div class="text-center" v-if="cargando_solicitudes == false && solicitudes_pendientes == 0">
+                <h1> No tienes Solicitudes pendientes</h1>
+                <v-avatar size="150">
+                    <v-img src="https://media.tenor.com/-wrmUJrUbeoAAAAM/emoji-disintergrating.gif">
+                        <template v-slot:placeholder>
+                            <v-row class="fill-height ma-0" align="center" justify="center">
+                                <v-progress-circular indeterminate color="white"></v-progress-circular>
+                            </v-row>
+                        </template>
+                    </v-img>
+                </v-avatar>
             </div>
         </v-sheet>
 
@@ -100,7 +109,9 @@ export default {
             descripcionProyecto: null,
             estudiante: null,
             fecha: null,
+            cargando_solicitudes:true,
             solicitudes: [],
+            solicitudes_pendientes:0,
             itemsOrdenar: [
                 { title: 'Por titulo', prop: 'title' },
                 {
@@ -133,6 +144,7 @@ export default {
                         this.solicitudes = respS.data
                         const usuarios = respU.data
                         const temas = respT.data
+
                         for (var i = 0; i < this.solicitudes.length; i++) {
                             var alumnoid = this.solicitudes[i].alumnoid
                             var temaid = this.solicitudes[i].temaid
@@ -147,7 +159,11 @@ export default {
                             this.solicitudes[i].fecha = datos_tema[0].fecha
                             this.solicitudes[i].estudiante = datos_alumno[0].nombre
                             this.solicitudes[i].profesor = datos_profesor[0].nombre
+                            if(datos_tema[0].resultado_comite && !datos_tema[0].resultado_directora){
+                                this.solicitudes_pendientes++
+                            }
                         }
+                        this.cargando_solicitudes=false
                     }).catch((e) => {
                         console.log(e)
                     })

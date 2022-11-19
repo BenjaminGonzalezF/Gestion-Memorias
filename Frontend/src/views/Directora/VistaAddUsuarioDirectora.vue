@@ -5,6 +5,7 @@
             <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;
             top:20%;
             left: 50%;" v-if="usuarios.length == 0">
+            
             </v-progress-circular>
             <v-container class="my-3">
                 <v-layout row class="mx-1 my-1">

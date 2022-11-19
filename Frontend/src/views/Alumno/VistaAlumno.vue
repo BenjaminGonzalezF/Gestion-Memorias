@@ -1,6 +1,7 @@
 <template>
     <v-app>
       <v-navigation-drawer right app v-model="drawer" color="rgb(0, 204, 255)">
+  
         <v-layout column class="text-center">
           <v-flex class="mt-6">
             <v-avatar size="150">
@@ -22,7 +23,7 @@
           </v-flex>
           <v-flex class="mt-3 mb-3">
           <cambiarRol></cambiarRol>
-        </v-flex>    
+        </v-flex>   
         </v-layout>
         <v-list>
           <v-list-item-group>
@@ -39,6 +40,7 @@
           </v-list-item-group>
         </v-list>
       </v-navigation-drawer>
+  
       <v-app-bar flat app color="rgb(0, 204, 255)">
         <v-img max-height="40" max-width="50" src="@/assets/utal.png">
   
@@ -49,23 +51,26 @@
       </v-app-bar>
       <loading></loading>
       <v-main v-if="!this.$store.state.loading">
-        <vistaSolicitud v-if="vista==1"></vistaSolicitud>
-        <Estudiantes v-if="vista==2"></Estudiantes>
+        <OfertaTemas v-if="this.$store.state.vistaSeleccionada==1"></OfertaTemas>
+        <MisTemas v-if="this.$store.state.vistaSeleccionada==2"></MisTemas>
+        <vistaSolicitar v-if=" this.$store.state.vistaSeleccionada==3"></vistaSolicitar>
       </v-main>
     </v-app>
   </template>
 <script>
-import vistaSolicitud from "./VistaSolicitudDirectora.vue"
-import Estudiantes from './VistaAddUsuarioDirectora.vue';
+import OfertaTemas from "./OfertaTemas.vue"
+import MisTemas from "./MisTemas.vue"
+import vistaSolicitar from "./VistaSolicitarTema.vue"
+import cambiarRol from "@/components/cambiarRol.vue"
+
 import Loading from '@/components/loading.vue';
-import cambiarRol from '@/components/cambiarRol.vue';
 export default {
     data() {
         return {
             drawer: null,
             items: [
-                { title: "Solicitud de memorias", route: '/solicitudTemas', icon: "mdi-folder" },
-                { title: "Añadir Usuarios", route: '/solicitudTemas', icon: "mdi-folder" },
+                { title: "Oferta de Temas", icon: "mdi-folder" },
+                { title: "Mis Temas", icon: "mdi-folder" },
                 { title: "Cerrar sesion", icon: "mdi-forum" },
             ],
             hover: "red",
@@ -80,9 +85,10 @@ export default {
         this.$store.commit('cargar_datos')
     },
     components:{
-        vistaSolicitud,
-        Estudiantes,
+        OfertaTemas,
         Loading,
+        MisTemas,
+        vistaSolicitar,
         cambiarRol
     },
     methods: {
@@ -94,10 +100,10 @@ export default {
                     this.$store.state.img=null
                     this.$router.push({ path: "/" })
                 }
-            }else if(ref == "Añadir Usuarios"){
-                this.vista=2
-            }else if(ref == "Solicitud de memorias"){
-                this.vista=1
+            }else if(ref == "Oferta de Temas"){
+              this.$store.state.vistaSeleccionada=1
+            }else if(ref == "Mis Temas"){
+              this.$store.state.vistaSeleccionada=2
             }
         }
     }

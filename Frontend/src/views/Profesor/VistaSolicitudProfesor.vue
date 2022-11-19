@@ -1,10 +1,9 @@
 <template>
     <div class="Solicitudes">
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
-            <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;
-            top:20%;
-            left: 50%;" v-if="solicitudes.length == 0">
+            <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;top:20%;left: 50%;" v-if="cargando_solicitudes == true">
             </v-progress-circular>
+            
             <div>
                 <v-container class="my-3">
                     <v-layout row class="mx-1">
@@ -27,7 +26,7 @@
                         </v-menu>
                     </v-layout>
                     <div v-for="(project, index) in solicitudes" :key="index">
-                        <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2">
+                        <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2" v-if="project.resultado_comite && project.resultado_directora && !project.resultado_profesor">
 
                             <v-layout row wrap :class="`pa-3 project ${project.status}`">
                                 <v-flex xs8 md3>
@@ -51,7 +50,7 @@
                                         </v-btn>
                                     </div>
                                 </v-flex>
-                                
+
                             </v-layout>
                         </v-card>
                         <v-dialog v-model="drawerSolicitud" max-width="700">
@@ -70,7 +69,8 @@
                                                             <div>{{ tituloProyecto }}</div>
                                                         </v-flex>
                                                         <v-flex>
-                                                            <div class="caption black--text">Descripcion general proyecto:
+                                                            <div class="caption black--text">Descripcion general
+                                                                proyecto:
                                                             </div>
                                                             <div>{{ descripcionProyecto }}</div>
                                                         </v-flex>
@@ -83,20 +83,22 @@
                                             </v-card>
                                         </v-col>
                                         <v-col cols="12" sm="12" md="6">
-                                            <v-card max-height="400" class ="justify-center">
+                                            <v-card max-height="400" class="justify-center">
                                                 <v-card-title>
                                                     <span class="text-h5">Datos estudiante</span>
                                                 </v-card-title>
-                                                <v-card-text >
+                                                <v-card-text>
                                                     <v-container>
                                                         <v-flex>
                                                             <v-avatar size="140">
                                                                 <v-img :src="imagenEstudiante">
-                                                                <template v-slot:placeholder>
-                                                                    <v-row class="fill-height ma-0" align="center" justify="center">
-                                                                    <v-progress-circular indeterminate color="white"></v-progress-circular>
-                                                                    </v-row>
-                                                                </template>
+                                                                    <template v-slot:placeholder>
+                                                                        <v-row class="fill-height ma-0" align="center"
+                                                                            justify="center">
+                                                                            <v-progress-circular indeterminate
+                                                                                color="white"></v-progress-circular>
+                                                                        </v-row>
+                                                                    </template>
                                                                 </v-img>
                                                             </v-avatar>
                                                         </v-flex>
@@ -108,15 +110,15 @@
                                                             <div class="caption black--text">Matricula:
                                                             </div>
                                                             <div>{{ matricula }}</div>
-                                                        </v-flex>                                                  
+                                                        </v-flex>
                                                     </v-container>
                                                 </v-card-text>
                                             </v-card>
                                         </v-col>
                                     </v-row>
                                     <v-card-actions class="justify-center">
-                                        <v-btn color="#FF0182" @click="feedback()" dark> Aceptar o rechazar </v-btn>                
-                                    </v-card-actions>                                    
+                                        <v-btn color="#FF0182" @click="feedback()" dark> Aceptar o rechazar </v-btn>
+                                    </v-card-actions>
                                 </v-container>
                             </v-card>
                         </v-dialog>
@@ -134,15 +136,15 @@
                                     <v-textarea counter="300">
                                         <template v-slot:label>
                                             <div>
-                                            Deje sus comentarios 
+                                                Deje sus comentarios
                                             </div>
                                         </template>
-                                        </v-textarea>
+                                    </v-textarea>
                                 </v-flex>
                             </v-container>
                         </v-card-text>
                         <v-card-actions class="justify-center">
-                            <v-btn >
+                            <v-btn>
                                 Aceptar solicitud
                             </v-btn>
                             <v-btn>
@@ -153,15 +155,26 @@
                     </v-card>
                 </v-dialog>
             </div>
+            <div class="text-center" v-if="cargando_solicitudes == false && solicitudes.length == 0">
+                <h1> No hay Solicitudes</h1>
+                <v-avatar size="150">
+                    <v-img src="https://media.tenor.com/-wrmUJrUbeoAAAAM/emoji-disintergrating.gif">
+                        <template v-slot:placeholder>
+                            <v-row class="fill-height ma-0" align="center" justify="center">
+                                <v-progress-circular indeterminate color="white"></v-progress-circular>
+                            </v-row>
+                        </template>
+                    </v-img>
+                </v-avatar>
+            </div>
         </v-sheet>
-
     </div>
 </template>
   
 <script>
 
 export default {
-    
+
     name: 'Solicitudes',
     components: {
     },
@@ -178,6 +191,7 @@ export default {
             fecha: null,
             toggle: null,
             solicitudes: [],
+            cargando_solicitudes: true,
             itemsOrdenar: [
                 { title: 'Por titulo', prop: 'title' },
                 {
@@ -187,7 +201,7 @@ export default {
             ],
         };
     },
-    created(){
+    created() {
         this.cargar_solicitudes()
     },
     methods: {
@@ -199,32 +213,33 @@ export default {
                             this.solicitudes = respS.data
                             const temas = respT.data
                             const usuarios = respU.data
-                            const solicitud_profesor=[]
+                            const solicitud_profesor = []
                             for (var i = 0; i < this.solicitudes.length; i++) {
                                 let alumno = usuarios.filter(u => u._id == this.solicitudes[i].alumnoid)
                                 let tema = temas.filter(t => t._id == this.solicitudes[i].temaid)
-                                if(this.solicitudes[i].profeguiaid===localStorage.getItem("key_user")){
+                                if (this.solicitudes[i].profeguiaid === localStorage.getItem("key_user")) {
                                     solicitud_profesor.push({
-                                        title:tema[0].nombre,
-                                        descripcion:tema[0].descripcion,
-                                        fecha:tema[0].fecha,
-                                        estudiante:alumno[0].nombre,
-                                        alumnoid:this.solicitudes[i].alumnoid,
-                                        temaid:this.solicitudes[i].temaid,
-                                        profeguiaid:this.solicitudes[i].profeguiaid,
-                                        img:alumno[0].img,
-                                        matricula:alumno[0].matricula
+                                        title: tema[0].nombre,
+                                        descripcion: tema[0].descripcion,
+                                        fecha: tema[0].fecha,
+                                        estudiante: alumno[0].nombre,
+                                        alumnoid: this.solicitudes[i].alumnoid,
+                                        temaid: this.solicitudes[i].temaid,
+                                        profeguiaid: this.solicitudes[i].profeguiaid,
+                                        img: alumno[0].img,
+                                        matricula: alumno[0].matricula
                                     })
                                 }
-                                this.solicitudes[i].title=tema[0].nombre
-                                this.solicitudes[i].descripcion=tema[0].descripcion
-                                this.solicitudes[i].fecha=tema[0].fecha
-                                this.solicitudes[i].estudiante=alumno[0].nombre
-                                this.solicitudes[i].matricula=alumno[0].matricula
-                                this.solicitudes[i].img=alumno[0].img
-                                
+                                this.solicitudes[i].title = tema[0].nombre
+                                this.solicitudes[i].descripcion = tema[0].descripcion
+                                this.solicitudes[i].fecha = tema[0].fecha
+                                this.solicitudes[i].estudiante = alumno[0].nombre
+                                this.solicitudes[i].matricula = alumno[0].matricula
+                                this.solicitudes[i].img = alumno[0].img
+
                             }
-                            this.solicitudes=solicitud_profesor
+                            this.cargando_solicitudes = false
+                            this.solicitudes = solicitud_profesor
                         })
                     })
                 })
@@ -244,7 +259,7 @@ export default {
             this.matricula = matricula
             this.imagenEstudiante = imagen
         },
-        feedback(){
+        feedback() {
             this.drawerFeedback = true
             this.drawerSolicitud = false
         },

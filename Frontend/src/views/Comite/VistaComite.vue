@@ -16,6 +16,10 @@
           <p class="white--text subheading-1 text-weight-bold mt-2">
             {{ this.$store.state.nombre }}
           </p>
+          <v-progress-circular class="mb-2" size="20" indeterminate color="white" v-if="this.$store.state.loading"></v-progress-circular>
+            <p class="white--text subheading-1 text-weight-bold" v-else>
+              {{this.$store.state.rol}}
+            </p>
         </v-flex>
         <v-flex class="mt-3 mb-3">
           <cambiarRol></cambiarRol>
@@ -48,12 +52,14 @@
     <loading></loading>
     <v-main v-if="!this.$store.state.loading">
       <vistaSolicitud v-if="vista == 1"></vistaSolicitud>
+      <vistaHistorialSolicitudes v-if="vista == 2"></vistaHistorialSolicitudes>
     </v-main>
   </v-app>
 </template>
   
 <script>
-import vistaSolicitud from "./VistaSolicitudComite.vue"
+import vistaSolicitud from "./SolicitudesPendientes.vue"
+import vistaHistorialSolicitudes from "./HistorialSolicitudes.vue"
 import Loading from '@/components/loading.vue';
 import cambiarRol from '@/components/cambiarRol.vue';
 export default {
@@ -61,7 +67,8 @@ export default {
     return {
       drawer: null,
       items: [
-        { title: "Solicitudes", route: '/solicitudTemas', icon: "mdi-folder" },
+        { title: "Solicitudes Pendientes", route: '/solicitudTemas', icon: "mdi-folder" },
+        { title: "Historial Solicitudes", route: '/solicitudTemas', icon: "mdi-folder" },
         { title: "Cerrar sesion", icon: "mdi-forum" },
       ],
       hover: "red",
@@ -78,7 +85,8 @@ export default {
   components: {
     vistaSolicitud,
     Loading,
-    cambiarRol
+    cambiarRol,
+    vistaHistorialSolicitudes
   },
   methods: {
     redirigir(ref) {
@@ -89,8 +97,10 @@ export default {
           this.$store.state.img=null
           this.$router.push({ path: "/" })
         }
-      } else if (ref == "Solicitud") {
+      } else if (ref == "Solicitudes Pendientes") {
         this.vista = 1
+      } else if(ref == "Historial Solicitudes"){
+        this.vista = 2
       }
     }
   }

@@ -22,7 +22,7 @@ const routes = [
   {
     path: '/Alumno',
     name: 'VistaAlumno',
-    component: () => import('../views/Alumno/VistaMainAlumno.vue')
+    component: () => import('../views/Alumno/VistaAlumno.vue')
   },
   {
     path: '/directora',

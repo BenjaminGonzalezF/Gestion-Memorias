@@ -24,6 +24,7 @@ export default new Vuex.Store({
     rol:false,
     img: null,
     nombre:null,
+    roles:[],
     //PARCHE,
     vistaSeleccionada:1,
   },
@@ -36,14 +37,27 @@ export default new Vuex.Store({
       usuario_id = localStorage.getItem("key_user")
       if (usuario_id !== null) {
         axios.get(`/usuario/${usuario_id}`)
-          .then((response) => {
-            usuario_sesion = response.data
-            if (usuario_sesion.length !== 0) {
-              this.interval = setTimeout(() => {
-                this.state.esdirector=usuario_sesion.esdirector
+        .then((response) => {
+          usuario_sesion = response.data
+          if (usuario_sesion.length !== 0) {
+            this.interval = setTimeout(() => {
+              this.state.roles=[]
+              this.state.esdirector=usuario_sesion.esdirector
                 this.state.esalumno=usuario_sesion.esalumno
                 this.state.esprofe=usuario_sesion.esprofe
                 this.state.escomite=usuario_sesion.escomite
+                if(usuario_sesion.esdirector){
+                  this.state.roles.push("Director")
+                }
+                if(usuario_sesion.esprofe){
+                  this.state.roles.push("Profesor")
+                }
+                if(usuario_sesion.escomite){
+                  this.state.roles.push("Comite")
+                }
+                if(usuario_sesion.esalumno){
+                  this.state.roles.push('Alumno')
+                }
                 this.state.nombre=usuario_sesion.nombre 
                 this.state.img=usuario_sesion.img 
                 this.state.rol=usuario_sesion.rolActivo

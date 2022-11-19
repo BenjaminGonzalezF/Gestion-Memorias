@@ -4,20 +4,21 @@
     <v-main v-if="!this.$store.state.ingresoUsuario && !this.$store.state.loading">
       <v-container class="fondo" fluid>
         <div class="mt-5">
-          <v-card class="mx-auto" max-width="460"  outlined>
+          <v-card class="mx-auto" max-width="460" outlined>
             <v-card-title>
               Bienvenido
             </v-card-title>
             <v-card-text>
               <v-text-field v-model="correo" label="Correo" prepend-icon="mdi-account-circle"></v-text-field>
               <v-text-field v-model="contrasena" prepend-icon="mdi-lock" label="Contraseña"
-                :append-icon="mostrar ? 'mdi-eye' : 'mdi-eye-off'" :type="mostrar ? 'text' : 'password'" name="input-10-1"
-                counter @click:append="mostrar = !mostrar"></v-text-field>
+                :append-icon="mostrar ? 'mdi-eye' : 'mdi-eye-off'" :type="mostrar ? 'text' : 'password'"
+                name="input-10-1" counter @click:append="mostrar = !mostrar"></v-text-field>
               <v-card-actions class="my-n4">
                 <v-card-text>
                   ¿No recuerdas tu contraseña?
                 </v-card-text>
-                <v-btn :class="vBtn" class="white--text" color="#65727c" small :disabled="vBtnIngreso" @click="ingreso()">
+                <v-btn :class="vBtn" class="white--text" color="#65727c" small :disabled="vBtnIngreso"
+                  @click="ingreso()">
                   Ingresar</v-btn>
               </v-card-actions>
             </v-card-text>
@@ -29,6 +30,7 @@
 </template>
  
 <script>
+import Swal from 'sweetalert2'
 import loading from "@/components/loading.vue"
 export default {
   data() {
@@ -36,20 +38,21 @@ export default {
       correo: null,
       contrasena: "",
       vBtnIngreso: true,
-      usuarios:[],
+      usuarios: [],
       mostrar: null,
-      nombre_ingreso:"Alumno",
+      nombre_ingreso: "Alumno",
     };
   },
   destroyed() {
     console.log("Login eliminado");
   },
   beforeCreate() {
-    this.$store.state.loading=true
+    this.$store.state.loading = true
     this.$store.commit('cargar_datos')
   },
-  components:{
-    loading
+  components: {
+    loading,
+    Swal
   },
   computed: {
     vBtn() {
@@ -63,39 +66,44 @@ export default {
   methods: {
     ingreso() {
       this.axios.get(`/todos_usuarios`)
-          .then((response) => {
-            this.usuarios=response.data
-            var usuario = this.usuarios.filter(u => u.correo == this.correo && u.contrasena == this.contrasena)
-            if(usuario.length!==0){
-              localStorage.setItem("key_user",usuario[0]._id)
-              if (usuario[0].esdirector) {
-                  this.$router.push({ path: "/directora" })
-                } else if (usuario[0].escomite) {
-                  this.$router.push({ path: "/comite" })
-                } else if (usuario[0].esprofe) {
-                  this.$router.push({ path: "/profesor" })
-                } else {
-                  this.$router.push({ path: "/alumno" })
-                }
-              console.log("ingreso correcto")
-            }else{
-              console.log("ingreso incorrecto")
+        .then((response) => {
+          this.usuarios = response.data
+          var usuario = this.usuarios.filter(u => u.correo == this.correo && u.contrasena == this.contrasena)
+          if (usuario.length !== 0) {
+            localStorage.setItem("key_user", usuario[0]._id)
+            if (usuario[0].esdirector) {
+              this.$router.push({ path: "/directora" })
+            } else if (usuario[0].escomite) {
+              this.$router.push({ path: "/comite" })
+            } else if (usuario[0].esprofe) {
+              this.$router.push({ path: "/profesor" })
+            } else {
+              this.$router.push({ path: "/alumno" })
             }
-          })
-          .catch((e) => {
-            console.log('error' + e);
-          })
+            console.log("ingreso correcto")
+          } else {
+            Swal.fire(
+              'Error!',
+              'Has ingresado incorrectamente!',
+              'Error'
+            )
+            console.log("ingreso incorrecto")
+          }
+        })
+        .catch((e) => {
+          console.log('error' + e);
+        })
     },
   }
 }
 </script>
 
 <style>
-  .fondo{
-    background-image: url('https://cdn.discordapp.com/attachments/1034862333966684261/1039324077829128202/iccExtension2.jpg');
-    height: 100%;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
+.fondo {
+  background-image: url('https://cdn.discordapp.com/attachments/1034862333966684261/1039324077829128202/iccExtension2.jpg');
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 </style>

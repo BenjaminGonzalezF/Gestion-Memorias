@@ -15,6 +15,10 @@
           <p class="white--text subheading-1 text-weight-bold mt-2">
             {{this.$store.state.nombre}}
           </p>
+          <v-progress-circular class="mb-2" size="20" indeterminate color="white" v-if="this.$store.state.loading"></v-progress-circular>
+            <p class="white--text subheading-1 text-weight-bold" v-else>
+              {{this.$store.state.rol}}
+            </p>
         </v-flex>
         <v-flex class="mt-3 mb-3">
           <cambiarRol></cambiarRol>

@@ -12,6 +12,7 @@ const notaSchema = new Schema({
   esalumno:Boolean,
   escomite:Boolean,
   esdirector:Boolean,
+  rolActivo:String,
 });
 
 // Convertir a modelo
