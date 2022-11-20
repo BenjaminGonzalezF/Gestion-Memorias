@@ -20,6 +20,7 @@
     "vue-axios": "^3.4.1",
     "vue-html2canvas": "^0.0.4",
     "vue-router": "^3.5.1",
+    "vue-search-input": "^1.1.11",
     "vuetify": "^2.6.12",
     "vuex": "^3.6.2"
   },

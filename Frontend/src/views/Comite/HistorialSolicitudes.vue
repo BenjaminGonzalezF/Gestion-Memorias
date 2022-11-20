@@ -4,13 +4,18 @@
             <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;top:20%;left: 50%;"
                 v-if="cargando_temas == true">
             </v-progress-circular>
-            <div>
+            <div v-else>
                 <v-container class="my-3">
                     <v-layout row class="mx-1">
+                        <v-col cols="12" sm="6" md="4">
+                            <v-autocomplete max-width="400" rounded solo-inverted v-model="buscar"
+                                :items="temasHistorial" color="white" item-text="nombre" item-title="nombre"
+                                label="Buscar proyectos" placeholder="Escribe para buscar"
+                                prepend-icon="mdi-database-search">
+                            </v-autocomplete>
+                        </v-col>
+
                         <v-spacer></v-spacer>
-                        <div class="search-wrapper panel-heading col-sm-12">
-                            <input type="text" v-model="search" placeholder="Search" /> <br> <br>
-                        </div>
                         <v-menu offset-y>
                             <v-spacer></v-spacer>
 
@@ -152,6 +157,7 @@ export default {
             fecha: null,
             toggle: null,
             temas: [],
+            temasHistorial: [],
             cargando_temas: true,
             itemsOrdenar: [
                 { title: 'Por titulo', prop: 'title' },
@@ -186,6 +192,9 @@ export default {
                                 let comite = usuarios.filter(u => u._id === this.temas[i].votos[j].refcomite)
                                 this.temas[i].votos[j].nombrecomite = comite[0].nombre
                                 this.temas[i].votos[j].imgcomite = comite[0].img
+                            }
+                            if (this.temas[i].resultado_comite != null) {
+                                this.temasHistorial.push(this.temas[i])
                             }
                         }
                         this.cargando_temas = false
