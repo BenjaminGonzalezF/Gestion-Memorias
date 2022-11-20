@@ -44,7 +44,7 @@
                                 <!-- <div class="caption grey--text">Durum</div> -->
                                 <div class="my-1 text-center">
                                     <v-btn
-                                        @click="verSolicitud(project._id, project.nombre, project.descripcion, project.idCreador, project.fecha)">
+                                        @click="verSolicitud(project)">
                                         Ver descripcion tema
                                     </v-btn>
                                 </div>
@@ -63,17 +63,21 @@
                             <v-container>
                                 <v-flex>
                                     <div class="caption black--text">Proyecto:</div>
-                                    <div>{{ tituloProyecto }}</div>
+                                    <div>{{tema_seleccionado.nombre}}</div>
                                 </v-flex>
                                 <v-flex>
                                     <div class="caption black--text">Descripción:</div>
-                                    <div>{{ descripcionProyecto }}</div>
+                                    <div>{{ tema_seleccionado.descripcion }}</div>
+                                </v-flex>
+                                <v-flex>
+                                    <div class="caption black--text">Creador:</div>
+                                    <div>{{ tema_seleccionado.nombrecreador }}</div>
                                 </v-flex>
                             </v-container>
                         </v-card-text>
                         <v-divider></v-divider>
                         <v-card-actions class="justify-center">
-                            <v-btn @click="enviarSolicitud(project._id)" color="#f5a42a">
+                            <v-btn @click="enviarSolicitud(tema_seleccionado._id)" color="#f5a42a">
                                 Enviar Solicitud
                             </v-btn>
                         </v-card-actions>
@@ -108,6 +112,7 @@ export default {
             profesor: null,
             estudiante: null,
             cargando_temas: true,
+            tema_seleccionado:[],
             temas: [],
             oferta_temas: 0,
             itemsOrdenar: [
@@ -148,18 +153,14 @@ export default {
                     console.log(e)
                 })
         },
-        verSolicitud(id, titulo, descripcion, estudiante, fecha) {
+        verSolicitud(tema) {
             this.drawerSolicitud = true;
-            this.tituloProyecto = titulo;
-            this.descripcionProyecto = descripcion;
-            this.estudiante = estudiante;
+            this.tema_seleccionado=tema
         },
         enviarSolicitud(id) {
             this.$store.state.id_tema_solicitar = id
             this.$store.state.vistaSeleccionada = 3
         }
-
-
     },
 }
 </script>

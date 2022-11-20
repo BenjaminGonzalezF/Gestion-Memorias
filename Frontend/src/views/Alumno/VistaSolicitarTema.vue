@@ -664,6 +664,34 @@ export default {
             console.log("valor trabaja?: " + this.estadoselect)
             console.log("valor link foto: " + linkfoto)
             console.log("valor link foto2: " + this.imagenAlumno)
+            this.axios.get("todos_usuarios").then((respU)=>{
+                this.axios.get("todos_temas").then((respT)=>{
+                    const usuarios = respU.data
+                    const temas = respT.data
+
+                    var alumno = usuarios.filter(u=> u._id==localStorage.getItem("key_user"))
+                    var tema = temas.filter(t=> t._id == this.$store.state.id_tema_solicitar)
+
+                    alumno[0].img = this.imagenAlumno
+                    alumno[0].modulosfaltantes = cursospendientes
+                    
+                    var trabaja=null
+                    if(this.estadoselect=="Trabaja"){
+                        trabaja=true
+                    }else{
+                        trabaja=false
+                    }
+                    tema[0].postulantes.push({
+                        id: alumno[0]._id,
+                        nombre: alumno[0].nombre,
+                        img: this.imagenAlumno,
+                        modulos_faltantes: cursospendientes,
+                        trabaja:trabaja,
+                    })
+                    this.axios.put(`usuario_ac/${alumno[0]._id}`, alumno[0])
+                    this.axios.put(`tema_ac/${tema[0]._id}`,tema[0])
+                })
+            })
         },
 
     },
