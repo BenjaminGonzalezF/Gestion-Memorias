@@ -4,14 +4,14 @@
         <div>
             <v-container class="my-3">
                 <v-layout row class="mx-1">
-                    <v-btn depressed color="rgb(0, 204, 255)" dark small @click="agregar_temas(false)">
+                    <v-btn depressed color="#f5a42a" dark small @click="agregar_temas(false,nombre_temacrear1,descripcion_temacrear1,profesor_temacrear1)">
                         Agregar tema
                         <v-icon right small>mdi-note-plus</v-icon>
                     </v-btn>
                     <v-spacer></v-spacer>
                     <v-menu offset-y>
                         <template v-slot:activator="{ on, attrs }">
-                            <v-btn depressed color="rgb(0, 204, 255)" class="mb-5" dark small v-bind="attrs" v-on="on">
+                            <v-btn depressed color="#f5a42a" class="mb-5" dark small v-bind="attrs" v-on="on">
                                 Ordenar
                                 <v-icon right small>mdi-sort</v-icon>
                             </v-btn>
@@ -48,50 +48,45 @@
                         </v-layout>
                     </v-card>
                 </div>
-                <v-dialog v-model="crearTema" max-width="1000">
-                    <v-card>
-                        <v-container class="grey lighten-5">
-                            <v-card-title class="justify-center">
-                                <span class="text-h5">Crear temas</span>
-                            </v-card-title>
-                        </v-container>
-                    </v-card>
-                </v-dialog>
+                <!-- Comment <v-dialog v-model="crearTema" max-width="80%"> -->
+                    <!-- Comment  <v-card> -->
+                    <!-- Comment   <v-container class="grey lighten-5"> -->  
+                    <!-- Comment        <v-card-title class="justify-center"> --> 
+                    <!-- Comment            <span class="text-h5">Crear temas</span> --> 
+                    <!-- Comment        </v-card-title> --> 
+                    <!-- Comment    </v-container> --> 
+                    <!-- Comment /</v-card>  -->
+                <!-- Comment </v-dialog> -->
             </v-container>
         </div>
         <!-- dialogo para agregar un tema -->
-        <v-dialog v-model="crearTema" max-width="1000">
-            <v-card>
+        <v-dialog v-model="crearTema" height="1000" width="80%">
+            <v-card height="60%" width="100%">
                 <v-container>
                     <v-card-title class="justify-center">
-                        <span class="text-h5">Crear temas</span>
+                        <span class="text-h5">Crear tema</span>
                     </v-card-title>
-                    <v-card-text>
-                        <v-text-field v-model="nombre_temacrear" label="Nombre del tema"></v-text-field>
-                        <v-text-field v-model="descripcion_temacrear" label="Descripcion del tema"></v-text-field>
+                    <v-card-text  color="#F4F4F4">
+                        <v-text-field v-model="nombre_temacrear" label="Título del tema"
+                            :rules="[() => !!nombre_temacrear || 'Este campo no puede quedar vacio']"
+                            :error-messages="errorMessages" required></v-text-field>
+                                
+                        <v-textarea
+                            v-model="descripcion_temacrear" label="Descripcion del tema" max-height="50"
+                            :rules="[() => !!descripcion_temacrear || 'Este campo no puede quedar vacio']"
+                            :error-messages="errorMessages" required
+                        ></v-textarea>
                         <v-select v-model="profesor_temacrear" label="Profesor guia" :items="profesores_guias"
-                            :item-value="profesores_guias.value"></v-select>
-                        <p>
-                            Requisitos:
-                        </p>
-                        <li v-for="(requisito, index) in requisitos_temacrear" :key="index">
-                            <label> {{ requisito }} </label>
-                            <!-- boton para editar un requisito -->
-                            <v-btn class="mx-1" fab width="30" height="30" color="#e5be01" outlined>
-                                <Icon icon="dashicons:edit" color="black" width="15" height="15" />
-                            </v-btn>
-                            <!-- boton para eliminar un requisito -->
-                            <v-btn fab width="30" height="30" color="#cf142b" outlined
-                                @click="eliminar_requisitos_tema(index)">
-                                <Icon icon="ant-design:delete-twotone" color="black" width="15" height="15" />
-                            </v-btn>
-                        </li>
-                        <v-btn fab width="40" height="40" @click="agregar_requisitos_tema(true)">
-                            <Icon icon="carbon:add-filled" width="45" height="45" color="rgb(0, 204, 255)" />
-                        </v-btn>
+                            :item-value="profesores_guias.value"
+                            :rules="[() => profesor_temacrear!=null|| 'Se tiene que selecionar profesor guia']"
+                            :error-messages="errorMessages" required></v-select>
+                            <v-col></v-col>
+                    
                         <v-spacer></v-spacer>
-                        <v-btn class="white--text mt-3" color="rgb(0, 204, 255)" @click="agregar_temas(true)">
+                        <v-row justify="space-around"> 
+                    <v-btn class="white--text mt-3" color="rgb(0, 204, 255)" @click="agregar_temas(true,nombre_temacrear,descripcion_temacrear,profesor_temacrear)" :disabled="((nombre_temacrear==null)||(descripcion_temacrear==null)||(profesor_temacrear==null))" >
                             Crear</v-btn>
+                        </v-row>
                     </v-card-text>
                 </v-container>
             </v-card>
@@ -104,9 +99,11 @@
                         <span class="text-h5">Crear requisito</span>
                     </v-card-title>
                     <v-card-text>
-                        <v-text-field v-model="requisito_anadir" label="Requisito"></v-text-field>
+                        <v-text-field v-model="requisito_anadir" label="Requisito"
+                        :rules="[() => !!requisito_anadir|| 'Este campo no puede quedar vacio']"
+                        :error-messages="errorMessages" required>></v-text-field>
                         <v-btn class="white--text mt-3" color="rgb(0, 204, 255)"
-                            @click="agregar_requisitos_tema(false)">Añadir</v-btn>
+                            @click="agregar_requisitos_tema(false)" :disabled="requisito_anadir==null">Añadir</v-btn>
                     </v-card-text>
                 </v-container>
             </v-card>
@@ -136,6 +133,9 @@ export default {
     },
     data() {
         return {
+            nombre_temacrear1: "a",
+            descripcion_temacrear1: "b",
+            profesor_temacrear1:"c",
             crearTema: false,
             crearRequisito: false,
             cargando_temas: true,
@@ -159,6 +159,8 @@ export default {
                     prop: 'descripcion',
                 },
             ],
+            errorMessages: '',
+            validacion: true,
         }
     },
     created() {
@@ -186,10 +188,20 @@ export default {
                     console.log(e)
                 })
         },
-        agregar_temas(crear_tema) {
-            if (!crear_tema) {
+        agregar_temas(crear_tema,titulo,descripcion,profesor) {
+            console.log("t : "+titulo)
+            console.log("d : "+descripcion)
+            console.log("p : "+profesor)
+            if(titulo==null||descripcion==null||profesor==null||titulo==""||descripcion==""||profesor==""){
+                console.log("error")
+                // pantalla de error    
+            }else{
+                console.log("t : "+titulo)
+                console.log("d : "+descripcion)
+                console.log("p : "+profesor)
+                if (!crear_tema) {
                 this.crearTema = true
-            } else {
+                } else {
                 var tema_crear = {
                     nombre: null,
                     idCreador: null,
@@ -233,6 +245,8 @@ export default {
                     })
                 })
             }
+            }
+            
         },
         agregar_requisitos_tema(consulta) {
             if (consulta) {
@@ -260,7 +274,9 @@ export default {
         sortBy(prop) {
             this.temas.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
         },
+       
     },
+   
 
 }
 
