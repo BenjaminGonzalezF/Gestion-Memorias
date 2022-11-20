@@ -1,7 +1,9 @@
 <template>
 
     <div class="Temas">
-        <div>
+        <v-card height="500" width="100%" outlined class="overflow-y-auto" >
+            <v-container class="my-3"> 
+                
             <v-container class="my-3">
                 <v-layout row class="mx-1">
                     <v-btn depressed color="#f5a42a" dark small @click="agregar_temas(false,nombre_temacrear1,descripcion_temacrear1,profesor_temacrear1)">
@@ -60,7 +62,7 @@
                     <!-- Comment /</v-card>  -->
                 <!-- Comment </v-dialog> -->
             </v-container>
-        </div>
+        
         <!-- dialogo para agregar un tema -->
         <v-dialog v-model="crearTema" height="1000" width="80%">
             <v-card height="60%" width="100%">
@@ -122,6 +124,8 @@
                 </v-img>
             </v-avatar>
         </div>
+            </v-container>
+        </v-card>
     </div>
 </template>
 <script>

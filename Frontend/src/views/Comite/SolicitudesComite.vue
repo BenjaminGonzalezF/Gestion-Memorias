@@ -1,5 +1,7 @@
 <template>
     <div class="Solicitudes">
+        <v-card height="500" width="100%" outlined class="overflow-y-auto" >
+        <v-container>
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
         <div>
             <v-container class="my-3">
@@ -150,7 +152,8 @@
             </v-container>
         </div>
         </v-sheet>
-        
+        </v-container>
+        </v-card>
     </div>
   </template>
   

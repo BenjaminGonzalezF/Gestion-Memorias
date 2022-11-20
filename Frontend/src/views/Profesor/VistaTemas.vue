@@ -1,7 +1,9 @@
 <template>
 
     <div class="Temas">
-        <div>
+        <v-card height="500" width="100%" outlined class="overflow-y-auto" >
+        <v-container>
+        <div>  
             <v-container class="my-3">
                 <v-layout row class="mx-1">
                     <v-btn depressed color="#f5a42a" dark small @click="agregar_temas(false,nombre_temacrear1,descripcion_temacrear1)">
@@ -65,6 +67,7 @@
                                 :rules="[() => !!descripcion_temacrear || 'Este campo no puede quedar vacio']"
                                 :error-messages="errorMessages" required
                                 ></v-textarea>
+                                <!-- verificar scroll-->
                                 <v-card height="100" width="100%" outlined class="overflow-y-auto">
                                     <p>
                                         Requisitos:
@@ -125,6 +128,8 @@
                 </v-img>
             </v-avatar>
         </div>
+        </v-container>
+        </v-card>
     </div>
 </template>
 <script>

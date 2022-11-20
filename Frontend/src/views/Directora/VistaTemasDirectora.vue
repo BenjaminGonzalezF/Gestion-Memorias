@@ -1,5 +1,7 @@
 <template>
     <div class="Solicitudes">
+        <v-card height="500" width="100%" outlined class="overflow-y-auto" >
+        <v-container>
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;"
             v-if="!this.$store.state.loading && this.$store.state.ingresoUsuario && this.$store.state.esdirector">
             <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;top:20%;left: 50%;" v-if="temas.length == 0">
@@ -92,7 +94,8 @@
                 </v-avatar>
             </div>
         </v-sheet>
-
+        </v-container>
+        </v-card>
     </div>
 </template>
 

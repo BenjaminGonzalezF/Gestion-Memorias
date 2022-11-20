@@ -1,6 +1,7 @@
 <template>
     <v-app>
         <div class="Oferta de temas">
+            <v-card height="500" width="100%" outlined class="overflow-y-auto" >
             <v-container class="my-3">
                 <v-layout row class="mx-1">
                     <v-spacer></v-spacer>
@@ -96,6 +97,7 @@
                     </v-avatar>
                 </div>
             </v-container>
+        </v-card>
         </div>
     </v-app>
 </template>
