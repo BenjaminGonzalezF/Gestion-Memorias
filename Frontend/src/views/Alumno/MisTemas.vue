@@ -202,6 +202,7 @@ export default {
                     requisitos: [],
                     descripcion: null,
                     votos: [],
+                    postulantes:[],
                     img: null,
                     resultado_comite: null,
                     resultado_directora: null,

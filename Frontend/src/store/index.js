@@ -27,6 +27,7 @@ export default new Vuex.Store({
     roles:[],
     //PARCHE,
     vistaSeleccionada:1,
+    id_tema_solicitar:null,
   },
   getters: {
   },

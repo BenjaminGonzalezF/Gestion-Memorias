@@ -161,8 +161,6 @@ export default {
             this.$store.state.id_tema_solicitar = id
             this.$store.state.vistaSeleccionada = 3
         }
-
-
     },
 }
 </script>
