@@ -98,7 +98,7 @@
                             </v-container>
                         </v-card-text>
                         <v-card-actions class="justify-center">
-                            <v-btn @click="votar_solicitud(false,null)">
+                            <v-btn @click="votar_solicitud(false, null)">
                                 Rechazar solicitud
                             </v-btn>
 
@@ -132,14 +132,14 @@ export default {
             toggle: null,
             drawer: null,
             drawerSolicitud: false,
-            drawerFeedback:null,
+            drawerFeedback: null,
             tituloProyecto: null,
             descripcionProyecto: null,
             estudiante: null,
             fecha: null,
-            feedbacktext:null,
+            feedbacktext: null,
             cargando_solicitudes: true,
-            solicitud_seleccionado:null,
+            solicitud_seleccionado: null,
             solicitudes: [],
             solicitudes_pendientes: 0,
             itemsOrdenar: [
@@ -187,7 +187,7 @@ export default {
                             this.solicitudes[i].profeguia = profeguia[0].nombre
 
                         }
-                        this.cargando_solicitudes=true
+                        this.cargando_solicitudes = true
                     })
                 }).catch((e) => {
                     console.log(e)
@@ -197,18 +197,18 @@ export default {
             })
         },
         votar_solicitud(voto, tema) {
-            if(voto){
-                this.solicitud_seleccionado=tema
-            }else{
-                this.solicitud_seleccionado.razon=this.feedbacktext
+            if (voto) {
+                this.solicitud_seleccionado = tema
+            } else {
+                this.solicitud_seleccionado.razon = this.feedbacktext
             }
-            this.solicitud_seleccionado.estado=voto
+            this.solicitud_seleccionado.estado = voto
             this.axios.put(`solicitud_ac/${this.solicitud_seleccionado._id}`, this.solicitud_seleccionado)
-            this.$store.state.loading=true
+            this.$store.state.loading = true
             this.$store.commit('cargar_datos')
         },
         feedback(solicitud) {
-            this.solicitud_seleccionado=solicitud
+            this.solicitud_seleccionado = solicitud
             this.drawerFeedback = true
             this.drawerSolicitud = false
         },

@@ -54,6 +54,7 @@
         <OfertaTemas v-if="this.$store.state.vistaSeleccionada==1"></OfertaTemas>
         <MisTemas v-if="this.$store.state.vistaSeleccionada==2"></MisTemas>
         <vistaSolicitar v-if=" this.$store.state.vistaSeleccionada==3"></vistaSolicitar>
+        <MisSolicitudes v-if=" this.$store.state.vistaSeleccionada==4"></MisSolicitudes>
       </v-main>
     </v-app>
   </template>
@@ -61,6 +62,7 @@
 import OfertaTemas from "./OfertaTemas.vue"
 import MisTemas from "./MisTemas.vue"
 import vistaSolicitar from "./VistaSolicitarTema.vue"
+import MisSolicitudes from "./MisSolicitudes.vue"
 import cambiarRol from "@/components/cambiarRol.vue"
 
 import Loading from '@/components/loading.vue';
@@ -71,7 +73,8 @@ export default {
             items: [
                 { title: "Oferta de Temas", icon: "mdi-folder" },
                 { title: "Mis Temas", icon: "mdi-folder" },
-                { title: "Cerrar sesion", icon: "mdi-forum" },
+                { title: "Mis Solicitudes", icon: "mdi-folder" },
+                { title: "Cerrar sesion", icon: "mdi-exit-to-app" },
             ],
             hover: "red",
             vista:1,
@@ -89,7 +92,8 @@ export default {
         Loading,
         MisTemas,
         vistaSolicitar,
-        cambiarRol
+        cambiarRol,
+        MisSolicitudes
     },
     methods: {
         redirigir(ref) {
@@ -104,6 +108,8 @@ export default {
               this.$store.state.vistaSeleccionada=1
             }else if(ref == "Mis Temas"){
               this.$store.state.vistaSeleccionada=2
+            }else if(ref == "Mis Solicitudes"){
+              this.$store.state.vistaSeleccionada=4
             }
         }
     }

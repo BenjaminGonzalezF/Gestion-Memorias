@@ -34,7 +34,7 @@
                         </v-menu>
                     </v-layout>
                     <div v-for="(project, index) in temas" :key="index">
-                        <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2" v-if="project.resultado_comite!=null && project.resultado_directora==null">
+                        <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2" v-if="project.resultado_comite==true && project.resultado_directora==null">
 
                             <v-layout row wrap :class="`pa-3 project ${project.status}`">
                                 <v-flex xs8 md2>

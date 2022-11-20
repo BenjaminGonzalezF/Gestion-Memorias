@@ -8,7 +8,7 @@ const notaSchema = new Schema({
   requisitos:Array,
   descripcion:String,
   votos:[{
-    refcomite:String,
+    refcomite:{type: Schema.Types.ObjectId, ref: 'usuarios'},
     voto:Boolean
   }],
   resultado_comite:Boolean,
@@ -16,6 +16,13 @@ const notaSchema = new Schema({
   resultado_profesor:Boolean,
   fechacambio:Date,
   colaborador:{type: Schema.Types.ObjectId, ref: 'usuarios'},
+  postulantes:[{
+    id:{type: Schema.Types.ObjectId, ref: 'usuarios'},
+    nombre:String,
+    img:String,
+    modulos_faltantes:[],
+    trabaja:Boolean,
+  }],
 });
 
 // Convertir a modelo

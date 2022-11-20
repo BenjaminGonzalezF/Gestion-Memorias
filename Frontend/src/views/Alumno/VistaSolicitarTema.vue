@@ -38,7 +38,6 @@
                     </v-col>
                 </v-card>
                 <v-col>
-
                 </v-col>
                 <v-col>
                     <h1>
@@ -48,14 +47,11 @@
                         <v-select v-model="estadoselect" :items="estado" label="¿Esta trabajando?"></v-select>
                     </v-card>
                 </v-col>
-
                 <h1>
                     Información
                 </h1>
-
                 <v-card height="250" width="80%" color="#F4F4F4">
                     <v-col>
-
                     </v-col>
                     <v-row justify="space-around">
                         <v-card height="180" width="40%">
@@ -64,18 +60,16 @@
                                     Alumno: {{nombrecompleto}}
                                 </p>
                                 <p>
-                                    Tema: {{nombretema}}
+                                    Tema: {{ nombretema }}
                                 </p>
                                 <p>
-                                    Profesor Guia: {{nombreprofesor}}
+                                    Profesor Guia: {{ nombreprofesor }}
                                 </p>
                                 <p>
                                     Cursos pendientes {{ nocursados }}
                                 </p>
                             </v-col>
                         </v-card>
-
-
                         <v-card height="180" width="40%">
                             <div v-show="!estadofoto">
                                 <v-col>
@@ -93,17 +87,14 @@
                                 </v-col>
                             </div>
                         </v-card>
-
                     </v-row>
                     <v-col>
-
                     </v-col>
                     <v-btn color="#f5a42a"
                         @click="enviardatos(nombrecompleto, nombretema, nombreprofesor, nocursados, estado, link)">
                         Enviar Solicitud
                     </v-btn>
                 </v-card>
-
             </v-col>
             <v-dialog v-model="drawerSolicitud" max-width="1000">
                 <v-stepper v-model="e1">
@@ -111,21 +102,15 @@
                         <v-stepper-step :complete="e1 > 1" step="1" color="#00CCFF">
                             1. Verificación
                         </v-stepper-step>
-
                         <v-divider></v-divider>
-
                         <v-stepper-step :complete="e1 > 2" step="2" color="#00CCFF">
                             2. Subir imagen
                         </v-stepper-step>
-
                         <v-divider></v-divider>
-
-
                         <v-stepper-step step="3" color="#00CCFF">
                             3. Completado
                         </v-stepper-step>
                     </v-stepper-header>
-
                     <v-stepper-items>
                         <v-stepper-content step="1">
                             <v-card height="300px" color="#F4F4F4">
@@ -138,11 +123,7 @@
                                                 Para continuar con la solicitud es necesario ingresar una foto (estilo
                                                 cédula de identidad)
                                             </p>
-
                                         </v-card>
-
-
-
                                         <v-card height="250" width="45%">
                                             <v-col>
                                                 <v-col></v-col>
@@ -154,10 +135,7 @@
                                         </v-card>
                                     </v-row>
                                 </div>
-
-
                             </v-card>
-
                             <v-btn color="#f5a42a" @click="e1 = 2">
                                 Continuar
                             </v-btn>
@@ -166,7 +144,6 @@
                                 Cancelar
                             </v-btn>
                         </v-stepper-content>
-
                         <v-stepper-content step="2">
                             <v-card height="300px" color="#F4F4F4">
                                 <div align="center">
@@ -191,9 +168,7 @@
                                             </v-col>
                                         </v-card>
                                     </v-row>
-
                                 </div>
-
                             </v-card>
 
                             <v-btn color="#f5a42a" @click="e1 = 3" :disabled="!estadofoto">
@@ -204,7 +179,6 @@
                                 Cancelar
                             </v-btn>
                         </v-stepper-content>
-
                         <v-stepper-content step="3">
                             <v-card height="300px" color="#F4F4F4">
                                 <div align="center">
@@ -214,20 +188,16 @@
                                     <v-col></v-col>
                                     <p class="mt-5">Aceptado correctamente </p>
                                 </div>
-
                             </v-card>
-
                             <v-btn color="#f5a42a" @click="cerrarint1()">
                                 Finalizar
                             </v-btn>
-
                             <v-btn text @click="cerrarint()">
                                 Cancelar
                             </v-btn>
                         </v-stepper-content>
                     </v-stepper-items>
                 </v-stepper>
-
             </v-dialog>
         </div>
     </v-app>
@@ -572,7 +542,7 @@ export default {
             nombretema: null,
             nombreprofesor: null,
             linkimagen: null,
-            temas:[],
+            temas: [],
             estadoselect: null,
             imagenAlumno: null,
             urlvalida: null,
@@ -588,13 +558,11 @@ export default {
             if(this.$store.state.id_tema_solicitar!= "nuevo tema"){
                 this.axios.get("todos_temas")
                 .then((respT) => {
-                    this.axios.get("todos_usuarios").then((respU)=>{
+                    this.axios.get("todos_usuarios").then((respU) => {
                         const usuarios = respU.data
                         this.temas = respT.data
-                        console.log("idtema: "+this.$store.state.id_tema_solicitar)
-                        this.temas = this.temas.filter(t=>t._id ==this.$store.state.id_tema_solicitar)
-                        
-                        const creador = usuarios.filter(u=> u._id ===this.temas[0].idCreador)
+                        this.temas = this.temas.filter(t => t._id == this.$store.state.id_tema_solicitar)
+                        const creador = usuarios.filter(u => u._id === this.temas[0].idCreador)
                         this.nombrecompleto = this.$store.state.nombre
                         this.nombretema = this.temas[0].nombre
                         this.nombreprofesor = creador[0].nombre
@@ -719,46 +687,34 @@ export default {
             console.log("valor trabaja?: " + this.estadoselect)
             console.log("valor link foto: " + linkfoto)
             console.log("valor link foto2: " + this.imagenAlumno)
-                /*
-                ejemplo para editar
-                if (this.name == '' || this.tipo == '' || this.marca == '' || this.stock == [] || this.color == '' || this.precio == '' || this.imagen == '') {
-                    console.log("Datos vacios")
-                } else {
-                    this.productoEditar = {
-                        nombre: null,
-                        marca: null,
-                        tipo: null,
-                        precio: null,
-                        stock: null,
-                        color: null,
-                        imagen: null,
-                        _id: null,
+            this.axios.get("todos_usuarios").then((respU)=>{
+                this.axios.get("todos_temas").then((respT)=>{
+                    const usuarios = respU.data
+                    const temas = respT.data
+
+                    var alumno = usuarios.filter(u=> u._id==localStorage.getItem("key_user"))
+                    var tema = temas.filter(t=> t._id == this.$store.state.id_tema_solicitar)
+
+                    alumno[0].img = this.imagenAlumno
+                    alumno[0].modulosfaltantes = cursospendientes
+                    
+                    var trabaja=null
+                    if(this.estadoselect=="Trabaja"){
+                        trabaja=true
+                    }else{
+                        trabaja=false
                     }
-                    this.productoEditar.nombre = this.name
-                    this.productoEditar.marca = this.marca
-                    this.productoEditar.stock = this.stock
-                    this.productoEditar.tipo = this.tipo
-                    this.productoEditar.color = this.color
-                    this.productoEditar.precio = this.precio
-                    this.productoEditar.imagen = this.imagen
-                    this.productoEditar._id = this._id
-                    this.axios.put(`Producto-ac/${this.productoEditar._id}`, this.productoEditar)
-                        .then(res => {
-                            const index = this.zapatillas.findIndex(zapatillaB => zapatillaB._id === this.productoEditar._id);
-                            this.zapatillas[index].nombre = this.productoEditar.nombre
-                            this.zapatillas[index].marca = this.productoEditar.marca
-                            this.zapatillas[index].stock = this.productoEditar.stock
-                            this.zapatillas[index].tipo = this.productoEditar.tipo
-                            this.zapatillas[index].color = this.productoEditar.color
-                            this.zapatillas[index].precio = this.productoEditar.precio
-                            this.zapatillas[index].imagen = this.productoEditar.imagen
-                        })
-                        .catch(e => {
-                            console.log(e);
-                        })
-                    this.editarBool=false
-                }
-                */
+                    tema[0].postulantes.push({
+                        id: alumno[0]._id,
+                        nombre: alumno[0].nombre,
+                        img: this.imagenAlumno,
+                        modulos_faltantes: cursospendientes,
+                        trabaja:trabaja,
+                    })
+                    this.axios.put(`usuario_ac/${alumno[0]._id}`, alumno[0])
+                    this.axios.put(`tema_ac/${tema[0]._id}`,tema[0])
+                })
+            })
         },
 
     },

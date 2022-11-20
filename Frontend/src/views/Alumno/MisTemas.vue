@@ -10,6 +10,8 @@
                     </v-btn>
                     <v-spacer></v-spacer>
                     <v-menu offset-y>
+                        <v-text-field class="pt-5" placeholder="Strawberries" outlined clearable></v-text-field>
+                        <v-btn dark x-large color="pink"> SEARCH </v-btn>
                         <template v-slot:activator="{ on, attrs }">
                             <v-btn depressed color="#f5a42a" class="mb-5" dark small v-bind="attrs" v-on="on">
                                 Ordenar
@@ -212,6 +214,7 @@ export default {
                     requisitos: [],
                     descripcion: null,
                     votos: [],
+                    postulantes:[],
                     img: null,
                     resultado_comite: null,
                     resultado_directora: null,
@@ -236,7 +239,7 @@ export default {
                     tema_crear.colaborador = this.profesor_temacrear
                     tema_crear.fechacambio = Date.now()
                     console.log(tema_crear)
-                    this.axios.post("nuevo_tema", tema_crear).then((resp)=>{
+                    this.axios.post("nuevo_tema", tema_crear).then((resp) => {
                         this.nombre_temacrear = null
                         this.descripcion_temacrear = null
                         this.requisitos_temacrear = null
