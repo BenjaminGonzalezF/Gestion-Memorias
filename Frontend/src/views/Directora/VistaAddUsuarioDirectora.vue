@@ -129,12 +129,17 @@ export default ({
                 { text: 'img', value: 'img' },
                 { text: 'id', value: '_id' },
                 { text: 'nombre', value: 'nombre' },
+                { text: 'profesor', value: 'profesor' },
+                { text: 'alumno', value: 'alumno' },
             ],
             headers_table: [
                 { text: 'nombre', value: '0' },
                 { text: 'matricula', value: '1' },
                 { text: 'correo', value: '2' },
                 { text: 'contraseña', value: '3' },
+                {text: 'alumno', value:'4'},
+                {text: 'comite', value:'5'},
+                {text: 'directora', value:'6'},
             ],
         }
     },
@@ -173,7 +178,7 @@ export default ({
             })
         },
         descargarPlantilla() {
-            const data = [['nombre', 'matricula', 'correo', 'contraseña']]
+            const data = [['nombre', 'matricula', 'correo', 'contraseña','alumno','profesor','comite','directora']]
             const fileName = "plantillaIngresoAlumnos"
             const exportType = exportFromJSON.types.xls
             exportFromJSON({ data, fileName, exportType })
