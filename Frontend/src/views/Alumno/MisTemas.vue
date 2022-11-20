@@ -1,136 +1,129 @@
 <template>
-
     <div class="Temas">
         <v-card height="500" width="100%" outlined class="overflow-y-auto" >
             <v-container class="my-3"> 
-                
-            <v-container class="my-3">
-                <v-layout row class="mx-1">
-                    <v-btn depressed color="#f5a42a" dark small @click="agregar_temas(false,nombre_temacrear1,descripcion_temacrear1,profesor_temacrear1)">
-                        Agregar tema
-                        <v-icon right small>mdi-note-plus</v-icon>
-                    </v-btn>
-                    <v-spacer></v-spacer>
-                    <v-menu offset-y>
-                        <v-text-field class="pt-5" placeholder="Strawberries" outlined clearable></v-text-field>
-                        <v-btn dark x-large color="pink"> SEARCH </v-btn>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn depressed color="#f5a42a" class="mb-5" dark small v-bind="attrs" v-on="on">
-                                Ordenar
-                                <v-icon right small>mdi-sort</v-icon>
-                            </v-btn>
-                        </template>
-                        <v-list>
-                            <v-list-item v-for="(item, index) in itemsOrdenar" :key="index" link>
-                                <v-list-item-title @click="sortBy(item.prop)">{{
-                                        item.title
-                                }}</v-list-item-title>
-                            </v-list-item>
-                        </v-list>
-                    </v-menu>
-                </v-layout>
-                <v-progress-circular :size="50" color="primary" indeterminate
-                    style="position: absolute;top:20%;left: 50%;" v-if="cargando_temas == true">
-                </v-progress-circular>
-                <div v-for="(project, index) in temas" :key="index">
-                    <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2">
-
-                        <v-layout row wrap :class="`pa-3 project ${project.status}`">
-                            <v-flex xs8 md3>
-                                <div class="caption grey--text">Titulo proyecto</div>
-                                <div>{{ project.nombre }}</div>
-                            </v-flex>
-                            <v-flex xs6 md6>
-                                <div class="caption grey--text">Descripcion general proyecto</div>
-                                <div>{{ project.descripcion }}</div>
-                            </v-flex>
-                            <v-flex xs2 sm1 md2>
-                                <div class="caption grey--text">Requisitos</div>
-                                <div v-for="(requisitos, index) in project.requisitos" :key="index"> - {{ requisitos }}
-                                </div>
-                            </v-flex>
-                        </v-layout>
-                    </v-card>
-                </div>
-                <!-- Comment <v-dialog v-model="crearTema" max-width="80%"> -->
-                    <!-- Comment  <v-card> -->
-                    <!-- Comment   <v-container class="grey lighten-5"> -->  
-                    <!-- Comment        <v-card-title class="justify-center"> --> 
-                    <!-- Comment            <span class="text-h5">Crear temas</span> --> 
-                    <!-- Comment        </v-card-title> --> 
-                    <!-- Comment    </v-container> --> 
-                    <!-- Comment /</v-card>  -->
-                <!-- Comment </v-dialog> -->
-            </v-container>
-        
-        <!-- dialogo para agregar un tema -->
-        <v-dialog v-model="crearTema" height="1000" width="80%">
-            <v-card height="60%" width="100%">
-                <v-container>
-                    <v-card-title class="justify-center">
-                        <span class="text-h5">Crear tema</span>
-                    </v-card-title>
-                    <v-card-text  color="#F4F4F4">
-                        <v-text-field v-model="nombre_temacrear" label="Título del tema"
-                            :rules="[() => !!nombre_temacrear || 'Este campo no puede quedar vacio']"
-                            :error-messages="errorMessages" required></v-text-field>
-                                
-                        <v-textarea
-                            v-model="descripcion_temacrear" label="Descripcion del tema" max-height="50"
-                            :rules="[() => !!descripcion_temacrear || 'Este campo no puede quedar vacio']"
-                            :error-messages="errorMessages" required
-                        ></v-textarea>
-                        <v-select v-model="profesor_temacrear" label="Profesor guia" :items="profesores_guias"
-                            :item-value="profesores_guias.value"
-                            :rules="[() => profesor_temacrear!=null|| 'Se tiene que selecionar profesor guia']"
-                            :error-messages="errorMessages" required></v-select>
-                            <v-col></v-col>
-                    
+                <v-container class="my-3">
+                    <v-layout row class="mx-1">
+                        <v-btn depressed color="#f5a42a" dark small @click="agregar_temas(false,nombre_temacrear1,descripcion_temacrear1,profesor_temacrear1)">
+                            Agregar tema
+                            <v-icon right small>mdi-note-plus</v-icon>
+                        </v-btn>
                         <v-spacer></v-spacer>
-                        <v-row justify="space-around"> 
-                    <v-btn class="white--text mt-3" color="rgb(0, 204, 255)" @click="agregar_temas(true,nombre_temacrear,descripcion_temacrear,profesor_temacrear)" :disabled="((nombre_temacrear==null)||(descripcion_temacrear==null)||(profesor_temacrear==null))" >
-                            Crear</v-btn>
-                        </v-row>
-                    </v-card-text>
+                        <!-- Arreglar el ordenar Ojo********* -->
+                        <v-menu offset-y>
+                            <v-text-field class="pt-5" placeholder="Strawberries" outlined clearable></v-text-field>
+                            <v-btn dark x-large color="pink"> SEARCH </v-btn>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn depressed color="#f5a42a" class="mb-5" dark small v-bind="attrs" v-on="on">
+                                    Ordenar
+                                    <v-icon right small>mdi-sort</v-icon>
+                                </v-btn>
+                            </template>
+                            <v-list>
+                                <v-list-item v-for="(item, index) in itemsOrdenar" :key="index" link>
+                                    <v-list-item-title @click="sortBy(item.prop)">{{
+                                            item.title
+                                    }}</v-list-item-title>
+                                </v-list-item>
+                            </v-list>
+                        </v-menu>
+                    </v-layout>
+                    <v-progress-circular :size="50" color="primary" indeterminate
+                        style="position: absolute;top:20%;left: 50%;" v-if="cargando_temas == true">
+                    </v-progress-circular>
+                    <div v-for="(project, index) in temas" :key="index">
+                        <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2">
+                            <v-layout row wrap :class="`pa-3 project ${project.status}`">
+                                <v-flex xs8 md3>
+                                    <div class="caption grey--text">Titulo proyecto</div>
+                                    <div>{{ project.nombre }}</div>
+                                </v-flex>
+                                <v-flex xs6 md6>
+                                    <div class="caption grey--text">Descripcion general proyecto</div>
+                                    <div>{{ project.descripcion }}</div>
+                                </v-flex>
+                                <v-flex xs2 sm1 md2>
+                                    <div class="caption grey--text">Requisitos</div>
+                                    <div v-for="(requisitos, index) in project.requisitos" :key="index"> - {{ requisitos }}
+                                    </div>
+                                </v-flex>
+                            </v-layout>
+                        </v-card>
+                    </div>
                 </v-container>
-            </v-card>
-        </v-dialog>
-        <!-- dialogo para añadir un requisito -->
-        <v-dialog v-model="crearRequisito" max-width="500">
-            <v-card>
-                <v-container>
-                    <v-card-title class="justify-center">
-                        <span class="text-h5">Crear requisito</span>
-                    </v-card-title>
-                    <v-card-text>
-                        <v-text-field v-model="requisito_anadir" label="Requisito"
-                        :rules="[() => !!requisito_anadir|| 'Este campo no puede quedar vacio']"
-                        :error-messages="errorMessages" required>></v-text-field>
-                        <v-btn class="white--text mt-3" color="rgb(0, 204, 255)"
-                            @click="agregar_requisitos_tema(false)" :disabled="requisito_anadir==null">Añadir</v-btn>
-                    </v-card-text>
-                </v-container>
-            </v-card>
-        </v-dialog>
-        <div class="text-center" v-if="cargando_temas == false && temas.length == 0">
-            <h1> No tienes Temas</h1>
-            <v-avatar size="150">
-                <v-img src="https://media.tenor.com/-wrmUJrUbeoAAAAM/emoji-disintergrating.gif">
-                    <template v-slot:placeholder>
-                        <v-row class="fill-height ma-0" align="center" justify="center">
-                            <v-progress-circular indeterminate color="white"></v-progress-circular>
-                        </v-row>
-                    </template>
-                </v-img>
-            </v-avatar>
-        </div>
+
+                <!-- dialogo para agregar un tema -->
+                <v-dialog v-model="crearTema" height="1000" width="80%">
+                    <v-card height="60%" width="100%">
+                        <v-container>
+                            <v-card-title class="justify-center">
+                                <span class="text-h5">Crear tema</span>
+                            </v-card-title>
+                            <v-card-text  color="#F4F4F4">
+                                <v-text-field v-model="nombre_temacrear" label="Título del tema"
+                                    :rules="[() => !!nombre_temacrear || 'Este campo no puede quedar vacio']"
+                                    :error-messages="errorMessages" required></v-text-field>    
+                                <v-textarea
+                                    v-model="descripcion_temacrear" label="Descripcion del tema" max-height="50"
+                                    :rules="[() => !!descripcion_temacrear || 'Este campo no puede quedar vacio']"
+                                    :error-messages="errorMessages" required
+                                ></v-textarea>
+                                <v-select v-model="profesor_temacrear" label="Profesor guia" :items="profesores_guias"
+                                    :item-value="profesores_guias.value"
+                                    :rules="[() => profesor_temacrear!=null|| 'Se tiene que selecionar profesor guia']"
+                                    :error-messages="errorMessages" required>
+                                </v-select>
+                                <v-col></v-col>
+                                <v-spacer></v-spacer>
+                                <v-row justify="space-around"> 
+                                    <v-btn class="white--text mt-3" color="rgb(0, 204, 255)" @click="agregar_temas(true,nombre_temacrear,descripcion_temacrear,profesor_temacrear)" :disabled="((nombre_temacrear==null)||(descripcion_temacrear==null)||(profesor_temacrear==null))" >
+                                        Crear
+                                    </v-btn>
+                                </v-row>
+                            </v-card-text>
+                        </v-container>
+                    </v-card>
+                </v-dialog>
+                
+                <!-- dialogo para añadir un requisito -->
+                <v-dialog v-model="crearRequisito" max-width="500">
+                    <v-card>
+                        <v-container>
+                            <v-card-title class="justify-center">
+                                <span class="text-h5">Crear requisito</span>
+                            </v-card-title>
+                            <v-card-text>
+                                <v-text-field v-model="requisito_anadir" label="Requisito"
+                                :rules="[() => !!requisito_anadir|| 'Este campo no puede quedar vacio']"
+                                :error-messages="errorMessages" required>></v-text-field>
+                                <v-btn class="white--text mt-3" color="rgb(0, 204, 255)"
+                                    @click="agregar_requisitos_tema(false)" :disabled="requisito_anadir==null">Añadir</v-btn>
+                            </v-card-text>
+                        </v-container>
+                    </v-card>
+                </v-dialog>
+                <div class="text-center" v-if="cargando_temas == false && temas.length == 0">
+                    <h1> No tienes Temas</h1>
+                    <v-avatar size="150">
+                        <v-img src="https://media.tenor.com/-wrmUJrUbeoAAAAM/emoji-disintergrating.gif">
+                            <template v-slot:placeholder>
+                                <v-row class="fill-height ma-0" align="center" justify="center">
+                                    <v-progress-circular indeterminate color="white"></v-progress-circular>
+                                </v-row>
+                            </template>
+                        </v-img>
+                    </v-avatar>
+                </div>
             </v-container>
         </v-card>
     </div>
 </template>
+
 <script>
+
 import { Icon } from '@iconify/vue2';
 import Swal from 'sweetalert2'
+
 export default {
     name: "Temas",
     components: {
@@ -166,7 +159,6 @@ export default {
                 },
             ],
             errorMessages: '',
-            validacion: true,
         }
     },
     created() {

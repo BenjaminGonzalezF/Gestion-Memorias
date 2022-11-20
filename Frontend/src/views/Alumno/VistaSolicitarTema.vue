@@ -19,7 +19,8 @@
                                                 <v-col>
                                                     <v-row>
                                                         <v-checkbox :v-model="ArrayRamos.selected"
-                                                            @click="agregar(ArrayRamos.name)"></v-checkbox>
+                                                            @click="agregar(ArrayRamos.name)">
+                                                        </v-checkbox>
                                                         <v-card height="25%" width="85%" outlined
                                                             class="overflow-y-auto" color="#FFFFFF">
                                                             <p class="mt-5">
@@ -31,14 +32,11 @@
                                             </v-card>
                                         </v-col>
                                     </v-card>
-
                                 </v-expansion-panel-content>
                             </v-expansion-panel>
                         </v-expansion-panels>
                     </v-col>
                 </v-card>
-                <v-col>
-                </v-col>
                 <v-col>
                     <h1>
                         Datos de interes
@@ -50,11 +48,11 @@
                 <h1>
                     Información
                 </h1>
-                <v-card height="250" width="80%" color="#F4F4F4">
+                <v-card height="220" width="80%" color="#F4F4F4">
                     <v-col>
                     </v-col>
                     <v-row justify="space-around">
-                        <v-card height="180" width="40%">
+                        <v-card height="200" width="50%">
                             <v-col>
                                 <p>
                                     Alumno: {{nombrecompleto}}
@@ -70,7 +68,7 @@
                                 </p>
                             </v-col>
                         </v-card>
-                        <v-card height="180" width="40%">
+                        <v-card height="200" width="40%">
                             <div v-show="!estadofoto">
                                 <v-col>
                                     <p> Verificación </p>
@@ -170,11 +168,9 @@
                                     </v-row>
                                 </div>
                             </v-card>
-
                             <v-btn color="#f5a42a" @click="e1 = 3" :disabled="!estadofoto">
                                 Continuar
                             </v-btn>
-
                             <v-btn text @click="cerrarint()">
                                 Cancelar
                             </v-btn>
@@ -205,8 +201,6 @@
 
 
 <script>
-
-import headerAlumno from "@/components/headerAlumno.vue"
 let Semestres = [
     {
         id: 0,
@@ -541,12 +535,10 @@ export default {
             nombrecompleto: null,
             nombretema: null,
             nombreprofesor: null,
-            linkimagen: null,
             temas: [],
             estadoselect: null,
             imagenAlumno: null,
             urlvalida: null,
-            estadotrabajo: null
         };
     },
     created() {
@@ -667,12 +659,9 @@ export default {
             }
             console.log("validaurl : "+this.urlvalida)
             if (this.urlvalida) {
-                this.linkimagen = "https://previews.123rf.com/images/xmarchant/xmarchant0612/xmarchant061200005/695441-retrato-hombre-frente-a-la-c%C3%A1mara.jpg"
                 this.imagenAlumno = url
-                console.log("link: "+this.linkimagen)
                 console.log("valur "+this.imagenAlumno)
                 this.estadofoto = true;
-
             } else {
                 //error 
                 console.log("url invalida ingresa otra")
@@ -683,7 +672,6 @@ export default {
             console.log("valor nombre proyecto: " + nombreproyecto)
             console.log("valor nombre profesor: " + nombreprofesor)
             console.log("valor cursos pendientes : " + cursospendientes)
-            //como se cual esta activo?
             console.log("valor trabaja?: " + this.estadoselect)
             console.log("valor link foto: " + linkfoto)
             console.log("valor link foto2: " + this.imagenAlumno)
@@ -691,13 +679,10 @@ export default {
                 this.axios.get("todos_temas").then((respT)=>{
                     const usuarios = respU.data
                     const temas = respT.data
-
                     var alumno = usuarios.filter(u=> u._id==localStorage.getItem("key_user"))
                     var tema = temas.filter(t=> t._id == this.$store.state.id_tema_solicitar)
-
                     alumno[0].img = this.imagenAlumno
                     alumno[0].modulosfaltantes = cursospendientes
-                    
                     var trabaja=null
                     if(this.estadoselect=="Trabaja"){
                         trabaja=true
