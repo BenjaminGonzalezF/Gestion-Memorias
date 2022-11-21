@@ -66,13 +66,13 @@
                                     :error-messages="errorMessages" required
                                     ></v-textarea>
                                     <!-- verificar scroll-->
+                                    <p>
+                                        Requisitos:
+                                    </p>
+                                    <v-btn fab width="40" height="40" @click="agregar_requisitos_tema(true)">
+                                        <Icon icon="carbon:add-filled" width="45" height="45" color="rgb(0, 204, 255)" />
+                                    </v-btn>
                                     <v-card height="100" width="100%" outlined class="overflow-y-auto">
-                                        <p>
-                                            Requisitos:
-                                        </p>
-                                        <v-btn fab width="40" height="40" @click="agregar_requisitos_tema(true)">
-                                            <Icon icon="carbon:add-filled" width="45" height="45" color="rgb(0, 204, 255)" />
-                                        </v-btn>
                                         <li v-for="(requisito, index) in requisitos_temacrear" :key="index">
                                             <label> {{ requisito }} </label>
                                             <!-- boton para editar un requisito -->
@@ -187,7 +187,7 @@ export default {
             if(titulo==null||descripcion==null||titulo==""||descripcion==""){
                 console.log("error")
                 // pantalla de error 
-                if(tiulo==null||titulo==""){
+                if(titulo==null||titulo==""){
                     Swal.fire({
                         icon: 'error',
                         title: 'Datos incorrectos...',

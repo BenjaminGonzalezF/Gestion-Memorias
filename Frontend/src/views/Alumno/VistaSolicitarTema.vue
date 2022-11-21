@@ -89,7 +89,7 @@
                     <v-col>
                     </v-col>
                     <v-btn color="#f5a42a"
-                        @click="enviardatos(nombrecompleto, nombretema, nombreprofesor, nocursados, estado, link)">
+                        @click="enviardatos(nombrecompleto, nombretema, nombreprofesor, nocursados, estadoselect, estadofoto)">
                         Enviar Solicitud
                     </v-btn>
                 </v-card>
@@ -201,6 +201,9 @@
 
 
 <script>
+
+import Swal from 'sweetalert2'
+
 let Semestres = [
     {
         id: 0,
@@ -526,7 +529,6 @@ export default {
             e1: 1,
             estado: ['Trabaja', 'No trabaja'],
             estadofoto: false,
-            estadofoto1: false,
             link: null,
             linkrules: [
                 v => !!v || 'Link es obligatorio',
@@ -539,6 +541,7 @@ export default {
             estadoselect: null,
             imagenAlumno: null,
             urlvalida: null,
+            errorMessages: '',
         };
     },
     created() {
@@ -667,39 +670,95 @@ export default {
                 console.log("url invalida ingresa otra")
             }
         },
-        enviardatos(nombre, nombreproyecto, nombreprofesor, cursospendientes, estadotrabajo, linkfoto) {
-            console.log("valor nombre: " + nombre)
-            console.log("valor nombre proyecto: " + nombreproyecto)
-            console.log("valor nombre profesor: " + nombreprofesor)
-            console.log("valor cursos pendientes : " + cursospendientes)
-            console.log("valor trabaja?: " + this.estadoselect)
-            console.log("valor link foto: " + linkfoto)
-            console.log("valor link foto2: " + this.imagenAlumno)
-            this.axios.get("todos_usuarios").then((respU)=>{
-                this.axios.get("todos_temas").then((respT)=>{
-                    const usuarios = respU.data
-                    const temas = respT.data
-                    var alumno = usuarios.filter(u=> u._id==localStorage.getItem("key_user"))
-                    var tema = temas.filter(t=> t._id == this.$store.state.id_tema_solicitar)
-                    alumno[0].img = this.imagenAlumno
-                    alumno[0].modulosfaltantes = cursospendientes
-                    var trabaja=null
-                    if(this.estadoselect=="Trabaja"){
-                        trabaja=true
-                    }else{
-                        trabaja=false
-                    }
-                    tema[0].postulantes.push({
-                        id: alumno[0]._id,
-                        nombre: alumno[0].nombre,
-                        img: this.imagenAlumno,
-                        modulos_faltantes: cursospendientes,
-                        trabaja:trabaja,
+        enviardatos(nombre, nombreproyecto, nombreprofesor, cursospendientes, estadoselect, estadofoto) {
+            if(nombre!=null&&nombreproyecto!=null&&nombreprofesor!=null&&cursospendientes.length!=0&&estadoselect!=null&&estadofoto!=false){
+                console.log("pasa1")
+                console.log("valor nombre: " + nombre)
+                console.log("valor nombre proyecto: " + nombreproyecto)
+                console.log("valor nombre profesor: " + nombreprofesor)
+                console.log("valor cursos pendientes : " + cursospendientes)
+                console.log("valor trabaja?: " + estadoselect)
+                console.log("valor estado foto: " + estadofoto)
+                console.log("valor link foto2: " + this.imagenAlumno)
+                this.axios.get("todos_usuarios").then((respU)=>{
+                    this.axios.get("todos_temas").then((respT)=>{
+                        const usuarios = respU.data
+                        const temas = respT.data
+                        var alumno = usuarios.filter(u=> u._id==localStorage.getItem("key_user"))
+                        var tema = temas.filter(t=> t._id == this.$store.state.id_tema_solicitar)
+                        alumno[0].img = this.imagenAlumno
+                        alumno[0].modulosfaltantes = cursospendientes
+                        var trabaja=null
+                        if(this.estadoselect=="Trabaja"){
+                            trabaja=true
+                        }else{
+                            trabaja=false
+                        }
+                        tema[0].postulantes.push({
+                            id: alumno[0]._id,
+                            nombre: alumno[0].nombre,
+                            img: this.imagenAlumno,
+                            modulos_faltantes: cursospendientes,
+                            trabaja:trabaja,
+                        })
+                        this.axios.put(`usuario_ac/${alumno[0]._id}`, alumno[0])
+                        this.axios.put(`tema_ac/${tema[0]._id}`,tema[0])
                     })
-                    this.axios.put(`usuario_ac/${alumno[0]._id}`, alumno[0])
-                    this.axios.put(`tema_ac/${tema[0]._id}`,tema[0])
                 })
-            })
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Se Ha Enviado La Solicitud',
+                    text: 'Se Ha Enviado Correctamente La Solicitud!',
+                })
+            }else{
+                console.log(" == cursos[0]: "+cursospendientes.length)
+                console.log("faltan datos")
+                console.log("valor nombre: " + nombre)
+                console.log("valor nombre proyecto: " + nombreproyecto)
+                console.log("valor nombre profesor: " + nombreprofesor)
+                console.log("valor cursos pendientes : " + cursospendientes)
+                console.log("valor trabaja?: " + estadoselect)
+                console.log("valor estado foto: " + estadofoto)
+                console.log("valor link foto2: " + this.imagenAlumno)
+                if(nombre==null){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Datos incorrectos...',
+                        text: 'Error de usuario!',
+                    })
+                }else if(nombreproyecto==null){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Datos incorrectos...',
+                        text: 'Error de proyecto!',
+                    }) 
+                }else if(nombreprofesor==null){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Datos incorrectos...',
+                        text: 'Error de profesor!',
+                    })
+                }else if(cursospendientes.length == 0){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Datos incorrectos...',
+                        text: 'Es necesario ingresar los cursos pendientes para continnuar!',
+                    })
+                }else if(estadoselect== null){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Datos incorrectos...',
+                        text: 'Es necesario ingresar si trabaja o no para continuar!',
+                    })
+                }else if(estadofoto== false){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Datos incorrectos...',
+                        text: 'Es necesario ingresar la imagen para continnuar!',
+                    })
+                }
+            }
+            
         },
 
     },

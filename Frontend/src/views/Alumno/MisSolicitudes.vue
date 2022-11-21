@@ -24,7 +24,7 @@
                 <v-progress-circular :size="50" color="primary" indeterminate
                     style="position: absolute;top:20%;left: 50%;" v-if="cargando_temas == true">
                 </v-progress-circular>
-                <div v-for="project in missolicitudestemas" :key="project._id">
+                <div v-for="(project,index) in missolicitudestemas" :key="index">
                     <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2"
                         v-if="project.resultado_comite == true && project.resultado_directora == true && project.colaborador == null">
 
