@@ -43,9 +43,8 @@
                                 <div>{{ project.descripcion }}</div>
                             </v-flex>
                             <v-flex xs2 sm1 md2>
-                                <div class="caption grey--text">Requisitos</div>
-                                <div v-for="(requisitos, index) in project.requisitos" :key="index"> - {{ requisitos }}
-                                </div>
+                                <div class="caption grey--text">Estado</div>
+                                <v-btn @click="verEstado(project)">ver estado</v-btn>     
                             </v-flex>
                         </v-layout>
                     </v-card>
@@ -113,6 +112,63 @@
                 </v-container>
             </v-card>
         </v-dialog>
+         <!-- dialogo para añadir un requisito -->
+        <v-dialog v-model="drawerEstado" max-width="500">
+            <v-card max-width="500">
+                <v-card-title>
+                    Estado
+                </v-card-title>
+                <v-card-text>
+                    <v-timeline>
+                        <v-timeline-item icon="mdi-clock" color="#bdbdbd"
+                            v-if="solicitud_seleccionada.resultado_comite == null">
+                            <span slot="opposite">Comite </span>
+                            <span slot="opposite">Pendiente</span>
+                        </v-timeline-item>
+                        <v-timeline-item icon="mdi-checkbox-marked-circle" color="green"
+                            v-if="solicitud_seleccionada.resultado_comite == true">
+                            <span slot="opposite">Comite </span>
+                            <span slot="opposite">Aceptado</span>
+                        </v-timeline-item>
+                        <v-timeline-item icon="mdi-cancel" color="red"
+                            v-if="solicitud_seleccionada.resultado_comite == false">
+                            <span slot="opposite">Comite </span>
+                            <span slot="opposite">Rechazado</span>
+                        </v-timeline-item>
+                        <v-timeline-item icon="mdi-clock" color="#bdbdbd"
+                            v-if="solicitud_seleccionada.resultado_directora == null">
+                            <span slot="opposite">Director </span>
+                            <span slot="opposite">Pendiente</span>
+                        </v-timeline-item>
+                        <v-timeline-item icon="mdi-checkbox-marked-circle" color="green"
+                            v-if="solicitud_seleccionada.resultado_directora == true">
+                            <span slot="opposite">Director </span>
+                            <span slot="opposite">Aceptado</span>
+                        </v-timeline-item>
+                        <v-timeline-item icon="mdi-cancel" color="red"
+                            v-if="solicitud_seleccionada.resultado_directora == false">
+                            <span slot="opposite">Director </span>
+                            <span slot="opposite">Rechazado</span>
+                        </v-timeline-item>
+                        <v-timeline-item icon="mdi-clock" color="#bdbdbd"
+                            v-if="solicitud_seleccionada.resultado_profesor == null">
+                            <span slot="opposite">Profesor </span>
+                            <span slot="opposite">Pendiente</span>
+                        </v-timeline-item>
+                        <v-timeline-item icon="mdi-checkbox-marked-circle" color="green"
+                            v-if="solicitud_seleccionada.resultado_profesor == true">
+                            <span slot="opposite">Profesor </span>
+                            <span slot="opposite">Aceptado</span>
+                        </v-timeline-item>
+                        <v-timeline-item icon="mdi-cancel" color="red"
+                            v-if="solicitud_seleccionada.resultado_profesor == false">
+                            <span slot="opposite">Profesor </span>
+                            <span slot="opposite">Rechazado</span>
+                        </v-timeline-item>
+                    </v-timeline>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
         <div class="text-center" v-if="cargando_temas == false && temas.length == 0">
             <h1> No tienes Temas</h1>
             <v-avatar size="150">
@@ -161,6 +217,8 @@ export default {
                     prop: 'descripcion',
                 },
             ],
+            solicitud_seleccionada:{},
+            drawerEstado:false,
         }
     },
     created() {
@@ -202,11 +260,12 @@ export default {
                     requisitos: [],
                     descripcion: null,
                     votos: [],
-                    postulantes:[],
+                    postulantes: [],
                     img: null,
                     resultado_comite: null,
                     resultado_directora: null,
                     resultado_profesor: null,
+                    
                 }
                 this.axios.get("todos_usuarios").then((resp) => {
                     const usuarios = resp.data
@@ -263,6 +322,10 @@ export default {
         sortBy(prop) {
             this.temas.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
         },
+        verEstado(solicitud){
+            this.drawerEstado=true
+            this.solicitud_seleccionada=solicitud
+        }
     },
 
 }

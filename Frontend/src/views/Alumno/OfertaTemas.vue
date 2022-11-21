@@ -43,8 +43,7 @@
                             <v-flex xs2 sm3 md2>
                                 <!-- <div class="caption grey--text">Durum</div> -->
                                 <div class="my-1 text-center">
-                                    <v-btn
-                                        @click="verSolicitud(project)">
+                                    <v-btn @click="verSolicitud(project)">
                                         Ver descripcion tema
                                     </v-btn>
                                 </div>
@@ -63,7 +62,7 @@
                             <v-container>
                                 <v-flex>
                                     <div class="caption black--text">Proyecto:</div>
-                                    <div>{{tema_seleccionado.nombre}}</div>
+                                    <div>{{ tema_seleccionado.nombre }}</div>
                                 </v-flex>
                                 <v-flex>
                                     <div class="caption black--text">Descripción:</div>
@@ -101,6 +100,8 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
+
 export default {
     name: "Alumno",
     data() {
@@ -112,7 +113,7 @@ export default {
             profesor: null,
             estudiante: null,
             cargando_temas: true,
-            tema_seleccionado:[],
+            tema_seleccionado: [],
             temas: [],
             oferta_temas: 0,
             itemsOrdenar: [
@@ -155,11 +156,28 @@ export default {
         },
         verSolicitud(tema) {
             this.drawerSolicitud = true;
-            this.tema_seleccionado=tema
+            this.tema_seleccionado = tema
         },
         enviarSolicitud(id) {
-            this.$store.state.id_tema_solicitar = id
-            this.$store.state.vistaSeleccionada = 3
+            var estado = false
+            for (var i = 0; i < this.temas.length; i++) {
+                for (var j = 0; j < this.temas[i].postulantes.length; j++) {
+                    if (localStorage.getItem("key_user") == this.temas[i].postulantes[j].id) {
+                        estado = true
+                    }
+                }
+            }
+            if (estado) {
+                Swal.fire(
+                    'Solicitud repetida!',
+                    'No puedes enviar 2 veces la misma solicitud!',
+                    'error'
+                )
+                this.drawerSolicitud=false
+            } else {
+                this.$store.state.id_tema_solicitar = id
+                this.$store.state.vistaSeleccionada = 3
+            }
         }
     },
 }
