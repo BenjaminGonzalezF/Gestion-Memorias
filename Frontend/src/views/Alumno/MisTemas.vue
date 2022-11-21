@@ -1,7 +1,8 @@
 <template>
     <div class="Temas">
         <v-layout row class="mx-1">
-            <v-btn depressed color="#f5a42a" dark small @click="agregar_temas(false,nombre_temacrear1,descripcion_temacrear1,profesor_temacrear1)">
+            <v-btn depressed color="#f5a42a" dark small
+                @click="agregar_temas(false, nombre_temacrear1, descripcion_temacrear1, profesor_temacrear1)">
                 Agregar tema
                 <v-icon right small>mdi-note-plus</v-icon>
             </v-btn>
@@ -19,16 +20,16 @@
                 <v-list>
                     <v-list-item v-for="(item, index) in itemsOrdenar" :key="index" link>
                         <v-list-item-title @click="sortBy(item.prop)">{{
-                            item.title
+                                item.title
                         }}</v-list-item-title>
                     </v-list-item>
                 </v-list>
             </v-menu>
         </v-layout>
-        <v-card height="500" width="100%" outlined class="overflow-y-auto" >
-            <v-container class="my-3"> 
+        <v-card height="500" width="100%" outlined class="overflow-y-auto">
+            <v-container class="my-3">
                 <v-container class="my-3">
-                    
+
                     <v-progress-circular :size="50" color="primary" indeterminate
                         style="position: absolute;top:20%;left: 50%;" v-if="cargando_temas == true">
                     </v-progress-circular>
@@ -45,7 +46,8 @@
                                 </v-flex>
                                 <v-flex xs2 sm1 md2>
                                     <div class="caption grey--text">Requisitos</div>
-                                    <div v-for="(requisitos, index) in project.requisitos" :key="index"> - {{ requisitos }}
+                                    <div v-for="(requisitos, index) in project.requisitos" :key="index"> - {{ requisitos
+                                    }}
                                     </div>
                                 </v-flex>
                             </v-layout>
@@ -60,24 +62,24 @@
                             <v-card-title class="justify-center">
                                 <span class="text-h5">Crear tema</span>
                             </v-card-title>
-                            <v-card-text  color="#F4F4F4">
+                            <v-card-text color="#F4F4F4">
                                 <v-text-field v-model="nombre_temacrear" label="Título del tema"
                                     :rules="[() => !!nombre_temacrear || 'Este campo no puede quedar vacio']"
-                                    :error-messages="errorMessages" required></v-text-field>    
-                                <v-textarea
-                                    v-model="descripcion_temacrear" label="Descripcion del tema" max-height="50"
+                                    :error-messages="errorMessages" required></v-text-field>
+                                <v-textarea v-model="descripcion_temacrear" label="Descripcion del tema" max-height="50"
                                     :rules="[() => !!descripcion_temacrear || 'Este campo no puede quedar vacio']"
-                                    :error-messages="errorMessages" required
-                                ></v-textarea>
+                                    :error-messages="errorMessages" required></v-textarea>
                                 <v-select v-model="profesor_temacrear" label="Profesor guia" :items="profesores_guias"
                                     :item-value="profesores_guias.value"
-                                    :rules="[() => profesor_temacrear!=null|| 'Se tiene que selecionar profesor guia']"
+                                    :rules="[() => profesor_temacrear != null || 'Se tiene que selecionar profesor guia']"
                                     :error-messages="errorMessages" required>
                                 </v-select>
                                 <v-col></v-col>
                                 <v-spacer></v-spacer>
-                                <v-row justify="space-around"> 
-                                    <v-btn class="white--text mt-3" color="rgb(0, 204, 255)" @click="agregar_temas(true,nombre_temacrear,descripcion_temacrear,profesor_temacrear)" :disabled="((nombre_temacrear==null)||(descripcion_temacrear==null)||(profesor_temacrear==null))" >
+                                <v-row justify="space-around">
+                                    <v-btn class="white--text mt-3" color="rgb(0, 204, 255)"
+                                        @click="agregar_temas(true, nombre_temacrear, descripcion_temacrear, profesor_temacrear)"
+                                        :disabled="((nombre_temacrear == null) || (descripcion_temacrear == null) || (profesor_temacrear == null))">
                                         Crear
                                     </v-btn>
                                 </v-row>
@@ -85,7 +87,7 @@
                         </v-container>
                     </v-card>
                 </v-dialog>
-                
+
                 <!-- dialogo para añadir un requisito -->
                 <v-dialog v-model="crearRequisito" max-width="500">
                     <v-card>
@@ -95,10 +97,11 @@
                             </v-card-title>
                             <v-card-text>
                                 <v-text-field v-model="requisito_anadir" label="Requisito"
-                                :rules="[() => !!requisito_anadir|| 'Este campo no puede quedar vacio']"
-                                :error-messages="errorMessages" required>></v-text-field>
+                                    :rules="[() => !!requisito_anadir || 'Este campo no puede quedar vacio']"
+                                    :error-messages="errorMessages" required>></v-text-field>
                                 <v-btn class="white--text mt-3" color="rgb(0, 204, 255)"
-                                    @click="agregar_requisitos_tema(false)" :disabled="requisito_anadir==null">Añadir</v-btn>
+                                    @click="agregar_requisitos_tema(false)" :disabled="requisito_anadir == null">Añadir
+                                </v-btn>
                             </v-card-text>
                         </v-container>
                     </v-card>
@@ -135,7 +138,7 @@ export default {
         return {
             nombre_temacrear1: "a",
             descripcion_temacrear1: "b",
-            profesor_temacrear1:"c",
+            profesor_temacrear1: "c",
             crearTema: false,
             crearRequisito: false,
             cargando_temas: true,
@@ -187,91 +190,105 @@ export default {
                     console.log(e)
                 })
         },
-        agregar_temas(crear_tema,titulo,descripcion,profesor) {
-            console.log("t : "+titulo)
-            console.log("d : "+descripcion)
-            console.log("p : "+profesor)
-            if(titulo==null||descripcion==null||profesor==null||titulo==""||descripcion==""||profesor==""){
+        agregar_temas(crear_tema, titulo, descripcion, profesor) {
+            console.log("t : " + titulo)
+            console.log("d : " + descripcion)
+            console.log("p : " + profesor)
+            if (titulo == null || descripcion == null || profesor == null || titulo == "" || descripcion == "" || profesor == "") {
                 console.log("error")
                 // pantalla de error 
-                if(titulo==null||titulo==""){
+                if (titulo == null || titulo == "") {
                     Swal.fire({
                         icon: 'error',
                         title: 'Datos incorrectos...',
                         text: 'Ingrese el titulo del tema',
                     })
-                }else if(descripcion==null||descripcion==""){
+                } else if (descripcion == null || descripcion == "") {
                     Swal.fire({
                         icon: 'error',
                         title: 'Datos incorrectos...',
                         text: 'Ingrese la descripcion del tema!',
                     })
-                }else if(profesor==null||profesor==""){
+                } else if (profesor == null || profesor == "") {
                     Swal.fire({
                         icon: 'error',
                         title: 'Datos incorrectos...',
                         text: 'Es necesario ingresar al profesor guia para continnuar!',
                     })
-                }   
-            }else{
-                console.log("t : "+titulo)
-                console.log("d : "+descripcion)
-                console.log("p : "+profesor)
-                console.log("se crea")
-                if (!crear_tema) { 
-                this.crearTema = true
-                } else {
-                var tema_crear = {
-                    nombre: null,
-                    idCreador: null,
-                    colaborador: null,
-                    estadoValido: null,
-                    estadorefsolicitud: null,
-                    fechacambio: null,
-                    requisitos: [],
-                    descripcion: null,
-                    votos: [],
-                    postulantes:[],
-                    img: null,
-                    resultado_comite: null,
-                    resultado_directora: null,
-                    resultado_profesor: null,
                 }
-                this.axios.get("todos_usuarios").then((resp) => {
-                    const usuarios = resp.data
-                    var comites = usuarios.filter(u => u.escomite == true)
-                    for (var i = 0; i < comites.length; i++) {
-                        tema_crear.votos.push({
-                            refcomite: comites[i]._id,
-                            voto: null
-                        })
+            } else {
+                console.log("t : " + titulo)
+                console.log("d : " + descripcion)
+                console.log("p : " + profesor)
+                console.log("se crea")
+                if (!crear_tema) {
+                    this.crearTema = true
+                } else {
+                    var tema_crear = {
+                        nombre: null,
+                        idCreador: null,
+                        colaborador: null,
+                        estadoValido: null,
+                        estadorefsolicitud: null,
+                        fechacambio: null,
+                        requisitos: [],
+                        descripcion: null,
+                        votos: [],
+                        postulantes: [],
+                        img: null,
+                        resultado_comite: null,
+                        resultado_directora: null,
+                        resultado_profesor: null,
                     }
-                    console.log(this.nombre_temacrear)
-                    console.log(this.descripcion_temacrear)
-                    console.log(this.requisitos_temacrear)
-                    tema_crear.nombre = this.nombre_temacrear
-                    tema_crear.descripcion = this.descripcion_temacrear
-                    tema_crear.requisitos = this.requisitos_temacrear
-                    tema_crear.idCreador = localStorage.getItem("key_user")
-                    tema_crear.colaborador = this.profesor_temacrear
-                    tema_crear.fechacambio = Date.now()
-                    console.log(tema_crear)
-                    this.axios.post("nuevo_tema", tema_crear).then((resp) => {
-                        this.nombre_temacrear = null
-                        this.descripcion_temacrear = null
-                        this.requisitos_temacrear = null
-                        this.$store.state.loading = true
-                        this.$store.commit('cargar_datos')
+                    Swal.fire({
+                        title: 'Estas Seguro?',
+                        text: "No se podrá revertir!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Si, confirmar!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            this.axios.get("todos_usuarios").then((resp) => {
+                                const usuarios = resp.data
+                                var comites = usuarios.filter(u => u.escomite == true)
+                                for (var i = 0; i < comites.length; i++) {
+                                    tema_crear.votos.push({
+                                        refcomite: comites[i]._id,
+                                        voto: null
+                                    })
+                                }
+                                console.log(this.nombre_temacrear)
+                                console.log(this.descripcion_temacrear)
+                                console.log(this.requisitos_temacrear)
+                                tema_crear.nombre = this.nombre_temacrear
+                                tema_crear.descripcion = this.descripcion_temacrear
+                                tema_crear.requisitos = this.requisitos_temacrear
+                                tema_crear.idCreador = localStorage.getItem("key_user")
+                                tema_crear.colaborador = this.profesor_temacrear
+                                tema_crear.fechacambio = Date.now()
+                                console.log(tema_crear)
+                                this.axios.post("nuevo_tema", tema_crear).then((resp) => {
+                                    this.nombre_temacrear = null
+                                    this.descripcion_temacrear = null
+                                    this.requisitos_temacrear = null
+                                    this.$store.state.loading = true
+                                    this.$store.commit('cargar_datos')
+                                })
+                            })
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'El Tema Agregado',
+                                text: 'Se ha agregado tema correctamente!',
+                            })
+
+                        }
                     })
-                })
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Se Tema Agregado',
-                    text: 'Se ha agregado tema correctamente!',
-                })
-            }    
+
+                }
             }
-            
+
         },
         agregar_requisitos_tema(consulta) {
             if (consulta) {
@@ -299,9 +316,9 @@ export default {
         sortBy(prop) {
             this.temas.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
         },
-       
+
     },
-   
+
 
 }
 
