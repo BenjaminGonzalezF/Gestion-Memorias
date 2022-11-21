@@ -91,13 +91,7 @@
                                     <!-- @click="deleteProject(project.id)" -->
                                 </v-btn>
                             </v-flex>
-                            <v-flex xs6 sm1 md1>
-                                <v-btn fab text small color="red accent-2" class="mt-1"
-                                    @click="exportPDF()"
-                                    >
-                                    Acta
-                                </v-btn>
-                            </v-flex>
+                            
                         </v-layout>
                      </v-card>
                     <v-dialog v-model="drawerSolicitud" max-width="900">
@@ -241,12 +235,6 @@ export default {
         })
     },
 
-    exportPDF() {
-        let pdfName = 'Acta'; 
-    var doc = new jsPDF();
-    doc.text("Hello World", 10, 10);
-    doc.save(pdfName + '.pdf');
-  },
     sortBy(prop) {
         this.solicitudes.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
     },
