@@ -1,17 +1,16 @@
 <template>
     <v-app>
       <v-navigation-drawer right app v-model="drawer" color="rgb(0, 204, 255)">
-  
         <v-layout column class="text-center">
           <v-flex class="mt-6">
             <v-avatar size="150">
               <v-img :src="this.$store.state.img">
-              <template v-slot:placeholder>
-                <v-row class="fill-height ma-0" align="center" justify="center">
-                  <v-progress-circular indeterminate color="white"></v-progress-circular>
-                </v-row>
-              </template>
-            </v-img>
+                <template v-slot:placeholder>
+                  <v-row class="fill-height ma-0" align="center" justify="center">
+                    <v-progress-circular indeterminate color="white"></v-progress-circular>
+                  </v-row>
+                </template>
+              </v-img>
             </v-avatar>
             <p class="white--text subheading-1 text-weight-bold mt-2">
               {{this.$store.state.nombre}}
@@ -22,8 +21,8 @@
             </p>
           </v-flex>
           <v-flex class="mt-3 mb-3">
-          <cambiarRol></cambiarRol>
-        </v-flex>   
+            <cambiarRol></cambiarRol>
+          </v-flex>   
         </v-layout>
         <v-list>
           <v-list-item-group>
@@ -43,7 +42,6 @@
   
       <v-app-bar flat app color="rgb(0, 204, 255)">
         <v-img max-height="40" max-width="50" src="@/assets/utal.png">
-  
         </v-img>
         <v-app-bar-nav-icon right absolute class="grey--text" @click="drawer = !drawer">
         </v-app-bar-nav-icon>
@@ -54,6 +52,7 @@
         <OfertaTemas v-if="this.$store.state.vistaSeleccionada==1"></OfertaTemas>
         <MisTemas v-if="this.$store.state.vistaSeleccionada==2"></MisTemas>
         <vistaSolicitar v-if=" this.$store.state.vistaSeleccionada==3"></vistaSolicitar>
+        <MisSolicitudes v-if=" this.$store.state.vistaSeleccionada==4"></MisSolicitudes>
       </v-main>
     </v-app>
   </template>
@@ -61,6 +60,7 @@
 import OfertaTemas from "./OfertaTemas.vue"
 import MisTemas from "./MisTemas.vue"
 import vistaSolicitar from "./VistaSolicitarTema.vue"
+import MisSolicitudes from "./MisSolicitudes.vue"
 import cambiarRol from "@/components/cambiarRol.vue"
 
 import Loading from '@/components/loading.vue';
@@ -71,7 +71,8 @@ export default {
             items: [
                 { title: "Oferta de Temas", icon: "mdi-folder" },
                 { title: "Mis Temas", icon: "mdi-folder" },
-                { title: "Cerrar sesion", icon: "mdi-forum" },
+                { title: "Mis Solicitudes", icon: "mdi-folder" },
+                { title: "Cerrar sesion", icon: "mdi-exit-to-app" },
             ],
             hover: "red",
             vista:1,
@@ -89,7 +90,8 @@ export default {
         Loading,
         MisTemas,
         vistaSolicitar,
-        cambiarRol
+        cambiarRol,
+        MisSolicitudes
     },
     methods: {
         redirigir(ref) {
@@ -101,9 +103,11 @@ export default {
                     this.$router.push({ path: "/" })
                 }
             }else if(ref == "Oferta de Temas"){
-              this.$store.state.vistaSeleccionada=1
+                this.$store.state.vistaSeleccionada=1
             }else if(ref == "Mis Temas"){
-              this.$store.state.vistaSeleccionada=2
+                this.$store.state.vistaSeleccionada=2
+            }else if(ref == "Mis Solicitudes"){
+                this.$store.state.vistaSeleccionada=4
             }
         }
     }
