@@ -1,5 +1,24 @@
 <template>
     <div class="Solicitudes">
+        <v-layout row class="mx-1">
+            <v-col cols="12" sm="6" md="4">
+                <v-autocomplete max-width="400" rounded solo-inverted v-model="buscar"
+                    :items="temasHistorial" color="white" item-text="nombre" item-title="nombre"
+                    label="Buscar proyectos" placeholder="Escribe para buscar"
+                    prepend-icon="mdi-database-search">
+                </v-autocomplete>
+            </v-col>
+            <v-spacer></v-spacer>
+            <v-menu offset-y>
+                <v-spacer></v-spacer>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn depressed color="rgb(0, 204, 255)" class="mb-5" dark small v-bind="attrs" v-on="on">
+                        Ordenar
+                        <v-icon right small>mdi-sort</v-icon>
+                    </v-btn>
+                </template>   
+            </v-menu>
+        </v-layout>
         <v-card height="500" width="100%" outlined class="overflow-y-auto" >
         <v-container>
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
@@ -8,35 +27,6 @@
             </v-progress-circular>
             <div v-else>
                 <v-container class="my-3">
-                    <v-layout row class="mx-1">
-                        <v-col cols="12" sm="6" md="4">
-                            <v-autocomplete max-width="400" rounded solo-inverted v-model="buscar"
-                                :items="temasHistorial" color="white" item-text="nombre" item-title="nombre"
-                                label="Buscar proyectos" placeholder="Escribe para buscar"
-                                prepend-icon="mdi-database-search">
-                            </v-autocomplete>
-                        </v-col>
-
-                        <v-spacer></v-spacer>
-                        <v-menu offset-y>
-                            <v-spacer></v-spacer>
-
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn depressed color="rgb(0, 204, 255)" class="mb-5" dark small v-bind="attrs"
-                                    v-on="on">
-                                    Ordenar
-                                    <v-icon right small>mdi-sort</v-icon>
-                                </v-btn>
-                            </template>
-                            <v-list>
-                                <v-list-item v-for="(item, index) in itemsOrdenar" :key="index" link>
-                                    <v-list-item-title @click="sortBy(item.prop)">{{
-                                            item.title
-                                    }}</v-list-item-title>
-                                </v-list-item>
-                            </v-list>
-                        </v-menu>
-                    </v-layout>
                     <div v-for="project in temas" :key="project._id">
                         <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2"
                             v-if="project.resultado_comite != null">

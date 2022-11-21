@@ -1,33 +1,34 @@
 <template>
     <div class="Temas">
+        <v-layout row class="mx-1">
+            <v-btn depressed color="#f5a42a" dark small @click="agregar_temas(false,nombre_temacrear1,descripcion_temacrear1,profesor_temacrear1)">
+                Agregar tema
+                <v-icon right small>mdi-note-plus</v-icon>
+            </v-btn>
+            <v-spacer></v-spacer>
+            <!-- Arreglar el ordenar Ojo********* -->
+            <v-menu offset-y>
+                <v-text-field class="pt-5" placeholder="Strawberries" outlined clearable></v-text-field>
+                <v-btn dark x-large color="pink"> SEARCH </v-btn>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn depressed color="#f5a42a" class="mb-5" dark small v-bind="attrs" v-on="on">
+                        Ordenar
+                        <v-icon right small>mdi-sort</v-icon>
+                    </v-btn>
+                </template>
+                <v-list>
+                    <v-list-item v-for="(item, index) in itemsOrdenar" :key="index" link>
+                        <v-list-item-title @click="sortBy(item.prop)">{{
+                            item.title
+                        }}</v-list-item-title>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
+        </v-layout>
         <v-card height="500" width="100%" outlined class="overflow-y-auto" >
             <v-container class="my-3"> 
                 <v-container class="my-3">
-                    <v-layout row class="mx-1">
-                        <v-btn depressed color="#f5a42a" dark small @click="agregar_temas(false,nombre_temacrear1,descripcion_temacrear1,profesor_temacrear1)">
-                            Agregar tema
-                            <v-icon right small>mdi-note-plus</v-icon>
-                        </v-btn>
-                        <v-spacer></v-spacer>
-                        <!-- Arreglar el ordenar Ojo********* -->
-                        <v-menu offset-y>
-                            <v-text-field class="pt-5" placeholder="Strawberries" outlined clearable></v-text-field>
-                            <v-btn dark x-large color="pink"> SEARCH </v-btn>
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn depressed color="#f5a42a" class="mb-5" dark small v-bind="attrs" v-on="on">
-                                    Ordenar
-                                    <v-icon right small>mdi-sort</v-icon>
-                                </v-btn>
-                            </template>
-                            <v-list>
-                                <v-list-item v-for="(item, index) in itemsOrdenar" :key="index" link>
-                                    <v-list-item-title @click="sortBy(item.prop)">{{
-                                            item.title
-                                    }}</v-list-item-title>
-                                </v-list-item>
-                            </v-list>
-                        </v-menu>
-                    </v-layout>
+                    
                     <v-progress-circular :size="50" color="primary" indeterminate
                         style="position: absolute;top:20%;left: 50%;" v-if="cargando_temas == true">
                     </v-progress-circular>
@@ -192,12 +193,32 @@ export default {
             console.log("p : "+profesor)
             if(titulo==null||descripcion==null||profesor==null||titulo==""||descripcion==""||profesor==""){
                 console.log("error")
-                // pantalla de error    
+                // pantalla de error 
+                if(titulo==null||titulo==""){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Datos incorrectos...',
+                        text: 'Ingrese el titulo del tema',
+                    })
+                }else if(descripcion==null||descripcion==""){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Datos incorrectos...',
+                        text: 'Ingrese la descripcion del tema!',
+                    })
+                }else if(profesor==null||profesor==""){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Datos incorrectos...',
+                        text: 'Es necesario ingresar al profesor guia para continnuar!',
+                    })
+                }   
             }else{
                 console.log("t : "+titulo)
                 console.log("d : "+descripcion)
                 console.log("p : "+profesor)
-                if (!crear_tema) {
+                console.log("se crea")
+                if (!crear_tema) { 
                 this.crearTema = true
                 } else {
                 var tema_crear = {
@@ -243,7 +264,12 @@ export default {
                         this.$store.commit('cargar_datos')
                     })
                 })
-            }
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Se Tema Agregado',
+                    text: 'Se ha agregado tema correctamente!',
+                })
+            }    
             }
             
         },

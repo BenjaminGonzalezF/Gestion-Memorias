@@ -1,5 +1,23 @@
 <template>
     <div class="Solicitudes">
+        <v-layout row class="mx-1">
+            <v-spacer></v-spacer>
+            <v-menu offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn depressed color="rgb(0, 204, 255)" class="mb-5" dark small v-bind="attrs" v-on="on">
+                        Ordenar 
+                        <v-icon right small>mdi-sort</v-icon>
+                    </v-btn>
+                </template>
+                <v-list>
+                    <v-list-item v-for="(item, index) in itemsOrdenar" :key="index" link>
+                        <v-list-item-title @click="sortBy(item.prop)">{{
+                            item.title
+                        }}</v-list-item-title>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
+        </v-layout>
         <v-card height="500" width="100%" outlined class="overflow-y-auto" >
             <v-container>
                 <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
@@ -8,25 +26,6 @@
                     </v-progress-circular>
                     <div>
                         <v-container class="my-3">
-                            <v-layout row class="mx-1">
-                                <v-spacer></v-spacer>
-                                <v-menu offset-y>
-                                    <template v-slot:activator="{ on, attrs }">
-                                        <v-btn depressed color="rgb(0, 204, 255)" class="mb-5" dark small v-bind="attrs"
-                                            v-on="on">
-                                            Ordenar
-                                            <v-icon right small>mdi-sort</v-icon>
-                                        </v-btn>
-                                    </template>
-                                    <v-list>
-                                        <v-list-item v-for="(item, index) in itemsOrdenar" :key="index" link>
-                                            <v-list-item-title @click="sortBy(item.prop)">{{
-                                                    item.title
-                                            }}</v-list-item-title>
-                                        </v-list-item>
-                                    </v-list>
-                                </v-menu>
-                            </v-layout>
                             <div v-for="(project, index) in temas" :key="index">
                                 <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2"
                                     v-if="project.resultado_comite && project.resultado_directora && project.resultado_profesor==null">

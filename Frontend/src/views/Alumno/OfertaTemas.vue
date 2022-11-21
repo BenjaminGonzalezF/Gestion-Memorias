@@ -1,26 +1,26 @@
 <template>
     <v-app>
+        <v-layout row class="mx-1">
+            <v-spacer></v-spacer>
+            <v-menu offset-y >
+            <template v-slot:activator="{ on, attrs }">
+                <v-btn depressed color="#f5a42a" class="mb-5" dark small v-bind="attrs" v-on="on">
+                    Ordenar
+                    <v-icon right small>mdi-sort</v-icon>
+                </v-btn>
+            </template>
+                <v-list >
+                    <v-list-item v-for="(item, index) in itemsOrdenar" :key="index" link>
+                        <v-list-item-title @click="sortBy(item.prop)">{{
+                            item.title
+                        }}</v-list-item-title>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
+        </v-layout>
         <div class="Oferta de temas">
             <v-card height="500" width="100%" outlined class="overflow-y-auto" >
                 <v-container class="my-3" >
-                    <v-layout row class="mx-1">
-                        <v-spacer></v-spacer>
-                        <v-menu offset-y >
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn depressed color="#f5a42a" class="mb-5" dark small v-bind="attrs" v-on="on">
-                                    Ordenar
-                                    <v-icon right small>mdi-sort</v-icon>
-                                </v-btn>
-                            </template>
-                            <v-list >
-                                <v-list-item v-for="(item, index) in itemsOrdenar" :key="index" link>
-                                    <v-list-item-title @click="sortBy(item.prop)">{{
-                                            item.title
-                                    }}</v-list-item-title>
-                                </v-list-item>
-                            </v-list>
-                        </v-menu>
-                    </v-layout>
                     <v-progress-circular :size="50" color="primary" indeterminate
                         style="position: absolute;top:20%;left: 50%;" v-if="cargando_temas == true">
                     </v-progress-circular>
