@@ -38,20 +38,20 @@
             </v-container>
             <!-- drawer agregar alumnos -->
             <v-container>
-                <v-dialog v-model="drawerAgregarAlumnos" width=80%>
+                <v-dialog v-model="drawerAgregarAlumnos" width=50%>
                     <v-stepper v-model="e1">
                         <v-stepper-header>
-                            <v-stepper-step :complete="e1 > 1" step="1">
+                            <v-stepper-step :complete="e1 > 1" step="1" color="pink">
                                 Descargar Plantilla
                             </v-stepper-step>
                             <v-divider></v-divider>
-                            <v-stepper-step :complete="e1 > 2" step="2">
+                            <v-stepper-step :complete="e1 > 2" step="2" color="pink">
                                 Importar datos
                             </v-stepper-step>
 
                             <v-divider></v-divider>
 
-                            <v-stepper-step step="3">
+                            <v-stepper-step color="pink" step="3">
                                 Confirmacion
                             </v-stepper-step>
                         </v-stepper-header>
@@ -64,10 +64,10 @@
                                     <v-card-text> </v-card-text>
                                     <v-btn class="ml-4" @click="descargarPlantilla()">Plantilla.xls</v-btn>
                                 </v-card>
-                                <v-btn color="primary" @click="e1 = 2">
+                                <v-btn color="pink" class="white--text" @click="e1 = 2">
                                     Continuar
                                 </v-btn>
-                                <v-btn text>
+                                <v-btn @click="drawerAgregarAlumnos = false" text>
                                     Cancelar
                                 </v-btn>
                             </v-stepper-content>
@@ -84,10 +84,10 @@
                                     </v-card-actions>
                                     <input id="archivoExcel" type="file" class="ml-4" @change="importarDatos()" />
                                 </v-card>
-                                <v-btn color="primary" @click="e1 = 3">
+                                <v-btn color="pink" class="white--text" @click="e1 = 3">
                                     Continue
                                 </v-btn>
-                                <v-btn text>
+                                <v-btn @click="e1 = 1" text>
                                     Cancel
                                 </v-btn>
                             </v-stepper-content>
@@ -95,11 +95,11 @@
                             <v-stepper-content step="3">
                                 <v-card class="mb-12" color="grey lighten-1" height="200px"></v-card>
 
-                                <v-btn color="primary" @click="e1 = 1">
+                                <v-btn @click="drawerAgregarAlumnos = false" color="pink" class="white--text">
                                     Continue
                                 </v-btn>
 
-                                <v-btn text>
+                                <v-btn @click="e1 = 2" text>
                                     Cancel
                                 </v-btn>
                             </v-stepper-content>
@@ -119,7 +119,7 @@ export default ({
     data() {
         return {
             search: '',
-            e1: null,
+            e1: 2,
             drawer: null,
             drawerAgregarAlumnos: null,
             datosImportados: [],
