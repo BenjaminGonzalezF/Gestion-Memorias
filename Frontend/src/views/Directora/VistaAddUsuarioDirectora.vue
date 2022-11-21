@@ -1,6 +1,7 @@
 <template>
     <div>
         <loading></loading>
+        
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
             <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;
             top:20%;
@@ -8,7 +9,14 @@
             
             </v-progress-circular>
             <v-container class="my-3">
+                
                 <v-layout row class="mx-1 my-1">
+                    <v-row>
+                        <v-col md="5">
+                            <v-text-field append-icon="mdi-magnify" v-model="search" label="Buscar" single-line hide-details="">
+                            </v-text-field>
+                        </v-col>
+                    </v-row>
                     <v-spacer></v-spacer>
 
                     <v-menu offset-y>
@@ -22,17 +30,18 @@
                 </v-layout>
                 <v-spacer></v-spacer>
                 <div>
-                    <v-card>
-                        <v-card-title>
+                    <v-card color="light-blue accent-2 white--text">
+                        <v-card-title >
                             Usuarios
+                            <v-divider class="mx-6" inset vertical></v-divider>
                             <v-spacer></v-spacer>
-                            <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line
-                                hide-details></v-text-field>
                         </v-card-title>
+                        <v-divider></v-divider>
 
                         <v-data-table :items="usuarios" :headers="headers" :search="search" :items-per-page="5"
                             v-if="usuarios.length > 0">
                         </v-data-table>
+                        
                     </v-card>
                 </div>
             </v-container>
@@ -126,11 +135,11 @@ export default ({
             items: [],
             usuarios: [],
             headers: [
-                { text: 'img', value: 'img' },
-                { text: 'id', value: '_id' },
-                { text: 'nombre', value: 'nombre' },
-                { text: 'profesor', value: 'profesor' },
-                { text: 'alumno', value: 'alumno' },
+                { text: 'IMG', value: 'img', class:'light-blue accent-2 white--text' },
+                { text: 'ID', value: '_id', class:'light-blue accent-2 white--text' },
+                { text: 'NOMBRE', value: 'nombre', class:'light-blue accent-2 white--text' },
+                { text: 'PROFESOR', value: 'profesor', class:'light-blue accent-2 white--text' },
+                { text: 'ALUMNO', value: 'alumno', class:'light-blue accent-2 white--text' },
             ],
             headers_table: [
                 { text: 'nombre', value: '0' },
