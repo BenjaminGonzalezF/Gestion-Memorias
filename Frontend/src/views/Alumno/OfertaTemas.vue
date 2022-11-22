@@ -160,11 +160,9 @@ export default {
         },
         enviarSolicitud(id) {
             var estado = false
-            for (var i = 0; i < this.temas.length; i++) {
-                for (var j = 0; j < this.temas[i].postulantes.length; j++) {
-                    if (localStorage.getItem("key_user") == this.temas[i].postulantes[j].id) {
-                        estado = true
-                    }
+            for (var i = 0; i < this.tema_seleccionado.postulantes.length; i++) {
+                if (localStorage.getItem("key_user") == this.tema_seleccionado.postulantes[i].id) {
+                    estado = true
                 }
             }
             if (estado) {
@@ -173,7 +171,7 @@ export default {
                     'No puedes enviar 2 veces la misma solicitud!',
                     'error'
                 )
-                this.drawerSolicitud=false
+                this.drawerSolicitud = false
             } else {
                 this.$store.state.id_tema_solicitar = id
                 this.$store.state.vistaSeleccionada = 3
