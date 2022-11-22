@@ -39,9 +39,9 @@
           </v-list-item-group>
         </v-list>
       </v-navigation-drawer>
-  
       <v-app-bar flat app color="rgb(0, 204, 255)">
         <v-img max-height="40" max-width="50" src="@/assets/utal.png">
+
         </v-img>
         <v-app-bar-nav-icon right absolute class="grey--text" @click="drawer = !drawer">
         </v-app-bar-nav-icon>
@@ -53,17 +53,21 @@
         <MisTemas v-if="this.$store.state.vistaSeleccionada==2"></MisTemas>
         <vistaSolicitar v-if=" this.$store.state.vistaSeleccionada==3"></vistaSolicitar>
         <MisSolicitudes v-if=" this.$store.state.vistaSeleccionada==4"></MisSolicitudes>
+        <AprobadoTema v-if=" this.$store.state.vistaSeleccionada==5"></AprobadoTema>
       </v-main>
     </v-app>
   </template>
+
 <script>
 import OfertaTemas from "./OfertaTemas.vue"
 import MisTemas from "./MisTemas.vue"
 import vistaSolicitar from "./VistaSolicitarTema.vue"
 import MisSolicitudes from "./MisSolicitudes.vue"
+import AprobadoTema from "./TemaAprobado.vue"
 import cambiarRol from "@/components/cambiarRol.vue"
 
 import Loading from '@/components/loading.vue';
+
 export default {
     data() {
         return {
@@ -72,6 +76,7 @@ export default {
                 { title: "Oferta de Temas", icon: "mdi-folder" },
                 { title: "Mis Temas", icon: "mdi-folder" },
                 { title: "Mis Solicitudes", icon: "mdi-folder" },
+                { title: "Comprobante certificado", icon:"mdi-folder"},
                 { title: "Cerrar sesion", icon: "mdi-exit-to-app" },
             ],
             hover: "red",
@@ -91,7 +96,8 @@ export default {
         MisTemas,
         vistaSolicitar,
         cambiarRol,
-        MisSolicitudes
+        MisSolicitudes,
+        AprobadoTema
     },
     methods: {
         redirigir(ref) {
@@ -108,6 +114,8 @@ export default {
                 this.$store.state.vistaSeleccionada=2
             }else if(ref == "Mis Solicitudes"){
                 this.$store.state.vistaSeleccionada=4
+            }else if(ref== "Comprobante certificado"){
+              this.$store.state.vistaSeleccionada=5
             }
         }
     }

@@ -24,19 +24,19 @@
                         <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2"
                             v-if="project.resultado_comite == true">
                             <v-layout row wrap :class="`pa- project ${project.estadovalido}`">
-                                <v-flex xs8 md2>
+                                <v-flex xs8 md3>
                                     <div class="caption grey--text">Titulo proyecto</div>
                                     <div>{{ project.nombre }}</div>
                                 </v-flex>
-                                <v-flex xs2 sm1 md2>
+                                <v-flex xs1 md2>
                                     <div class="caption grey--text">Creador</div>
                                     <div>{{ project.nombreCreador }}</div>
                                 </v-flex>
-                                <v-flex xs6 sm4 md1>
+                                <v-flex xs6 md3>
                                     <div class="caption grey--text">fecha</div>
                                     <div>{{ project.fechacambio }}</div>
                                 </v-flex>
-                                <v-flex xs6 sm4 md1>
+                                <v-flex xs5 md2>
                                     <div class="caption grey--text">Estado</div>
                                     <div v-if="project.resultado_comite">Aprobado</div>
                                     <div v-else>Rechazado</div>
@@ -74,7 +74,6 @@
                                             <div class="caption black--text">Creador:</div>
                                             <div>{{ estudiante }}</div>
                                         </v-flex>
-
                                         <v-flex>
                                             <div class="caption black--text">fecha:</div>
                                             <div>{{ fecha }}</div>
@@ -86,18 +85,6 @@
                     </v-dialog>
                 </v-container>
             </div>
-            <div class="text-center" v-if="cargando_temas == false && temas.length == 0">
-                <h1> No tienes temas en el Historial</h1>
-                <v-avatar size="150">
-                    <v-img src="https://media.tenor.com/-wrmUJrUbeoAAAAM/emoji-disintergrating.gif">
-                        <template v-slot:placeholder>
-                            <v-row class="fill-height ma-0" align="center" justify="center">
-                                <v-progress-circular indeterminate color="white"></v-progress-circular>
-                            </v-row>
-                        </template>
-                    </v-img>
-                </v-avatar>
-            </div>
         </v-sheet>
     </v-container>
     </v-card>
@@ -105,10 +92,7 @@
 </template>
 
 <script>
-import Swal from 'sweetalert2'
 import loading from '@/components/loading.vue';
-import jsPDF from 'jspdf'
-import html2canvas from 'html2canvas';
 export default {
     name: 'Solicitudes',
     components: {
@@ -195,4 +179,3 @@ export default {
     }
 }
 </script>
-

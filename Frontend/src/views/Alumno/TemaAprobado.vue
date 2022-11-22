@@ -1,6 +1,5 @@
 <template>
     <div>
-        <header-profe></header-profe>
         <div class="elementos">
             <div class="elemento1">
                 <div class="caja">
@@ -19,8 +18,11 @@
             <div class="elemento2">
                 <h2>Información</h2>
                 <div class="caja2">
-                    <div v-for="(tema, index) in tema" :key="index">
-                        <p>{{ index }} : {{ tema }}</p>
+                    <div>
+                        <p>Nombre tema: {{tema.nombre}}</p>
+                        <p>Descripción: {{tema.descripcion}}</p>
+                        <p>Profesor asignado: FALTA</p>
+                        <p v-for="(participante,index) in participantes"  :key="participante.id">Alumno {{index+1}}: {{participante}}</p>
                     </div>
                 </div>
             </div>
@@ -32,23 +34,35 @@
 <script>
 import headerProfe from '@/components/headerProfe.vue'
 import jsPDF from 'jspdf'
-import html2canvas from 'html2canvas';
 
 export default {
     components: { headerProfe },
     data() {
         return {
             idTema: "",
-            tema: { "Nombre Alumno": "Fernando Gonzalez", "Nombre del tema": "Ejemplo proyecto 2", "Profesor Guía": "Rodrigo Pavez", "Detalles del tema": "Se realizará un estudio exhaustivo de los métodos actualmente existentes utilizados para el reconocimiento de patrones, tanto desde el punto de vista estadístico como de redes neuronales.Se analizarán ventajas y desventajas de cada uno de ellos, a través del diseño de un experimento estándar. Se dará especial énfasis a aquellos basados en redes neuronales con buena capacidad de aprendizaje. El tema finalizará con la sugerencia del mejor método para clasificar el origen de los vinos chilenos." },
+            tema: { },
+            participantes: [],
         }
     },
     created() {
         this.idTema = this.$route.params.id;
+        this.obtenerTema(this.idTema);
     },
     methods: {
+        obtenerTema(temaId){
+            this.axios.get('tema/'+temaId).then((response) => {
+                this.tema = response.data;
+                this.tema.postulantes.forEach(element => {
+                    console.log(element);
+                    this.participantes.push(element.nombre);
+                });
+                
+            });
+            
+        },
         createPDF() {
             var pdf = new jsPDF('p', 'mm', 'letter');
-            var strArr = pdf.splitTextToSize(this.tema['Detalles del tema'], 195)
+            var strArr = pdf.splitTextToSize(this.tema['descripcion'], 195)
             pdf.setFontSize(22);
             pdf.setFontSize(16);
 
@@ -67,15 +81,14 @@ export default {
             img.crossOrigin = "";
             img.src = "//i.imgur.com/Hjs2ccm.png";
             img2.src = "//i.imgur.com/gopDy9Y.png";
-
-            pdf.text(13, 80, "El siguiente documento acredita que, " + this.tema['Nombre Alumno'] + " puede comenzar");
-            pdf.text(13, 90, "a realizar su trabajo de tesis.");
+            
+            var participantes = pdf.splitTextToSize("El siguiente documento acredita que, " + this.participantes + " puede comenzar a realizar su trabajo de tesis.", 190)
+            pdf.text(13, 80,participantes);
             pdf.text(13, 140, "INFORMACIÓN:");
             pdf.text(13, 141, "_____________");
-            pdf.text(13, 155, "Nombre del tema: " + this.tema['Nombre del tema']);
+            pdf.text(13, 155, "Nombre del tema: " + this.tema['nombre']);
             pdf.text(13, 165, "Profesor guía: " + this.tema['Profesor Guía']);
             pdf.text(13,175,strArr)
-            //pdf.text(13, 175, "Detalles del tema: " + this.tema['Detalles del tema']);
         }
     }
 }
