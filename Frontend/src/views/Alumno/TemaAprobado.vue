@@ -11,7 +11,7 @@
                         src="@/assets/check.png"></v-img>
                 </div>
                 <div class="boton">
-                    <v-btn v-on:click="createPDF()">Descarga el documento<v-img max-height="20" max-width="20"
+                    <v-btn color = pink v-on:click="createPDF()">PDF<v-img max-height="20" max-width="20"
                             height="5%" width="auto" src="@/assets/download.png"></v-img>
                     </v-btn>
                 </div>

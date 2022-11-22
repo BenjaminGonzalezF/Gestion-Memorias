@@ -52,15 +52,19 @@
         <vistaSolicitud v-if="vista==1"></vistaSolicitud>
         <Estudiantes v-if="vista==2"></Estudiantes>
         <vistaMemoria v-if="vista==3"></vistaMemoria>
+        <historial v-if="vista==4"></historial>>
       </v-main>
     </v-app>
   </template>
+
 <script>
 import vistaSolicitud from "./VistaTemasDirectora.vue"
 import vistaMemoria from "./VistaMemoriaDirectora.vue"
 import Estudiantes from './VistaAddUsuarioDirectora.vue';
 import Loading from '@/components/loading.vue';
+import historial from './HistorialMemoria.vue';
 import cambiarRol from '@/components/cambiarRol.vue';
+
 export default {
     data() {
         return {
@@ -69,6 +73,7 @@ export default {
                 { title: "Solicitud de temas", route: '/solicitudTemas', icon: "mdi-folder" },
                 { title: "Añadir usuarios", route: '/solicitudTemas', icon: "mdi-folder" },
                 { title: "Solicitud de memorias", route: '/solicitudTemas', icon: "mdi-folder" },
+                { title: "Historial de memorias", route: '/HistorialMemoria', icon: "mdi-folder"},
                 { title: "Cerrar sesion", icon: "mdi-forum" },
             ],
             hover: "red",
@@ -87,6 +92,7 @@ export default {
         vistaMemoria,
         Estudiantes,
         Loading,
+        historial,
         cambiarRol
     },
     methods: {
@@ -104,6 +110,8 @@ export default {
                 this.vista=1
             }else if(ref == "Solicitud de memorias"){
                 this.vista=3
+            }else if(ref == "Historial de memorias"){
+              this.vista=4
             }
         }
     }
