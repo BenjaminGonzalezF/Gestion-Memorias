@@ -281,9 +281,9 @@ export default {
                 .setFont("helvetica")
                 .setFontSize(12)
 
-                .text("Directora de carrera" , 3.5, 20.5, { align: "left", maxWidth: "20.5" });
+                .text("Directora de carrera" , 8.5, 20.5, { align: "left", maxWidth: "20.5" });
 
-                pdf.setLineWidth(0.01).line(0.5, 20, 10, 20);
+                pdf.setLineWidth(0.01).line(5.5, 20, 15, 20);
             pdf
                 .setFont("times")
                 .setFontSize(10)
