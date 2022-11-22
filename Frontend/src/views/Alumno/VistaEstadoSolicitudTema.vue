@@ -3,7 +3,10 @@
     <div class="Oferta de temas">
        
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
-            <h1>Alumnos: Estado de Solicitudes</h1> 
+            <div class="one">
+            <h1>Alumnos: Estado de Solicitudes</h1>
+            </div>
+            
         <div>
          
             <v-container class="my-3">
@@ -184,4 +187,31 @@
         display: flex;
         font-size: 16px;
     }
+    .one h1 {
+  text-align: center;
+  text-transform: uppercase;
+  padding-bottom: 5px;
+}
+.one h1:before {
+  width: 28px;
+  height: 5px;
+  display: block;
+  content: "";
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  margin-left: -14px;
+  background-color: #f5a42a;
+}
+.one h1:after {
+  width: 100px;
+  height: 1px;
+  display: block;
+  content: "";
+  position: relative;
+  margin-top: 25px;
+  left: 50%;
+  margin-left: -50px;
+  background-color: #f5a42a;
+}
 </style>

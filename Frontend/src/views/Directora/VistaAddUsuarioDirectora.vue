@@ -1,7 +1,11 @@
 <template>
     <div>
         <loading></loading>
-        <h1>Direccción de escuela: Añadir estudiantes</h1>
+
+        <div class="one">
+            <h1>Direccción de escuela: Añadir estudiantes</h1>
+            </div>
+       
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
             <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;
             top:20%;
@@ -181,3 +185,42 @@ export default ({
     }
 })
 </script>
+
+
+<style> 
+    .v-list-item:hover { 
+        background: #f5a42a; 
+    } 
+    .box {
+        display: flex;
+        font-size: 16px;
+    }
+    .one h1 {
+  text-align: center;
+  text-transform: uppercase;
+  padding-bottom: 5px;
+}
+.one h1:before {
+  width: 28px;
+  height: 5px;
+  display: block;
+  content: "";
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  margin-left: -14px;
+  background-color: #f5a42a;
+}
+.one h1:after {
+  width: 100px;
+  height: 1px;
+  display: block;
+  content: "";
+  position: relative;
+  margin-top: 25px;
+  left: 50%;
+  margin-left: -50px;
+  background-color: #f5a42a;
+}
+</style>
+
