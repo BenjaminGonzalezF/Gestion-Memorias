@@ -1,40 +1,32 @@
 <template>
     <div class="Solicitudes">
+        <v-layout row class="mx-1">
+            <v-col cols="12" sm="6" md="4">
+                <v-autocomplete max-width="400" rounded solo-inverted v-model="buscar"
+                    :items="temasHistorial" color="white" item-text="nombre" item-title="nombre"
+                    label="Buscar proyectos" placeholder="Escribe para buscar"
+                    prepend-icon="mdi-database-search">
+                </v-autocomplete>
+            </v-col>
+            <v-spacer></v-spacer>
+            <v-menu offset-y>
+                <v-spacer></v-spacer>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn depressed color="rgb(0, 204, 255)" class="mb-5" dark small v-bind="attrs" v-on="on">
+                        Ordenar
+                        <v-icon right small>mdi-sort</v-icon>
+                    </v-btn>
+                </template>   
+            </v-menu>
+        </v-layout>
+        <v-card height="500" width="100%" outlined class="overflow-y-auto" >
+        <v-container>
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
             <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;top:20%;left: 50%;"
                 v-if="cargando_temas == true">
             </v-progress-circular>
             <div v-else>
                 <v-container class="my-3">
-                    <v-layout row class="mx-1">
-                        <v-col cols="12" sm="6" md="4">
-                            <v-autocomplete max-width="400" rounded solo-inverted v-model="buscar"
-                                :items="temasHistorial" color="white" item-text="nombre" item-title="nombre"
-                                label="Buscar proyectos" placeholder="Escribe para buscar"
-                                prepend-icon="mdi-database-search">
-                            </v-autocomplete>
-                        </v-col>
-
-                        <v-spacer></v-spacer>
-                        <v-menu offset-y>
-                            <v-spacer></v-spacer>
-
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn depressed color="rgb(0, 204, 255)" class="mb-5" dark small v-bind="attrs"
-                                    v-on="on">
-                                    Ordenar
-                                    <v-icon right small>mdi-sort</v-icon>
-                                </v-btn>
-                            </template>
-                            <v-list>
-                                <v-list-item v-for="(item, index) in itemsOrdenar" :key="index" link>
-                                    <v-list-item-title @click="sortBy(item.prop)">{{
-                                            item.title
-                                    }}</v-list-item-title>
-                                </v-list-item>
-                            </v-list>
-                        </v-menu>
-                    </v-layout>
                     <div v-for="project in temas" :key="project._id">
                         <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2"
                             v-if="project.resultado_comite != null">
@@ -81,7 +73,8 @@
                                 </v-flex>
                                 <v-flex xs2 sm1 md2>
                                     <v-btn class="ml-6 white--text" color="#FF0182"
-                                        @click="exportPDF(project.nombre, project.nombreCreador)">PDF
+
+                                        @click="exportPDF(project)">PDF
                                     </v-btn>
                                 </v-flex>
                             </v-layout>
@@ -133,6 +126,8 @@
                 </v-avatar>
             </div>
         </v-sheet>
+    </v-container>
+    </v-card>
     </div>
 </template>
   
@@ -204,14 +199,34 @@ export default {
                     console.log(e)
                 })
         },
-        exportPDF(titulo, estudiante) {
+        exportPDF(tema) {
             let pdfName = 'Acta';
-
             var pdf = new jsPDF({
                 orientation: "p",
                 unit: "cm",
                 format: "letter"
             });
+            var tituloTema= tema.nombre
+            var colaborador= tema.nombreCreador
+            var resultado= null
+            if(tema.resultado_comite== true){
+                resultado= "Aprobado"
+            }else{
+                resultado = "Rechazado"
+            }
+
+             var comite1 = null
+             var comite2 = null
+             var comite3 = null
+             for(var i=0;i<tema.votos.length;i++){
+                if(i==0){
+                    comite1=tema.votos[i].nombrecomite
+                }else if(i==1){
+                    comite2=tema.votos[i].nombrecomite
+                }else if(i==2){
+                    comite3=tema.votos[i].nombrecomite
+                }
+             }
             var img = new Image;
             var img2 = new Image;
 
@@ -227,14 +242,14 @@ export default {
             img.crossOrigin = "";
             img.src = "//i.imgur.com/2QXaKmk.png";
             img2.src = "//i.imgur.com/KEhaByh.jpg";
-            pdf.setFontSize(18).text("Acta Veredicto Del Consejo", 1, 5.0);
+            pdf.setFontSize(18).text("Acta Veredicto Del Comite", 1, 5.0);
             pdf.setLineWidth(0.01).line(0.5, 5.1, 20.0, 5.1);
             pdf
                 .setFont("helvetica")
                 .setFontSize(12)
                 .text("Luego de una exhaustiva reunión de los integrantes del comtité en la cual se ha logrado llegar a una conclusión, " +
                     " se presentan los resultados de la votación de la solicitud del tema "
-                    + titulo + " propuesto por " + estudiante +
+                    + tituloTema + " propuesto por " + colaborador +
                     ". ", 0.5, 6.5, { maxWidth: "20.5" });
             pdf
                 .setFont("helvetica")
@@ -244,23 +259,31 @@ export default {
                 .setFont("helvetica")
                 .setFontSize(12)
 
-                .text("1.-", 0.5, 10, { align: "left", maxWidth: "20.5" });
+                .text("1.- "+ comite1 , 0.5, 10, { align: "left", maxWidth: "20.5" });
             pdf
                 .setFont("helvetica")
                 .setFontSize(12)
 
-                .text("2.-", 0.5, 11, { align: "left", maxWidth: "20.5" });
+                .text("2.-"+ comite2, 0.5, 11, { align: "left", maxWidth: "20.5" });
             pdf
                 .setFont("helvetica")
                 .setFontSize(12)
 
-                .text("3.-", 0.5, 12, { align: "left", maxWidth: "20.5" });
+                .text("3.-"+ comite3, 0.5, 12, { align: "left", maxWidth: "20.5" });
             pdf
                 .setFont("helvetica")
                 .setFontSize(12)
 
-                .text("Dando asi como resultado que la propuesta es " + ". ", 0.5, 13, { align: "left", maxWidth: "20.5" });
+                .text("Dando asi como resultado que la propuesta es " + resultado+ ". ", 0.5, 13, { align: "left", maxWidth: "20.5" });
 
+
+            pdf
+                .setFont("helvetica")
+                .setFontSize(12)
+
+                .text("Directora de carrera" , 8.5, 20.5, { align: "left", maxWidth: "20.5" });
+
+                pdf.setLineWidth(0.01).line(5.5, 20, 15, 20);
             pdf
                 .setFont("times")
                 .setFontSize(10)

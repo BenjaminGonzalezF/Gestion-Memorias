@@ -1,29 +1,30 @@
 <template>
     <v-app>
         <div class="Oferta de temas">
+            <v-layout row class="mx-1">
+                <v-spacer></v-spacer>
+                <v-menu offset-y>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn depressed color="#f5a42a" class="mb-5" dark small v-bind="attrs" v-on="on">
+                            Ordenar
+                            <v-icon right small>mdi-sort</v-icon>
+                        </v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item v-for="(item, index) in itemsOrdenar" :key="index" link>
+                            <v-list-item-title @click="sortBy(item.prop)">{{
+                                item.title
+                            }}</v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+            </v-layout>
+            <v-card height="500" width="100%" outlined class="overflow-y-auto" >
             <v-container class="my-3">
-                <v-layout row class="mx-1">
-                    <v-spacer></v-spacer>
-                    <v-menu offset-y>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn depressed color="#f5a42a" class="mb-5" dark small v-bind="attrs" v-on="on">
-                                Ordenar
-                                <v-icon right small>mdi-sort</v-icon>
-                            </v-btn>
-                        </template>
-                        <v-list>
-                            <v-list-item v-for="(item, index) in itemsOrdenar" :key="index" link>
-                                <v-list-item-title @click="sortBy(item.prop)">{{
-                                        item.title
-                                }}</v-list-item-title>
-                            </v-list-item>
-                        </v-list>
-                    </v-menu>
-                </v-layout>
                 <v-progress-circular :size="50" color="primary" indeterminate
                     style="position: absolute;top:20%;left: 50%;" v-if="cargando_temas == true">
                 </v-progress-circular>
-                <div v-for="(project, index) in missolicitudestemas" :key="index">
+                <div v-for="(project,index) in missolicitudestemas" :key="index">
                     <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2"
                         v-if="project.resultado_comite == true && project.resultado_directora == true && project.colaborador == null">
 
@@ -58,6 +59,7 @@
                     </v-avatar>
                 </div>
             </v-container>
+        </v-card>
         </div>
     </v-app>
 </template>

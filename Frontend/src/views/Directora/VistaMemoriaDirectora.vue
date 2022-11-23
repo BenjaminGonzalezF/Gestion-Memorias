@@ -1,38 +1,39 @@
 <template>
     <div class="Solicitudes">
+        <v-layout row class="mx-1">
+            <v-spacer></v-spacer>
+            <v-btn-toggle v-model="toggle" dense class="mr-2" style="max-height: 20px !important">
+                <v-btn small color="#f5a42a" :disabled="toggle === 0">
+                    <v-icon class="white--text">mdi-view-agenda</v-icon>
+                </v-btn>
+                <v-btn small color="#f5a42a" :disabled="toggle === 1">
+                    <v-icon class="white--text">mdi-view-grid</v-icon>
+                </v-btn>
+            </v-btn-toggle>
+            <v-menu offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn depressed color="#f5a42a" class="mb-5" dark small v-bind="attrs" v-on="on">
+                        Ordenar
+                        <v-icon right small>mdi-sort</v-icon>
+                    </v-btn>
+                </template>
+                <v-list>
+                    <v-list-item v-for="(item, index) in itemsOrdenar" :key="index" link>
+                        <v-list-item-title @click="sortBy(item.prop)">{{
+                            item.title
+                        }}</v-list-item-title>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
+        </v-layout>
+        <v-card height="500" width="100%" outlined class="overflow-y-auto" >
+        <v-container>
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;" v-if="!this.$store.state.loading">
             <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;top:20%;left: 50%;"
                 v-if="cargando_solicitudes && solicitudes_pendientes == 0">
             </v-progress-circular>
             <div>
                 <v-container class="my-3">
-                    <v-layout row class="mx-1">
-                        <v-spacer></v-spacer>
-                        <v-btn-toggle v-model="toggle" dense class="mr-2" style="max-height: 20px !important">
-                            <v-btn small color=#f5a42a :disabled="toggle === 0">
-                                <v-icon class="white--text">mdi-view-agenda</v-icon>
-                            </v-btn>
-
-                            <v-btn small color=#f5a42a :disabled="toggle === 1">
-                                <v-icon class="white--text">mdi-view-grid</v-icon>
-                            </v-btn>
-                        </v-btn-toggle>
-                        <v-menu offset-y>
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn depressed color=#f5a42a class="mb-5" dark small v-bind="attrs" v-on="on">
-                                    Ordenar
-                                    <v-icon right small>mdi-sort</v-icon>
-                                </v-btn>
-                            </template>
-                            <v-list>
-                                <v-list-item v-for="(item, index) in itemsOrdenar" :key="index" link>
-                                    <v-list-item-title @click="sortBy(item.prop)">{{
-                                            item.title
-                                    }}</v-list-item-title>
-                                </v-list-item>
-                            </v-list>
-                        </v-menu>
-                    </v-layout>
                     <div v-for="(project, index) in solicitudes" :key="index">
                         <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2" v-if="project.estado == null">
 
@@ -119,6 +120,8 @@
                 </v-avatar>
             </div>
         </v-sheet>
+        </v-container>
+        </v-card>
 
     </div>
 </template>

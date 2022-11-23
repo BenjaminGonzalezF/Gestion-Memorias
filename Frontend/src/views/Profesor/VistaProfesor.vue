@@ -39,10 +39,8 @@
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
-
     <v-app-bar flat app color="rgb(0, 204, 255)">
       <v-img max-height="40" max-width="50" src="@/assets/utal.png">
-
       </v-img>
       <v-app-bar-nav-icon right absolute class="grey--text" @click="drawer = !drawer">
       </v-app-bar-nav-icon>
@@ -57,10 +55,12 @@
 </template>
 
 <script>
+
 import Loading from '@/components/loading.vue';
 import vistaSolicitud from './VistaSolicitudProfesor.vue'
 import vistaTemas from './VistaTemas.vue'
 import cambiarRol from '@/components/cambiarRol.vue';
+
 export default {
   data() {
       return {
@@ -93,7 +93,7 @@ export default {
               if (this.$route.path !== "/Alumno" || this.$route.path !== "/solicitudTemas") {
                   localStorage.clear();
                   this.$store.state.nombre=null
-                    this.$store.state.img=null
+                  this.$store.state.img=null
                   this.$router.push({ path: "/" })
               }
           }else if(ref == "Solicitudes"){

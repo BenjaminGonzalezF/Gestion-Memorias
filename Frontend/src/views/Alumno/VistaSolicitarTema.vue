@@ -19,7 +19,8 @@
                                                 <v-col>
                                                     <v-row>
                                                         <v-checkbox :v-model="ArrayRamos.selected"
-                                                            @click="agregar(ArrayRamos.name)"></v-checkbox>
+                                                            @click="agregar(ArrayRamos.name)">
+                                                        </v-checkbox>
                                                         <v-card height="25%" width="85%" outlined
                                                             class="overflow-y-auto" color="#FFFFFF">
                                                             <p class="mt-5">
@@ -31,14 +32,11 @@
                                             </v-card>
                                         </v-col>
                                     </v-card>
-
                                 </v-expansion-panel-content>
                             </v-expansion-panel>
                         </v-expansion-panels>
                     </v-col>
                 </v-card>
-                <v-col>
-                </v-col>
                 <v-col>
                     <h1>
                         Datos de interes
@@ -50,14 +48,14 @@
                 <h1>
                     Información
                 </h1>
-                <v-card height="250" width="80%" color="#F4F4F4">
+                <v-card height="220" width="80%" color="#F4F4F4">
                     <v-col>
                     </v-col>
                     <v-row justify="space-around">
-                        <v-card height="180" width="40%">
+                        <v-card height="200" width="50%">
                             <v-col>
                                 <p>
-                                    Nombre: {{ nombrecompleto }}
+                                    Alumno: {{nombrecompleto}}
                                 </p>
                                 <p>
                                     Tema: {{ nombretema }}
@@ -70,7 +68,7 @@
                                 </p>
                             </v-col>
                         </v-card>
-                        <v-card height="180" width="40%">
+                        <v-card height="200" width="40%">
                             <div v-show="!estadofoto">
                                 <v-col>
                                     <p> Verificación </p>
@@ -81,7 +79,8 @@
                             <div v-show="estadofoto">
                                 <v-col>
                                     <p> Verificación </p>
-                                    <v-img max-height="100" max-width="120" :src="imagenAlumno">
+                                    <v-img max-height="100" max-width="120"
+                                        :src="this.imagenAlumno">
                                     </v-img>
                                 </v-col>
                             </div>
@@ -90,7 +89,7 @@
                     <v-col>
                     </v-col>
                     <v-btn color="#f5a42a"
-                        @click="enviardatos(nombrecompleto, nombretema, nombreprofesor, nocursados, estado, link)">
+                        @click="enviardatos(nombrecompleto, nombretema, nombreprofesor, nocursados, estadoselect, estadofoto)">
                         Enviar Solicitud
                     </v-btn>
                 </v-card>
@@ -169,10 +168,9 @@
                                     </v-row>
                                 </div>
                             </v-card>
-                            <v-btn color="#f5a42a" @click="e1 = 3">
+                            <v-btn color="#f5a42a" @click="e1 = 3" :disabled="!estadofoto">
                                 Continuar
                             </v-btn>
-
                             <v-btn text @click="cerrarint()">
                                 Cancelar
                             </v-btn>
@@ -204,7 +202,8 @@
 
 <script>
 
-import headerAlumno from "@/components/headerAlumno.vue"
+import Swal from 'sweetalert2'
+
 let Semestres = [
     {
         id: 0,
@@ -530,7 +529,6 @@ export default {
             e1: 1,
             estado: ['Trabaja', 'No trabaja'],
             estadofoto: false,
-            estadofoto1: false,
             link: null,
             linkrules: [
                 v => !!v || 'Link es obligatorio',
@@ -539,22 +537,21 @@ export default {
             nombrecompleto: null,
             nombretema: null,
             nombreprofesor: null,
-            linkimagen: null,
             temas: [],
             estadoselect: null,
-            imagenAlumno: null
+            imagenAlumno: null,
+            urlvalida: null,
+            errorMessages: '',
         };
     },
     created() {
         this.cargar_datos()
         this.listarsemestres();
     },
-    components: {
-        headerAlumno,
-    },
     methods: {
         cargar_datos() {
-            this.axios.get("todos_temas")
+            if(this.$store.state.id_tema_solicitar!= "nuevo tema"){
+                this.axios.get("todos_temas")
                 .then((respT) => {
                     this.axios.get("todos_usuarios").then((respU) => {
                         const usuarios = respU.data
@@ -564,12 +561,25 @@ export default {
                         this.nombrecompleto = this.$store.state.nombre
                         this.nombretema = this.temas[0].nombre
                         this.nombreprofesor = creador[0].nombre
+                        if(this.$store.state.img !=null && this.$store.state.img !="https://i.ibb.co/T2J4034/download.png"){ ///this.$store.state.img !=usuario_sesion.img VER VALIDACION PARA LA IMGAGEN POR DEFECTO
+                            this.imagenAlumno=this.$store.state.img  
+                            this.estadofoto = true;
+                        }
                     })
 
                 })
                 .catch((e) => {
                     console.log(e)
                 })
+            }else{
+                this.nombrecompleto = this.$store.state.nombre
+                if(this.$store.state.img !=null && this.$store.state.img !="https://i.ibb.co/T2J4034/download.png"){ ///this.$store.state.img !=usuario_sesion.img VER VALIDACION PARA LA IMGAGEN POR DEFECTO
+                    this.imagenAlumno=this.$store.state.img  
+                    this.estadofoto = true;
+                }
+                console.log("nuevo tema")
+            }
+            
         },
         listarsemestres() {
             //console.log("Tamaño semestres"+semestres1.length) verificar ingreso
@@ -640,60 +650,119 @@ export default {
             this.estadofoto = true;
 
         },
-        subirlink(value) {
-            console.log("valor vaule: " + value)
+        subirlink(url) {
+            console.log("valor vaule: " + url)
             //guardar value que es el link en la vase de datos
             //si se guarda correctamente
-            if (true) {
-                this.linkimagen = "https://previews.123rf.com/images/xmarchant/xmarchant0612/xmarchant061200005/695441-retrato-hombre-frente-a-la-c%C3%A1mara.jpg"
-                this.imagenAlumno = value
-                console.log("link: " + this.linkimagen)
-                console.log("valur " + this.imagenAlumno)
+            var validUrl= /^(ht|f)tps?:\/\/\w+([\.\-\w]+)?\.[a-z]{2,10}(:\d{2,5})?(\/.*)?$/i
+            if(validUrl.test(url)){
+               this.urlvalida=true 
+            }else{
+                this.urlvalida=false
+            }
+            console.log("validaurl : "+this.urlvalida)
+            if (this.urlvalida) {
+                this.imagenAlumno = url
+                console.log("valur "+this.imagenAlumno)
                 this.estadofoto = true;
-
             } else {
                 //error 
+                console.log("url invalida ingresa otra")
             }
         },
-        enviardatos(nombre, nombreproyecto, nombreprofesor, cursospendientes, estadotrabajo, linkfoto) {
-            console.log("valor nombre: " + nombre)
-            console.log("valor nombre proyecto: " + nombreproyecto)
-            console.log("valor nombre profesor: " + nombreprofesor)
-            console.log("valor cursos pendientes : " + cursospendientes)
-            //como se cual esta activo?
-            console.log("valor trabaja?: " + this.estadoselect)
-            console.log("valor link foto: " + linkfoto)
-            console.log("valor link foto2: " + this.imagenAlumno)
-            this.axios.get("todos_usuarios").then((respU)=>{
-                this.axios.get("todos_temas").then((respT)=>{
-                    const usuarios = respU.data
-                    const temas = respT.data
-
-                    var alumno = usuarios.filter(u=> u._id==localStorage.getItem("key_user"))
-                    var tema = temas.filter(t=> t._id == this.$store.state.id_tema_solicitar)
-
-                    alumno[0].img = this.imagenAlumno
-                    alumno[0].modulosfaltantes = cursospendientes
-                    
-                    var trabaja=null
-                    if(this.estadoselect=="Trabaja"){
-                        trabaja=true
-                    }else{
-                        trabaja=false
-                    }
-                    tema[0].postulantes.push({
-                        id: alumno[0]._id,
-                        nombre: alumno[0].nombre,
-                        img: this.imagenAlumno,
-                        modulos_faltantes: cursospendientes,
-                        trabaja:trabaja,
+        enviardatos(nombre, nombreproyecto, nombreprofesor, cursospendientes, estadoselect, estadofoto) {
+            if(nombre!=null&&nombreproyecto!=null&&nombreprofesor!=null&&cursospendientes.length!=0&&estadoselect!=null&&estadofoto!=false){
+                console.log("pasa1")
+                console.log("valor nombre: " + nombre)
+                console.log("valor nombre proyecto: " + nombreproyecto)
+                console.log("valor nombre profesor: " + nombreprofesor)
+                console.log("valor cursos pendientes : " + cursospendientes)
+                console.log("valor trabaja?: " + estadoselect)
+                console.log("valor estado foto: " + estadofoto)
+                console.log("valor link foto2: " + this.imagenAlumno)
+                this.axios.get("todos_usuarios").then((respU)=>{
+                    this.axios.get("todos_temas").then((respT)=>{
+                        const usuarios = respU.data
+                        const temas = respT.data
+                        var alumno = usuarios.filter(u=> u._id==localStorage.getItem("key_user"))
+                        var tema = temas.filter(t=> t._id == this.$store.state.id_tema_solicitar)
+                        alumno[0].img = this.imagenAlumno
+                        alumno[0].modulosfaltantes = cursospendientes
+                        var trabaja=null
+                        if(this.estadoselect=="Trabaja"){
+                            trabaja=true
+                        }else{
+                            trabaja=false
+                        }
+                        tema[0].postulantes.push({
+                            id: alumno[0]._id,
+                            nombre: alumno[0].nombre,
+                            img: this.imagenAlumno,
+                            modulos_faltantes: cursospendientes,
+                            trabaja:trabaja,
+                        })
+                        this.axios.put(`usuario_ac/${alumno[0]._id}`, alumno[0])
+                        this.axios.put(`tema_ac/${tema[0]._id}`,tema[0])
                     })
                     this.axios.put(`usuario_ac/${alumno[0]._id}`, alumno[0])
                     this.axios.put(`tema_ac/${tema[0]._id}`,tema[0])
                     this.$store.state.loading = true
                     this.$store.commit('cargar_datos')
                 })
-            })
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Se Ha Enviado La Solicitud',
+                    text: 'Se Ha Enviado Correctamente La Solicitud!',
+                })
+            }else{
+                console.log(" == cursos[0]: "+cursospendientes.length)
+                console.log("faltan datos")
+                console.log("valor nombre: " + nombre)
+                console.log("valor nombre proyecto: " + nombreproyecto)
+                console.log("valor nombre profesor: " + nombreprofesor)
+                console.log("valor cursos pendientes : " + cursospendientes)
+                console.log("valor trabaja?: " + estadoselect)
+                console.log("valor estado foto: " + estadofoto)
+                console.log("valor link foto2: " + this.imagenAlumno)
+                if(nombre==null){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Datos incorrectos...',
+                        text: 'Error de usuario!',
+                    })
+                }else if(nombreproyecto==null){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Datos incorrectos...',
+                        text: 'Error de proyecto!',
+                    }) 
+                }else if(nombreprofesor==null){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Datos incorrectos...',
+                        text: 'Error de profesor!',
+                    })
+                }else if(cursospendientes.length == 0){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Datos incorrectos...',
+                        text: 'Es necesario ingresar los cursos pendientes para continnuar!',
+                    })
+                }else if(estadoselect== null){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Datos incorrectos...',
+                        text: 'Es necesario ingresar si trabaja o no para continuar!',
+                    })
+                }else if(estadofoto== false){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Datos incorrectos...',
+                        text: 'Es necesario ingresar la imagen para continnuar!',
+                    })
+                }
+            }
+            
         },
 
     },

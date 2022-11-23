@@ -1,30 +1,31 @@
 <template>
     <div class="Solicitudes">
+        <v-layout row class="mx-1">
+            <v-spacer></v-spacer>
+            <v-menu offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn depressed color="rgb(0, 204, 255)" class="mb-5" dark small v-bind="attrs" v-on="on">
+                        Ordenar
+                        <v-icon right small>mdi-sort</v-icon>
+                    </v-btn>
+                </template>
+                <v-list>
+                    <v-list-item v-for="(item, index) in itemsOrdenar" :key="index" link>
+                        <v-list-item-title @click="sortBy(item.prop)">{{
+                            item.title
+                        }}</v-list-item-title>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
+        </v-layout>
+        <v-card height="500" width="100%" outlined class="overflow-y-auto" >
+        <v-container>
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
             <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;top:20%;left: 50%;"
                 v-if="cargando_temas == true">
             </v-progress-circular>
             <div>
                 <v-container class="my-3">
-                    <v-layout row class="mx-1">
-                        <v-spacer></v-spacer>
-                        <v-menu offset-y>
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn depressed color="rgb(0, 204, 255)" class="mb-5" dark small v-bind="attrs"
-                                    v-on="on">
-                                    Ordenar
-                                    <v-icon right small>mdi-sort</v-icon>
-                                </v-btn>
-                            </template>
-                            <v-list>
-                                <v-list-item v-for="(item, index) in itemsOrdenar" :key="index" link>
-                                    <v-list-item-title @click="sortBy(item.prop)">{{
-                                            item.title
-                                    }}</v-list-item-title>
-                                </v-list-item>
-                            </v-list>
-                        </v-menu>
-                    </v-layout>
                     <div v-for="project in temas" :key="project._id">
                         <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2"
                             v-if="project.resultado_comite == null">
@@ -80,11 +81,6 @@
 
                                     </v-tooltip>
                                 </v-flex>
-                                <v-flex >
-                                    <v-btn class="ml-6 white--text" color="#FF0182"
-                                        @click="exportPDF(project.nombre, project.nombreCreador)">PDF
-                                    </v-btn>
-                                </v-flex>
                             </v-layout>
                         </v-card>
                     </div>
@@ -134,6 +130,8 @@
                 </v-avatar>
             </div>
         </v-sheet>
+        </v-container>
+        </v-card>
     </div>
 </template>
   
@@ -212,53 +210,7 @@ export default {
                     console.log(e)
                 })
         },
-        exportPDF(titulo, estudiante) {
-            let pdfName = 'Acta';
-
-            const doc = new jsPDF({
-                orientation: "portrait",
-                unit: "in",
-                format: "letter"
-            });
-
-            doc.setFontSize(18).text("Acta Veredicto Del Consejo", 0.5, 1.0);
-            doc.setLineWidth(0.01).line(0.5, 1.1, 8.0, 1.1);
-            doc
-                .setFont("helvetica")
-                .setFontSize(12)
-                .text("Luego de una exhaustiva reunión de los integrantes del comtité en la cual se ha logrado llegar a una conclusión, " +
-                    " se presentan los resultados de la votación de la solicitud del tema "
-                    + titulo + " propuesto por " + estudiante +
-                    ". ", 0.5, 2.0, { align: "left", maxWidth: "7.5" });
-            doc
-                .setFont("helvetica")
-                .setFontSize(12)
-                .text("Por consiguiente se muestran los intregantes del comité que votaron:", 0.5, 2.7, { align: "left", maxWidth: "7.5" });
-            doc
-                .setFont("helvetica")
-                .setFontSize(12)
-                .text("1.-", 0.5, 3.4, { align: "left", maxWidth: "7.5" });
-            doc
-                .setFont("helvetica")
-                .setFontSize(12)
-                .text("2.-", 0.5, 4.1, { align: "left", maxWidth: "7.5" });
-            doc
-                .setFont("helvetica")
-                .setFontSize(12)
-                .text("3.-", 0.5, 4.8, { align: "left", maxWidth: "7.5" });
-            doc
-                .setFont("helvetica")
-                .setFontSize(12)
-                .text("Dando asi como resultado que la propuesta es " + ". ", 0.5, 5.5, { align: "left", maxWidth: "7.5" });
-
-            doc
-                .setFont("times")
-                .setFontSize(10)
-                .text("Documento validado y verificado por la Universidad de Talca.",
-                    0.5,
-                    doc.internal.pageSize.height - 0.5)
-            doc.save(pdfName + '.pdf');
-        },
+        
         confirmacion(id, voto) {
             Swal.fire({
                 title: 'Estas Seguro?',
