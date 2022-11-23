@@ -703,16 +703,15 @@ export default {
                         this.axios.put(`usuario_ac/${alumno[0]._id}`, alumno[0])
                         this.axios.put(`tema_ac/${tema[0]._id}`, tema[0])
                     })
-                    this.axios.put(`usuario_ac/${alumno[0]._id}`, alumno[0])
-                    this.axios.put(`tema_ac/${tema[0]._id}`, tema[0])
-                    this.$store.state.loading = true
-                    this.$store.commit('cargar_datos')
+                    //this.axios.put(`usuario_ac/${alumno[0]._id}`, alumno[0])
+                    //this.axios.put(`tema_ac/${tema[0]._id}`, tema[0])
                 })
                 Swal.fire({
                     icon: 'success',
                     title: 'Se Ha Enviado La Solicitud',
                     text: 'Se Ha Enviado Correctamente La Solicitud!',
                 })
+                this.$store.state.vistaSeleccionada=1
                 this.$store.state.loading = true
                 this.$store.commit('cargar_datos')
             } else {
