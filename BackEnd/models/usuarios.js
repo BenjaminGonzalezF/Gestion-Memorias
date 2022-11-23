@@ -13,6 +13,7 @@ const notaSchema = new Schema({
   escomite:Boolean,
   esdirector:Boolean,
   rolActivo:String,
+  img:String,
 });
 
 // Convertir a modelo

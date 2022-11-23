@@ -20,11 +20,13 @@
                         </v-list>
                     </v-menu>
                 </v-layout>
-                <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;top:20%;left: 50%;" v-if="cargando_temas == true">
+                <v-progress-circular :size="50" color="primary" indeterminate
+                    style="position: absolute;top:20%;left: 50%;" v-if="cargando_temas == true">
                 </v-progress-circular>
 
                 <div v-for="project in temas" :key="project._id">
-                    <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2" v-if="project.colaborador==null && project.resultado_comite==true && project.resultado_comite==true">
+                    <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2"
+                        v-if="project.colaborador == null && project.resultado_comite == true && project.resultado_comite == true">
 
                         <v-layout row wrap :class="`pa-3 project ${project.status}`">
                             <v-flex xs8 md3>
@@ -53,49 +55,50 @@
                             </v-flex>
                         </v-layout>
                     </v-card>
-                    <v-dialog v-model="drawerSolicitud" max-width="1000">
-                        <v-container class="grey lighten-5">
-                            <v-row>
-                                <v-card>
-                                    <v-card-title>
-                                        <span class="text-h5">Datos proyecto</span>
-                                    </v-card-title>
-                                    <v-card-text>
-                                        <v-container>
-                                            <v-flex>
-                                                <div class="caption grey--text">Proyecto:</div>
-                                                <div>{{ tituloProyecto }}</div>
-                                            </v-flex>
-                                            <v-flex>
-                                                <div class="caption grey--text">Descripción:</div>
-                                                <div>{{ descripcionProyecto }}</div>
-                                            </v-flex>
-                                        </v-container>
-                                    </v-card-text>
-                                    <v-divider></v-divider>
-                                    <v-card-actions class="justify-center">
-                                        <v-btn @click="enviarSolicitud(project._id)" color="#f5a42a">
-                                            Enviar Solicitud
-                                        </v-btn>
-                                    </v-card-actions>
 
-                                </v-card>
-                            </v-row>
-                        </v-container>
-                    </v-dialog>
                 </div>
+                <v-dialog v-model="drawerSolicitud" max-width="1000">
+                    <v-container class="grey lighten-5">
+                        <v-row>
+                            <v-card>
+                                <v-card-title>
+                                    <span class="text-h5">Datos proyecto</span>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-container>
+                                        <v-flex>
+                                            <div class="caption grey--text">Proyecto:</div>
+                                            <div>{{ tituloProyecto }}</div>
+                                        </v-flex>
+                                        <v-flex>
+                                            <div class="caption grey--text">Descripción:</div>
+                                            <div>{{ descripcionProyecto }}</div>
+                                        </v-flex>
+                                    </v-container>
+                                </v-card-text>
+                                <v-divider></v-divider>
+                                <v-card-actions class="justify-center">
+                                    <v-btn @click="enviarSolicitud(project._id)" color="#f5a42a">
+                                        Enviar Solicitud
+                                    </v-btn>
+                                </v-card-actions>
+
+                            </v-card>
+                        </v-row>
+                    </v-container>
+                </v-dialog>
                 <div class="text-center" v-if="cargando_temas == false && oferta_temas == 0">
-                <h1> No hay oferta de temas</h1>
-                <v-avatar size="150">
-                    <v-img src="https://media.tenor.com/-wrmUJrUbeoAAAAM/emoji-disintergrating.gif">
-                        <template v-slot:placeholder>
-                            <v-row class="fill-height ma-0" align="center" justify="center">
-                                <v-progress-circular indeterminate color="white"></v-progress-circular>
-                            </v-row>
-                        </template>
-                    </v-img>
-                </v-avatar>
-            </div>
+                    <h1> No hay oferta de temas</h1>
+                    <v-avatar size="150">
+                        <v-img src="https://media.tenor.com/-wrmUJrUbeoAAAAM/emoji-disintergrating.gif">
+                            <template v-slot:placeholder>
+                                <v-row class="fill-height ma-0" align="center" justify="center">
+                                    <v-progress-circular indeterminate color="white"></v-progress-circular>
+                                </v-row>
+                            </template>
+                        </v-img>
+                    </v-avatar>
+                </div>
             </v-container>
         </div>
     </v-app>
@@ -114,7 +117,7 @@ export default {
             estudiante: null,
             cargando_temas: true,
             temas: [],
-            oferta_temas:0,
+            oferta_temas: 0,
             itemsOrdenar: [
                 { title: "Por titulo", prop: "title" },
                 {

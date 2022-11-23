@@ -8,15 +8,6 @@
                 <v-container class="my-3">
                     <v-layout row class="mx-1">
                         <v-spacer></v-spacer>
-                        <v-btn-toggle v-model="toggle" dense class="mr-2" style="max-height: 20px !important">
-                            <v-btn small color=#f5a42a :disabled="toggle === 0">
-                                <v-icon class="white--text">mdi-view-agenda</v-icon>
-                            </v-btn>
-
-                            <v-btn small color=#f5a42a :disabled="toggle === 1">
-                                <v-icon class="white--text">mdi-view-grid</v-icon>
-                            </v-btn>
-                        </v-btn-toggle>
                         <v-menu offset-y>
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn depressed color=#f5a42a class="mb-5" dark small v-bind="attrs" v-on="on">
