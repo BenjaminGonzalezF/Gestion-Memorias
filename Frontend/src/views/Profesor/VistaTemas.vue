@@ -38,7 +38,7 @@
                                         <div class="caption grey--text">Titulo proyecto</div>
                                         <div>{{ project.nombre }}</div>
                                     </v-flex>
-                                    <v-flex xs6 md6>
+                                    <v-flex xs6 md4>
                                         <div class="caption grey--text">Descripcion general proyecto</div>
                                         <div>{{ project.descripcion }}</div>
                                     </v-flex>
@@ -48,6 +48,10 @@
                                                 requisitos
                                         }}
                                         </div>
+                                    </v-flex>
+                                    <v-flex xs2 sm1 md2>
+                                        <div class="caption grey--text">Estado</div>
+                                        <v-btn @click="verEstado(project)">ver estado</v-btn>
                                     </v-flex>
                                 </v-layout>
                             </v-card>
@@ -64,8 +68,8 @@
                                             :rules="[() => !!nombre_temacrear || 'Este campo no puede quedar vacio']"
                                             :error-messages="errorMessages" required>
                                         </v-text-field>
-                                        <v-textarea v-model="descripcion_temacrear" label="Descripcion del tema"
-                                            max-height="50"
+                                        <v-textarea auto-grow v-model="descripcion_temacrear"
+                                            label="Descripcion del tema"
                                             :rules="[() => !!descripcion_temacrear || 'Este campo no puede quedar vacio']"
                                             :error-messages="errorMessages" required></v-textarea>
                                         <!-- verificar scroll-->
@@ -114,7 +118,8 @@
                                             :rules="[() => !!requisito_anadir || 'Este campo no puede quedar vacio']"
                                             :error-messages="errorMessages" required>></v-text-field>
                                         <v-btn class="white--text mt-3" color="rgb(0, 204, 255)"
-                                            @click="agregar_requisitos_tema(false)" :disabled="requisito_anadir == null">
+                                            @click="agregar_requisitos_tema(false)"
+                                            :disabled="requisito_anadir == null">
                                             Añadir</v-btn>
                                     </v-card-text>
                                 </v-container>
@@ -134,62 +139,47 @@
                         </v-img>
                     </v-avatar>
                 </div>
-        <v-dialog v-model="drawerEstado" max-width="500">
-            <v-card max-width="500">
-                <v-card-title>
-                    Estado
-                <v-card-text>
-                </v-card-title>
-                    <v-timeline>
-                        <v-timeline-item icon="mdi-clock" color="#bdbdbd"
-                            <span slot="opposite">Comite </span>
-                            v-if="solicitud_seleccionada.resultado_comite == null">
-                            <span slot="opposite">Pendiente</span>
-                        </v-timeline-item>
-                        <v-timeline-item icon="mdi-checkbox-marked-circle" color="green"
-                            v-if="solicitud_seleccionada.resultado_comite == true">
-                            <span slot="opposite">Aceptado</span>
-                            <span slot="opposite">Comite </span>
-                        </v-timeline-item>
-                        <v-timeline-item icon="mdi-cancel" color="red"
-                            v-if="solicitud_seleccionada.resultado_comite == false">
-                            <span slot="opposite">Comite </span>
-                        </v-timeline-item>
-                            <span slot="opposite">Rechazado</span>
-                        <v-timeline-item icon="mdi-clock" color="#bdbdbd"
-                            v-if="solicitud_seleccionada.resultado_directora == null">
-                            <span slot="opposite">Director </span>
-                            <span slot="opposite">Pendiente</span>
-                        </v-timeline-item>
-                        <v-timeline-item icon="mdi-checkbox-marked-circle" color="green"
-                            v-if="solicitud_seleccionada.resultado_directora == true">
-                            <span slot="opposite">Director </span>
-                            <span slot="opposite">Aceptado</span>
-                        </v-timeline-item>
-                        <v-timeline-item icon="mdi-cancel" color="red"
-                            <span slot="opposite">Director </span>
-                            v-if="solicitud_seleccionada.resultado_directora == false">
-                            <span slot="opposite">Rechazado</span>
-                        </v-timeline-item>
-                            v-if="solicitud_seleccionada.resultado_profesor == null">
-                        <v-timeline-item icon="mdi-clock" color="#bdbdbd"
-                            <span slot="opposite">Profesor </span>
-                            <span slot="opposite">Pendiente</span>
-                        </v-timeline-item>
-                        <v-timeline-item icon="mdi-checkbox-marked-circle" color="green"
-                            v-if="solicitud_seleccionada.resultado_profesor == true">
-                            <span slot="opposite">Profesor </span>
-                        </v-timeline-item>
-                            <span slot="opposite">Aceptado</span>
-                        <v-timeline-item icon="mdi-cancel" color="red"
-                            v-if="solicitud_seleccionada.resultado_profesor == false">
-                            <span slot="opposite">Profesor </span>
-                            <span slot="opposite">Rechazado</span>
-                        </v-timeline-item>
-                    </v-timeline>
-            </v-card>
-                </v-card-text>
-        </v-dialog>
+                <v-dialog v-model="drawerEstado" max-width="500">
+                    <v-card max-width="500">
+                        <v-card-title>
+                            Estado
+                        </v-card-title>
+                        <v-card-text>
+                            <v-timeline>
+                                <v-timeline-item icon="mdi-clock" color="#bdbdbd" 
+                                    v-if="solicitud_seleccionada.resultado_comite == null">
+                                    <span slot="opposite">Comite </span>
+                                    <span slot="opposite">Pendiente</span>
+                                </v-timeline-item>
+                                <v-timeline-item icon="mdi-checkbox-marked-circle" color="green"
+                                    v-if="solicitud_seleccionada.resultado_comite == true">
+                                    <span slot="opposite">Aceptado</span>
+                                    <span slot="opposite">Comite </span>
+                                </v-timeline-item>
+                                <v-timeline-item icon="mdi-cancel" color="red"
+                                    v-if="solicitud_seleccionada.resultado_comite == false">
+                                    <span slot="opposite">Comite </span>
+                                </v-timeline-item>
+                                <span slot="opposite">Rechazado</span>
+                                <v-timeline-item icon="mdi-clock" color="#bdbdbd"
+                                    v-if="solicitud_seleccionada.resultado_directora == null">
+                                    <span slot="opposite">Director </span>
+                                    <span slot="opposite">Pendiente</span>
+                                </v-timeline-item>
+                                <v-timeline-item icon="mdi-checkbox-marked-circle" color="green"
+                                    v-if="solicitud_seleccionada.resultado_directora == true">
+                                    <span slot="opposite">Director </span>
+                                    <span slot="opposite">Aceptado</span>
+                                </v-timeline-item>
+                                <v-timeline-item icon="mdi-cancel" color="red" 
+                                    v-if="solicitud_seleccionada.resultado_directora == false">
+                                    <span slot="opposite">Rechazado</span>
+                                    <span slot="opposite">Director </span>
+                                </v-timeline-item>
+                            </v-timeline>
+                        </v-card-text>
+                    </v-card>
+                </v-dialog>
             </v-container>
         </v-card>
     </div>
@@ -206,8 +196,8 @@ export default {
     },
     data() {
         return {
-            drawerEstado:false,
-            solicitud_seleccionada:[],
+            drawerEstado: false,
+            solicitud_seleccionada: [],
             nombre_temacrear1: "a",
             descripcion_temacrear1: "b",
             profesor_temacrear1: "c",
@@ -359,9 +349,9 @@ export default {
         sortBy(prop) {
             this.temas.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
         },
-        verEstado(solicitud){
-            this.drawerEstado=true
-            this.solicitud_seleccionada=solicitud
+        verEstado(solicitud) {
+            this.drawerEstado = true
+            this.solicitud_seleccionada = solicitud
         }
     },
 
