@@ -1,24 +1,24 @@
 <template>
     <v-app>
-        <v-layout row class="mx-1">
-            <v-spacer></v-spacer>
-            <v-menu offset-y >
-            <template v-slot:activator="{ on, attrs }">
-                <v-btn depressed color="#f5a42a" class="mb-5" dark small v-bind="attrs" v-on="on">
-                    Ordenar
-                    <v-icon right small>mdi-sort</v-icon>
-                </v-btn>
-            </template>
-                <v-list >
-                    <v-list-item v-for="(item, index) in itemsOrdenar" :key="index" link>
-                        <v-list-item-title @click="sortBy(item.prop)">{{
-                            item.title
-                        }}</v-list-item-title>
-                    </v-list-item>
-                </v-list>
-            </v-menu>
-        </v-layout>
         <div class="Oferta de temas">
+            <v-layout row class="mx-1">
+                <v-spacer></v-spacer>
+                <v-menu offset-y >
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn depressed color="#f5a42a" class="mb-5" dark small v-bind="attrs" v-on="on">
+                        Ordenar
+                        <v-icon right small>mdi-sort</v-icon>
+                    </v-btn>
+                </template>
+                    <v-list >
+                        <v-list-item v-for="(item, index) in itemsOrdenar" :key="index" link>
+                            <v-list-item-title @click="sortBy(item.prop)">{{
+                                item.title
+                            }}</v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+            </v-layout>
             <v-card height="500" width="100%" outlined class="overflow-y-auto" >
                 <v-container class="my-3" >
                     <v-progress-circular :size="50" color="primary" indeterminate
@@ -63,7 +63,7 @@
                             <v-container>
                                 <v-flex>
                                     <div class="caption black--text">Proyecto:</div>
-                                    <div>{{tema_seleccionado.nombre}}</div>
+                                    <div>{{ tema_seleccionado.nombre }}</div>
                                 </v-flex>
                                 <v-flex>
                                     <div class="caption black--text">Descripción:</div>
@@ -102,6 +102,8 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
+
 export default {
     name: "Alumno",
     data() {
@@ -113,7 +115,7 @@ export default {
             profesor: null,
             estudiante: null,
             cargando_temas: true,
-            tema_seleccionado:[],
+            tema_seleccionado: [],
             temas: [],
             oferta_temas: 0,
             itemsOrdenar: [
@@ -156,11 +158,26 @@ export default {
         },
         verSolicitud(tema) {
             this.drawerSolicitud = true;
-            this.tema_seleccionado=tema
+            this.tema_seleccionado = tema
         },
         enviarSolicitud(id) {
-            this.$store.state.id_tema_solicitar = id
-            this.$store.state.vistaSeleccionada = 3
+            var estado = false
+            for (var i = 0; i < this.tema_seleccionado.postulantes.length; i++) {
+                if (localStorage.getItem("key_user") == this.tema_seleccionado.postulantes[i].id) {
+                    estado = true
+                }
+            }
+            if (estado) {
+                Swal.fire(
+                    'Solicitud repetida!',
+                    'No puedes enviar 2 veces la misma solicitud!',
+                    'error'
+                )
+                this.drawerSolicitud = false
+            } else {
+                this.$store.state.id_tema_solicitar = id
+                this.$store.state.vistaSeleccionada = 3
+            }
         }
     },
 }

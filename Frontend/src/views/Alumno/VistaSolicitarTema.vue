@@ -55,7 +55,7 @@
                         <v-card height="200" width="50%">
                             <v-col>
                                 <p>
-                                    Alumno: {{nombrecompleto}}
+                                    Alumno: {{ nombrecompleto }}
                                 </p>
                                 <p>
                                     Tema: {{ nombretema }}
@@ -79,8 +79,7 @@
                             <div v-show="estadofoto">
                                 <v-col>
                                     <p> Verificación </p>
-                                    <v-img max-height="100" max-width="120"
-                                        :src="this.imagenAlumno">
+                                    <v-img max-height="100" max-width="120" :src="this.imagenAlumno">
                                     </v-img>
                                 </v-col>
                             </div>
@@ -89,7 +88,7 @@
                     <v-col>
                     </v-col>
                     <v-btn color="#f5a42a"
-                        @click="enviardatos(nombrecompleto, nombretema, nombreprofesor, nocursados, estado, link)">
+                        @click="enviardatos(nombrecompleto, nombretema, nombreprofesor, nocursados, estadoselect, estadofoto)">
                         Enviar Solicitud
                     </v-btn>
                 </v-card>
@@ -201,6 +200,9 @@
 
 
 <script>
+
+import Swal from 'sweetalert2'
+
 let Semestres = [
     {
         id: 0,
@@ -526,7 +528,6 @@ export default {
             e1: 1,
             estado: ['Trabaja', 'No trabaja'],
             estadofoto: false,
-            estadofoto1: false,
             link: null,
             linkrules: [
                 v => !!v || 'Link es obligatorio',
@@ -539,6 +540,7 @@ export default {
             estadoselect: null,
             imagenAlumno: null,
             urlvalida: null,
+            errorMessages: '',
         };
     },
     created() {
@@ -547,36 +549,36 @@ export default {
     },
     methods: {
         cargar_datos() {
-            if(this.$store.state.id_tema_solicitar!= "nuevo tema"){
+            if (this.$store.state.id_tema_solicitar != "nuevo tema") {
                 this.axios.get("todos_temas")
-                .then((respT) => {
-                    this.axios.get("todos_usuarios").then((respU) => {
-                        const usuarios = respU.data
-                        this.temas = respT.data
-                        this.temas = this.temas.filter(t => t._id == this.$store.state.id_tema_solicitar)
-                        const creador = usuarios.filter(u => u._id === this.temas[0].idCreador)
-                        this.nombrecompleto = this.$store.state.nombre
-                        this.nombretema = this.temas[0].nombre
-                        this.nombreprofesor = creador[0].nombre
-                        if(this.$store.state.img !=null && this.$store.state.img !="https://i.ibb.co/T2J4034/download.png"){ ///this.$store.state.img !=usuario_sesion.img VER VALIDACION PARA LA IMGAGEN POR DEFECTO
-                            this.imagenAlumno=this.$store.state.img  
-                            this.estadofoto = true;
-                        }
-                    })
+                    .then((respT) => {
+                        this.axios.get("todos_usuarios").then((respU) => {
+                            const usuarios = respU.data
+                            this.temas = respT.data
+                            this.temas = this.temas.filter(t => t._id == this.$store.state.id_tema_solicitar)
+                            const creador = usuarios.filter(u => u._id === this.temas[0].idCreador)
+                            this.nombrecompleto = this.$store.state.nombre
+                            this.nombretema = this.temas[0].nombre
+                            this.nombreprofesor = creador[0].nombre
+                            if (this.$store.state.img != null && this.$store.state.img != "https://i.ibb.co/T2J4034/download.png") { ///this.$store.state.img !=usuario_sesion.img VER VALIDACION PARA LA IMGAGEN POR DEFECTO
+                                this.imagenAlumno = this.$store.state.img
+                                this.estadofoto = true;
+                            }
+                        })
 
-                })
-                .catch((e) => {
-                    console.log(e)
-                })
-            }else{
+                    })
+                    .catch((e) => {
+                        console.log(e)
+                    })
+            } else {
                 this.nombrecompleto = this.$store.state.nombre
-                if(this.$store.state.img !=null && this.$store.state.img !="https://i.ibb.co/T2J4034/download.png"){ ///this.$store.state.img !=usuario_sesion.img VER VALIDACION PARA LA IMGAGEN POR DEFECTO
-                    this.imagenAlumno=this.$store.state.img  
+                if (this.$store.state.img != null && this.$store.state.img != "https://i.ibb.co/T2J4034/download.png") { ///this.$store.state.img !=usuario_sesion.img VER VALIDACION PARA LA IMGAGEN POR DEFECTO
+                    this.imagenAlumno = this.$store.state.img
                     this.estadofoto = true;
                 }
                 console.log("nuevo tema")
             }
-            
+
         },
         listarsemestres() {
             //console.log("Tamaño semestres"+semestres1.length) verificar ingreso
@@ -651,55 +653,117 @@ export default {
             console.log("valor vaule: " + url)
             //guardar value que es el link en la vase de datos
             //si se guarda correctamente
-            var validUrl= /^(ht|f)tps?:\/\/\w+([\.\-\w]+)?\.[a-z]{2,10}(:\d{2,5})?(\/.*)?$/i
-            if(validUrl.test(url)){
-               this.urlvalida=true 
-            }else{
-                this.urlvalida=false
+            var validUrl = /^(ht|f)tps?:\/\/\w+([\.\-\w]+)?\.[a-z]{2,10}(:\d{2,5})?(\/.*)?$/i
+            if (validUrl.test(url)) {
+                this.urlvalida = true
+            } else {
+                this.urlvalida = false
             }
-            console.log("validaurl : "+this.urlvalida)
+            console.log("validaurl : " + this.urlvalida)
             if (this.urlvalida) {
                 this.imagenAlumno = url
-                console.log("valur "+this.imagenAlumno)
+                console.log("valur " + this.imagenAlumno)
                 this.estadofoto = true;
             } else {
                 //error 
                 console.log("url invalida ingresa otra")
             }
         },
-        enviardatos(nombre, nombreproyecto, nombreprofesor, cursospendientes, estadotrabajo, linkfoto) {
-            console.log("valor nombre: " + nombre)
-            console.log("valor nombre proyecto: " + nombreproyecto)
-            console.log("valor nombre profesor: " + nombreprofesor)
-            console.log("valor cursos pendientes : " + cursospendientes)
-            console.log("valor trabaja?: " + this.estadoselect)
-            console.log("valor link foto: " + linkfoto)
-            console.log("valor link foto2: " + this.imagenAlumno)
-            this.axios.get("todos_usuarios").then((respU)=>{
-                this.axios.get("todos_temas").then((respT)=>{
-                    const usuarios = respU.data
-                    const temas = respT.data
-                    var alumno = usuarios.filter(u=> u._id==localStorage.getItem("key_user"))
-                    var tema = temas.filter(t=> t._id == this.$store.state.id_tema_solicitar)
-                    alumno[0].img = this.imagenAlumno
-                    alumno[0].modulosfaltantes = cursospendientes
-                    var trabaja=null
-                    if(this.estadoselect=="Trabaja"){
-                        trabaja=true
-                    }else{
-                        trabaja=false
-                    }
-                    tema[0].postulantes.push({
-                        id: alumno[0]._id,
-                        nombre: alumno[0].nombre,
-                        img: this.imagenAlumno,
-                        modulos_faltantes: cursospendientes,
-                        trabaja:trabaja,
+        enviardatos(nombre, nombreproyecto, nombreprofesor, cursospendientes, estadoselect, estadofoto) {
+            if (nombre != null && nombreproyecto != null && nombreprofesor != null && cursospendientes.length != 0 && estadoselect != null && estadofoto != false) {
+                console.log("pasa1")
+                console.log("valor nombre: " + nombre)
+                console.log("valor nombre proyecto: " + nombreproyecto)
+                console.log("valor nombre profesor: " + nombreprofesor)
+                console.log("valor cursos pendientes : " + cursospendientes)
+                console.log("valor trabaja?: " + estadoselect)
+                console.log("valor estado foto: " + estadofoto)
+                console.log("valor link foto2: " + this.imagenAlumno)
+                this.axios.get("todos_usuarios").then((respU) => {
+                    this.axios.get("todos_temas").then((respT) => {
+                        const usuarios = respU.data
+                        const temas = respT.data
+                        var alumno = usuarios.filter(u => u._id == localStorage.getItem("key_user"))
+                        var tema = temas.filter(t => t._id == this.$store.state.id_tema_solicitar)
+                        alumno[0].img = this.imagenAlumno
+                        alumno[0].modulosfaltantes = cursospendientes
+                        var trabaja = null
+                        if (this.estadoselect == "Trabaja") {
+                            trabaja = true
+                        } else {
+                            trabaja = false
+                        }
+                        tema[0].postulantes.push({
+                            id: alumno[0]._id,
+                            nombre: alumno[0].nombre,
+                            img: this.imagenAlumno,
+                            modulosfaltantes: cursospendientes,
+                            trabaja: trabaja,
+                        })
+                        this.$store.state.img=this.imagenAlumno
+                        this.axios.put(`usuario_ac/${alumno[0]._id}`, alumno[0])
+                        this.axios.put(`tema_ac/${tema[0]._id}`, tema[0])
                     })
-                    this.axios.put(`usuario_ac/${alumno[0]._id}`, alumno[0])
-                    this.axios.put(`tema_ac/${tema[0]._id}`,tema[0])
+                    //this.axios.put(`usuario_ac/${alumno[0]._id}`, alumno[0])
+                    //this.axios.put(`tema_ac/${tema[0]._id}`, tema[0])
                 })
-            })
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Se Ha Enviado La Solicitud',
+                    text: 'Se Ha Enviado Correctamente La Solicitud!',
+                })
+                this.$store.state.vistaSeleccionada=1
+                this.$store.state.loading = true
+                this.$store.commit('cargar_datos')
+            } else {
+                console.log(" == cursos[0]: " + cursospendientes.length)
+                console.log("faltan datos")
+                console.log("valor nombre: " + nombre)
+                console.log("valor nombre proyecto: " + nombreproyecto)
+                console.log("valor nombre profesor: " + nombreprofesor)
+                console.log("valor cursos pendientes : " + cursospendientes)
+                console.log("valor trabaja?: " + estadoselect)
+                console.log("valor estado foto: " + estadofoto)
+                console.log("valor link foto2: " + this.imagenAlumno)
+                if (nombre == null) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Datos incorrectos...',
+                        text: 'Error de usuario!',
+                    })
+                } else if (nombreproyecto == null) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Datos incorrectos...',
+                        text: 'Error de proyecto!',
+                    })
+                } else if (nombreprofesor == null) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Datos incorrectos...',
+                        text: 'Error de profesor!',
+                    })
+                } else if (cursospendientes.length == 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Datos incorrectos...',
+                        text: 'Es necesario ingresar los cursos pendientes para continnuar!',
+                    })
+                } else if (estadoselect == null) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Datos incorrectos...',
+                        text: 'Es necesario ingresar si trabaja o no para continuar!',
+                    })
+                } else if (estadofoto == false) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Datos incorrectos...',
+                        text: 'Es necesario ingresar la imagen para continnuar!',
+                    })
+                }
+            }
+
         },
 
     },

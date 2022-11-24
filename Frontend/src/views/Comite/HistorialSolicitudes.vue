@@ -73,7 +73,8 @@
                                 </v-flex>
                                 <v-flex xs2 sm1 md2>
                                     <v-btn class="ml-6 white--text" color="#FF0182"
-                                        @click="exportPDF(project.nombre, project.nombreCreador)">PDF
+
+                                        @click="exportPDF(project)">PDF
                                     </v-btn>
                                 </v-flex>
                             </v-layout>
@@ -198,14 +199,34 @@ export default {
                     console.log(e)
                 })
         },
-        exportPDF(titulo, estudiante) {
+        exportPDF(tema) {
             let pdfName = 'Acta';
-
             var pdf = new jsPDF({
                 orientation: "p",
                 unit: "cm",
                 format: "letter"
             });
+            var tituloTema= tema.nombre
+            var colaborador= tema.nombreCreador
+            var resultado= null
+            if(tema.resultado_comite== true){
+                resultado= "Aprobado"
+            }else{
+                resultado = "Rechazado"
+            }
+
+             var comite1 = null
+             var comite2 = null
+             var comite3 = null
+             for(var i=0;i<tema.votos.length;i++){
+                if(i==0){
+                    comite1=tema.votos[i].nombrecomite
+                }else if(i==1){
+                    comite2=tema.votos[i].nombrecomite
+                }else if(i==2){
+                    comite3=tema.votos[i].nombrecomite
+                }
+             }
             var img = new Image;
             var img2 = new Image;
 
@@ -221,14 +242,14 @@ export default {
             img.crossOrigin = "";
             img.src = "//i.imgur.com/2QXaKmk.png";
             img2.src = "//i.imgur.com/KEhaByh.jpg";
-            pdf.setFontSize(18).text("Acta Veredicto Del Consejo", 1, 5.0);
+            pdf.setFontSize(18).text("Acta Veredicto Del Comite", 1, 5.0);
             pdf.setLineWidth(0.01).line(0.5, 5.1, 20.0, 5.1);
             pdf
                 .setFont("helvetica")
                 .setFontSize(12)
                 .text("Luego de una exhaustiva reunión de los integrantes del comtité en la cual se ha logrado llegar a una conclusión, " +
                     " se presentan los resultados de la votación de la solicitud del tema "
-                    + titulo + " propuesto por " + estudiante +
+                    + tituloTema + " propuesto por " + colaborador +
                     ". ", 0.5, 6.5, { maxWidth: "20.5" });
             pdf
                 .setFont("helvetica")
@@ -238,23 +259,31 @@ export default {
                 .setFont("helvetica")
                 .setFontSize(12)
 
-                .text("1.-", 0.5, 10, { align: "left", maxWidth: "20.5" });
+                .text("1.- "+ comite1 , 0.5, 10, { align: "left", maxWidth: "20.5" });
             pdf
                 .setFont("helvetica")
                 .setFontSize(12)
 
-                .text("2.-", 0.5, 11, { align: "left", maxWidth: "20.5" });
+                .text("2.-"+ comite2, 0.5, 11, { align: "left", maxWidth: "20.5" });
             pdf
                 .setFont("helvetica")
                 .setFontSize(12)
 
-                .text("3.-", 0.5, 12, { align: "left", maxWidth: "20.5" });
+                .text("3.-"+ comite3, 0.5, 12, { align: "left", maxWidth: "20.5" });
             pdf
                 .setFont("helvetica")
                 .setFontSize(12)
 
-                .text("Dando asi como resultado que la propuesta es " + ". ", 0.5, 13, { align: "left", maxWidth: "20.5" });
+                .text("Dando asi como resultado que la propuesta es " + resultado+ ". ", 0.5, 13, { align: "left", maxWidth: "20.5" });
 
+
+            pdf
+                .setFont("helvetica")
+                .setFontSize(12)
+
+                .text("Directora de carrera" , 8.5, 20.5, { align: "left", maxWidth: "20.5" });
+
+                pdf.setLineWidth(0.01).line(5.5, 20, 15, 20);
             pdf
                 .setFont("times")
                 .setFontSize(10)
