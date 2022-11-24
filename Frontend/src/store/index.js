@@ -22,6 +22,12 @@ export default new Vuex.Store({
     esdirector: false,
     escomite: false,
     rol:false,
+    img: null,
+    nombre:null,
+    roles:[],
+    //PARCHE,
+    vistaSeleccionada:1,
+    id_tema_solicitar:null,
   },
   getters: {
   },
@@ -32,27 +38,46 @@ export default new Vuex.Store({
       usuario_id = localStorage.getItem("key_user")
       if (usuario_id !== null) {
         axios.get(`/usuario/${usuario_id}`)
-          .then((response) => {
-            usuario_sesion = response.data
-            if (usuario_sesion.length !== 0) {
-              console.log("Token encontrado")
-              this.interval = setTimeout(() => {
-                this.state.esdirector=usuario_sesion.esdirector
+        .then((response) => {
+          usuario_sesion = response.data
+          if (usuario_sesion.length !== 0) {
+            this.interval = setTimeout(() => {
+              this.state.roles=[]
+              this.state.esdirector=usuario_sesion.esdirector
                 this.state.esalumno=usuario_sesion.esalumno
                 this.state.esprofe=usuario_sesion.esprofe
                 this.state.escomite=usuario_sesion.escomite
-                if (usuario_sesion.esdirector) {
-                  this.state.rol="director"
-                  router.push({ path: "/directora" })
-                } else if (usuario_sesion.escomite) {
-                  this.state.rol="comite"
-                  router.push({ path: "/VistaComite" })
-                } else if (usuario_sesion.esprofe) {
-                  this.state.rol="profesor"
-                  router.push({ path: "/profesor/Solicitudes" })
+                if(usuario_sesion.esdirector){
+                  this.state.roles.push("Director")
+                }
+                if(usuario_sesion.esprofe){
+                  this.state.roles.push("Profesor")
+                }
+                if(usuario_sesion.escomite){
+                  this.state.roles.push("Comite")
+                }
+                if(usuario_sesion.esalumno){
+                  this.state.roles.push('Alumno')
+                }
+                this.state.nombre=usuario_sesion.nombre 
+                this.state.img=usuario_sesion.img 
+                this.state.rol=usuario_sesion.rolActivo
+                if (usuario_sesion.rolActivo=="Director") {
+                  if(router.history.current.path!=="/directora"){
+                    router.push({ path: "/directora" })
+                  }
+                } else if (usuario_sesion.rolActivo=="Comite") {
+                  if(router.history.current.path!=="/comite"){
+                    router.push({ path: "/comite" })
+                  }
+                } else if (usuario_sesion.rolActivo=="Profesor") {
+                  if(router.history.current.path!=="/profesor"){
+                    router.push({ path: "/profesor" })
+                  }
                 } else {
-                  this.state.rol="alumno"
-                  router.push({ path: "/Alumno" })
+                  if(router.history.current.path!=="/Alumno"){
+                    router.push({ path: "/Alumno" })
+                  }
                 }
               }, 1000)
               this.interval = setTimeout(() => {

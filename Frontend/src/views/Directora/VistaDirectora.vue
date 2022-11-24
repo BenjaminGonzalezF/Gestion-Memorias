@@ -1,16 +1,16 @@
 <template>
     <v-app>
-      <v-navigation-drawer right app v-model="drawer" color="rgb(0, 204, 255)">
+      <v-navigation-drawer right app color="rgb(0, 204, 255)">
         <v-layout column class="text-center">
           <v-flex class="mt-6">
             <v-avatar size="150">
               <v-img :src="this.$store.state.img">
-                <template v-slot:placeholder>
-                  <v-row class="fill-height ma-0" align="center" justify="center">
-                    <v-progress-circular indeterminate color="white"></v-progress-circular>
-                  </v-row>
-                </template>
-              </v-img>
+              <template v-slot:placeholder>
+                <v-row class="fill-height ma-0" align="center" justify="center">
+                  <v-progress-circular indeterminate color="white"></v-progress-circular>
+                </v-row>
+              </template>
+            </v-img>
             </v-avatar>
             <p class="white--text subheading-1 text-weight-bold mt-2">
               {{this.$store.state.nombre}}
@@ -21,8 +21,8 @@
             </p>
           </v-flex>
           <v-flex class="mt-3 mb-3">
-            <cambiarRol></cambiarRol>
-          </v-flex>   
+          <cambiarRol></cambiarRol>
+        </v-flex>    
         </v-layout>
         <v-list>
           <v-list-item-group>
@@ -41,7 +41,7 @@
       </v-navigation-drawer>
       <v-app-bar flat app color="rgb(0, 204, 255)">
         <v-img max-height="40" max-width="50" src="@/assets/utal.png">
-
+  
         </v-img>
         <v-app-bar-nav-icon right absolute class="grey--text" @click="drawer = !drawer">
         </v-app-bar-nav-icon>
@@ -49,35 +49,32 @@
       </v-app-bar>
       <loading></loading>
       <v-main v-if="!this.$store.state.loading">
-        <OfertaTemas v-if="this.$store.state.vistaSeleccionada==1"></OfertaTemas>
-        <MisTemas v-if="this.$store.state.vistaSeleccionada==2"></MisTemas>
-        <vistaSolicitar v-if=" this.$store.state.vistaSeleccionada==3"></vistaSolicitar>
-        <MisSolicitudes v-if=" this.$store.state.vistaSeleccionada==4"></MisSolicitudes>
-        <AprobadoTema v-if=" this.$store.state.vistaSeleccionada==5"></AprobadoTema>
+        <vistaSolicitud v-if="vista==1"></vistaSolicitud>
+        <Estudiantes v-if="vista==2"></Estudiantes>
+        <vistaMemoria v-if="vista==3"></vistaMemoria>
+        <historial v-if="vista==4"></historial>>
       </v-main>
     </v-app>
   </template>
 
 <script>
-import OfertaTemas from "./OfertaTemas.vue"
-import MisTemas from "./MisTemas.vue"
-import vistaSolicitar from "./VistaSolicitarTema.vue"
-import MisSolicitudes from "./MisSolicitudes.vue"
-import AprobadoTema from "./TemaAprobado.vue"
-import cambiarRol from "@/components/cambiarRol.vue"
-
+import vistaSolicitud from "./VistaTemasDirectora.vue"
+import vistaMemoria from "./VistaMemoriaDirectora.vue"
+import Estudiantes from './VistaAddUsuarioDirectora.vue';
 import Loading from '@/components/loading.vue';
+import historial from './HistorialMemoria.vue';
+import cambiarRol from '@/components/cambiarRol.vue';
 
 export default {
     data() {
         return {
             drawer: null,
             items: [
-                { title: "Oferta de Temas", icon: "mdi-folder" },
-                { title: "Mis Temas", icon: "mdi-folder" },
-                { title: "Mis Solicitudes", icon: "mdi-folder" },
-                { title: "Comprobante certificado", icon:"mdi-folder"},
-                { title: "Cerrar sesion", icon: "mdi-exit-to-app" },
+                { title: "Solicitud de temas", route: '/solicitudTemas', icon: "mdi-folder" },
+                { title: "Añadir usuarios", route: '/solicitudTemas', icon: "mdi-folder" },
+                { title: "Solicitud de memorias", route: '/solicitudTemas', icon: "mdi-folder" },
+                { title: "Historial de memorias", route: '/HistorialMemoria', icon: "mdi-folder"},
+                { title: "Cerrar sesion", icon: "mdi-forum" },
             ],
             hover: "red",
             vista:1,
@@ -91,13 +88,12 @@ export default {
         this.$store.commit('cargar_datos')
     },
     components:{
-        OfertaTemas,
+        vistaSolicitud,
+        vistaMemoria,
+        Estudiantes,
         Loading,
-        MisTemas,
-        vistaSolicitar,
-        cambiarRol,
-        MisSolicitudes,
-        AprobadoTema
+        historial,
+        cambiarRol
     },
     methods: {
         redirigir(ref) {
@@ -108,14 +104,14 @@ export default {
                     this.$store.state.img=null
                     this.$router.push({ path: "/" })
                 }
-            }else if(ref == "Oferta de Temas"){
-                this.$store.state.vistaSeleccionada=1
-            }else if(ref == "Mis Temas"){
-                this.$store.state.vistaSeleccionada=2
-            }else if(ref == "Mis Solicitudes"){
-                this.$store.state.vistaSeleccionada=4
-            }else if(ref== "Comprobante certificado"){
-              this.$store.state.vistaSeleccionada=5
+            }else if(ref == "Añadir usuarios"){
+                this.vista=2
+            }else if(ref == "Solicitud de temas"){
+                this.vista=1
+            }else if(ref == "Solicitud de memorias"){
+                this.vista=3
+            }else if(ref == "Historial de memorias"){
+              this.vista=4
             }
         }
     }
