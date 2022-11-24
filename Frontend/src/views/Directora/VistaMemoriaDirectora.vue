@@ -1,5 +1,8 @@
 <template>
     <div class="Solicitudes">
+        <div class="one"> 
+            <h1>Direccion de Escuela: Solicitudes de Memorias</h1> 
+            </div>
         <v-layout row class="mx-1">
             <v-spacer></v-spacer>
             <v-btn-toggle v-model="toggle" dense class="mr-2" style="max-height: 20px !important">
@@ -56,57 +59,114 @@
                                     <div>{{ project.profeguia }}</div>
                                 </v-flex>
                                 <v-flex xs2 sm3 md2>
-                                    <!-- <div class="caption grey--text">Durum</div> -->
-                                </v-flex>
-                                <v-flex xs6 sm1 md1>
-                                    <v-tooltip top>
-                                        <template v-slot:activator="{}">
-                                            <div class="text-xs-center">
-                                                <div>
-                                                    <v-spacer></v-spacer>
-                                                    <v-card-actions>
-                                                        <!-- <v-container class="mx-auto mb-n5"> <strong> {{ oferta.alumno }}</strong></v-container> -->
-                                                        <v-btn class="white--text" color="green darken-1" small
-                                                            @click="votar_solicitud(true, project)">aceptar</v-btn>
-                                                        <v-btn class="white--text" color="red lighten-2" small
-                                                            @click="feedback(project)">rechazar</v-btn>
-                                                    </v-card-actions>
-                                                </div>
+                                            <!-- <div class="caption grey--text">Durum</div> -->
+                                            <div class="my-1 text-center">
+                                                <v-btn
+                                                    @click="verSolicitud(project.nombreTema, project.descripcionTema, project.estudiante_nombre, project.fechaTema, project.estudiante_matricula, project.estudiante_img)">
+                                                    Ver solicitud
+                                                </v-btn>
                                             </div>
-                                        </template>
-                                    </v-tooltip>
-                                </v-flex>
-                            </v-layout>
-                        </v-card>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-card>
+                            </div>
+                            <v-dialog v-model="drawerSolicitud" max-width="700">
+                                <v-card>
+                                    <v-container class="grey lighten-5">
+                                        <v-row>
+                                            <v-col cols="12" sm="12" md="6">
+                                                <v-card max-height="400">
+                                                    <v-card-title>
+                                                        <span class="text-h5">Datos proyecto</span>
+                                                    </v-card-title>
+                                                    <v-card-text>
+                                                        <v-container>
+                                                            <v-flex>
+                                                                <div class="caption black--text">Titulo proyecto:</div>
+                                                                <div>{{ project.nombre }}</div>
+                                                            </v-flex>
+                                                            <v-flex>
+                                                                <div class="caption black--text">Descripcion general
+                                                                    proyecto:
+                                                                </div>
+                                                                <div>{{ project.descripcion }}</div>
+                                                            </v-flex>
+                                                            <v-flex>
+                                                                <div class="caption black--text">Estudiante:</div>
+                                                                <div>{{project.alumno  }}</div>
+                                                            </v-flex>
+                                                        </v-container>
+                                                    </v-card-text>
+                                                </v-card>
+                                            </v-col>
+                                            <v-col cols="12" sm="12" md="6">
+                                                <v-card max-height="400" class="justify-center">
+                                                    <v-card-title>
+                                                        <span class="text-h5">Datos estudiante</span>
+                                                    </v-card-title>
+                                                    <v-card-text>
+                                                        <v-container>
+                                                            <v-flex>
+                                                                <v-avatar size="140">
+                                                                    <v-img :src="imagenEstudiante">
+                                                                        <template v-slot:placeholder>
+                                                                            <v-row class="fill-height ma-0" align="center"
+                                                                                justify="center">
+                                                                                <v-progress-circular indeterminate
+                                                                                    color="rgb(0, 204, 255)"></v-progress-circular>
+                                                                            </v-row>
+                                                                        </template>
+                                                                    </v-img>
+                                                                </v-avatar>
+                                                            </v-flex>
+                                                            <v-flex>
+                                                                <div class="caption black--text">Nombre estudiante:</div>
+                                                                <div>{{ estudiante }}</div>
+                                                            </v-flex>
+                                                            <v-flex>
+                                                                <div class="caption black--text">Matricula:
+                                                                </div>
+                                                                <div>{{ matricula }}</div>
+                                                            </v-flex>
+                                                        </v-container>
+                                                    </v-card-text>
+                                                </v-card>
+                                            </v-col>
+                                        </v-row>
+                                        <v-card-actions class="justify-center">
+                                            <v-btn color="#FF0182" dark @click="votar_tema(true,'')"> Aceptar</v-btn>
+                                            <v-btn color="#FF0182" @click="feedback('')" dark> Rechazar </v-btn>
+                                        </v-card-actions>
+                                    </v-container>
+                                </v-card>
+                            </v-dialog>
+                        </v-container>
+                        <v-dialog v-model="drawerFeedback" max-width="600">
+                            <v-card>
+                                <v-card-title>
+                                    <span class="text-h5">Feedback solicitud</span>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-container>
+                                        <v-flex>
+                                            <v-textarea v-model="feedbacktext" counter="300">
+                                                <template v-slot:label>
+                                                    <div>
+                                                        Deje sus comentarios
+                                                    </div>
+                                                </template>
+                                            </v-textarea>
+                                        </v-flex>
+                                    </v-container>
+                                </v-card-text>
+                                <v-card-actions class="justify-center">
+                                    <v-btn @click="votar_tema(false,null)">
+                                        Rechazar solicitud
+                                    </v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
                     </div>
-                </v-container>
-                <v-dialog v-model="drawerFeedback" max-width="600">
-                    <v-card>
-                        <v-card-title>
-                            <span class="text-h5">Feedback solicitud</span>
-                        </v-card-title>
-                        <v-card-text>
-                            <v-container>
-                                <v-flex>
-                                    <v-textarea v-model="feedbacktext" counter="300">
-                                        <template v-slot:label>
-                                            <div>
-                                                Deje sus comentarios
-                                            </div>
-                                        </template>
-                                    </v-textarea>
-                                </v-flex>
-                            </v-container>
-                        </v-card-text>
-                        <v-card-actions class="justify-center">
-                            <v-btn @click="votar_solicitud(false, null)">
-                                Rechazar solicitud
-                            </v-btn>
-
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-            </div>
             <div class="text-center" v-if="cargando_solicitudes == false && solicitudes_pendientes == 0">
                 <h1> No tienes Solicitudes pendientes</h1>
                 <v-avatar size="150">
@@ -135,7 +195,7 @@ export default {
             toggle: null,
             drawer: null,
             drawerSolicitud: false,
-            drawerFeedback: null,
+            drawerFeedback: false,
             tituloProyecto: null,
             descripcionProyecto: null,
             estudiante: null,
@@ -260,4 +320,32 @@ export default {
 .v-list-item:hover {
     background: #f5a42a;
 }
+
+.one h1 { 
+  text-align: center; 
+  text-transform: uppercase; 
+  padding-bottom: 5px; 
+} 
+.one h1:before { 
+  width: 28px; 
+  height: 5px; 
+  display: block; 
+  content: ""; 
+  position: absolute; 
+  bottom: 3px; 
+  left: 50%; 
+  margin-left: -14px; 
+  background-color: #f5a42a; 
+} 
+.one h1:after { 
+  width: 100px; 
+  height: 1px; 
+  display: block; 
+  content: ""; 
+  position: relative; 
+  margin-top: 25px; 
+  left: 50%; 
+  margin-left: -50px; 
+  background-color: #f5a42a; 
+} 
 </style>

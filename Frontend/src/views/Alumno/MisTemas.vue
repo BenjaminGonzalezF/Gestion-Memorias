@@ -1,5 +1,8 @@
 <template>
     <div class="Temas">
+        <div class="one"> 
+            <h1>Alumnos: Mis Temas</h1> 
+            </div>
         <v-layout row class="mx-1">
             <v-btn depressed color="#f5a42a" dark small
                 @click="agregar_temas(false, nombre_temacrear1, descripcion_temacrear1, profesor_temacrear1)">
@@ -383,3 +386,34 @@ export default {
 }
 
 </script>
+
+<style>
+
+.one h1 { 
+  text-align: center; 
+  text-transform: uppercase; 
+  padding-bottom: 5px; 
+} 
+.one h1:before { 
+  width: 28px; 
+  height: 5px; 
+  display: block; 
+  content: ""; 
+  position: absolute; 
+  bottom: 3px; 
+  left: 50%; 
+  margin-left: -14px; 
+  background-color: #f5a42a; 
+} 
+.one h1:after { 
+  width: 100px; 
+  height: 1px; 
+  display: block; 
+  content: ""; 
+  position: relative; 
+  margin-top: 25px; 
+  left: 50%; 
+  margin-left: -50px; 
+  background-color: #f5a42a; 
+} 
+</style>

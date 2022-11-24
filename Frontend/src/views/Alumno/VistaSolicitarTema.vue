@@ -1,5 +1,8 @@
 <template>
     <v-app>
+        <div class="one"> 
+            <h1>Alumnos: Solicirtudes de memoria</h1> 
+            </div>
         <div align="center">
             <v-col lass="px-4">
                 <h1>
@@ -770,3 +773,34 @@ export default {
 }
 
 </script>
+
+<style>
+
+.one h1 { 
+  text-align: center; 
+  text-transform: uppercase; 
+  padding-bottom: 5px; 
+} 
+.one h1:before { 
+  width: 28px; 
+  height: 5px; 
+  display: block; 
+  content: ""; 
+  position: absolute; 
+  bottom: 3px; 
+  left: 50%; 
+  margin-left: -14px; 
+  background-color: #f5a42a; 
+} 
+.one h1:after { 
+  width: 100px; 
+  height: 1px; 
+  display: block; 
+  content: ""; 
+  position: relative; 
+  margin-top: 25px; 
+  left: 50%; 
+  margin-left: -50px; 
+  background-color: #f5a42a; 
+} 
+</style>
