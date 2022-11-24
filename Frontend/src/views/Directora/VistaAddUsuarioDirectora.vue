@@ -1,3 +1,4 @@
+
 <template>
     <div>
         <loading></loading>
@@ -226,7 +227,6 @@ export default ({
                         eliminar_encabezado.push(this.datosImportados[i])
                     }
                 }
-
                 this.datosImportados = eliminar_encabezado
             })
         },
@@ -269,31 +269,35 @@ export default ({
                         alumnoingresar.correo = this.datosImportados[i][2]
                         if (this.datosImportados[i][3] == "X" || this.datosImportados[i][3] == "x") {
                             alumnoingresar.esalumno = true
+                            alumnoingresar.rolActivo="Alumno"
                         }
                         else {
                             alumnoingresar.esalumno = false
                         }
                         if (this.datosImportados[i][4] == "X" || this.datosImportados[i][4] == "x") {
                             alumnoingresar.esprofe = true
+                            alumnoingresar.rolActivo="Profesor"
                         }
                         else {
                             alumnoingresar.esprofe = false
                         }
                         if (this.datosImportados[i][5] == "X" || this.datosImportados[i][5] == "x") {
                             alumnoingresar.escomite = true
+                            alumnoingresar.rolActivo="Comite"
                         }
                         else {
                             alumnoingresar.escomite = false
                         }
                         if (this.datosImportados[i][6] == "X" || this.datosImportados[i][6] == "x") {
                             alumnoingresar.esdirector = true
+                            alumnoingresar.rolActivo="Director"
                         }
                         else {
                             alumnoingresar.esdirector = false
                         }
                         this.e1 = 1
                         this.axios.post("nuevo_usuario", alumnoingresar).then(() => {
-                        
+
                         }).catch((e) => {
                             console.log(e)
                         })
