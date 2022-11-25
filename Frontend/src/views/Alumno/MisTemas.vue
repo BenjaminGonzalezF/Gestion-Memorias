@@ -64,7 +64,8 @@
                                 <v-text-field v-model="nombre_temacrear" label="Título del tema"
                                     :rules="[() => !!nombre_temacrear || 'Este campo no puede quedar vacio']"
                                     :error-messages="errorMessages" required></v-text-field>
-                                <v-textarea auto-grow v-model="descripcion_temacrear" label="Descripcion del tema" max-height="50"
+                                <v-textarea auto-grow v-model="descripcion_temacrear" label="Descripcion del tema"
+                                    max-height="50"
                                     :rules="[() => !!descripcion_temacrear || 'Este campo no puede quedar vacio']"
                                     :error-messages="errorMessages" required></v-textarea>
                                 <v-select v-model="profesor_temacrear" label="Profesor guia" :items="profesores_guias"
@@ -315,6 +316,7 @@ export default {
                                         voto: null
                                     })
                                 }
+                                var alumno = usuarios.find(u=> u._id == localStorage.getItem("key_user"))
                                 console.log(this.nombre_temacrear)
                                 console.log(this.descripcion_temacrear)
                                 console.log(this.requisitos_temacrear)
@@ -323,7 +325,16 @@ export default {
                                 tema_crear.requisitos = this.requisitos_temacrear
                                 tema_crear.idCreador = localStorage.getItem("key_user")
                                 tema_crear.colaborador = this.profesor_temacrear
-                                tema_crear.fechacambio = Date.now()
+                                tema_crear.fechacambio = new Date().toLocaleDateString()
+                                tema_crear.postulantes = {
+                                    id: localStorage.getItem("key_user"),
+                                    nombre: alumno.nombre,
+                                    img: alumno.img,
+                                    modulos_faltantes: alumno.modulosfaltantes,
+                                    trabaja: alumno.trabaja,
+                                    resultado_profesor_postulante: null,
+                                    razon: null,
+                                }
                                 console.log(tema_crear)
                                 this.axios.post("nuevo_tema", tema_crear).then((resp) => {
                                     this.nombre_temacrear = null

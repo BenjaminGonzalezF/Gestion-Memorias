@@ -699,6 +699,8 @@ export default {
                             img: this.imagenAlumno,
                             modulosfaltantes: cursospendientes,
                             trabaja: trabaja,
+                            resultado_profesor_postulante:null,
+                            razon:null,
                         })
                         this.$store.state.img=this.imagenAlumno
                         this.axios.put(`usuario_ac/${alumno[0]._id}`, alumno[0])

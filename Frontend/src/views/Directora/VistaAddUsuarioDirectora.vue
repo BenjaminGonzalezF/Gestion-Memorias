@@ -42,6 +42,10 @@
 
                         <v-data-table :items="usuarios" :headers="headers" :search="search" :items-per-page="5"
                             v-if="usuarios.length > 0">
+                            <template v-slot:item._id="{ item }">
+                                <v-btn color="light-blue accent-2 white--text" @click="mostrarInfo(item)">ver más
+                                </v-btn>
+                            </template>
                         </v-data-table>
 
                     </v-card>
@@ -158,6 +162,34 @@
                         </v-stepper-items>
                     </v-stepper>
                 </v-dialog>
+                <!-- dialogo de mas informacion del usuario -->
+                <v-dialog v-model="drawerInfoAlumnos" width=50%>
+                    <v-scroll-y-transition mode="out-in">
+                        <v-card class="d-flex text-center" flat>
+                            <v-card-text>
+                                <v-avatar class="mt-4" size="150">
+                                    <v-img :src="alumno_seleccionado.img">
+                                        <template v-slot:placeholder>
+                                            <v-row class="fill-height ma-0" align="center" justify="center">
+                                                <v-progress-circular indeterminate color="black"></v-progress-circular>
+                                            </v-row>
+                                        </template>
+                                    </v-img>
+                                </v-avatar>
+                                <h3 class="text-h5 mb-2">
+                                    {{ alumno_seleccionado.nombre }}
+                                </h3>
+                                <div class="blue--text mb-2">
+                                    {{ alumno_seleccionado.correo }}
+                                </div>
+                                <div class=" mb-2">
+                                    {{ alumno_seleccionado.matricula }}
+                                </div>
+                                <!-- falta agregar los roles que tienen -->
+                            </v-card-text>
+                        </v-card>
+                    </v-scroll-y-transition>
+                </v-dialog>
             </v-container>
         </v-sheet>
     </div>
@@ -175,15 +207,14 @@ export default ({
             e1: 1,
             drawer: null,
             drawerAgregarAlumnos: null,
+            drawerInfoAlumnos: null,
             datosImportados: [],
             items: [],
             usuarios: [],
             headers: [
-                { text: 'IMG', value: 'img' },
-                { text: 'ID', value: '_id' },
                 { text: 'NOMBRE', value: 'nombre' },
-                { text: 'PROFESOR', value: 'profesor' },
-                { text: 'ALUMNO', value: 'alumno' },
+                { text: 'CORREO', value: 'correo' },
+                { text: 'INFORMACION', value: '_id' },
             ],
             headers_table: [
                 { text: 'nombre', value: '0' },
@@ -194,6 +225,7 @@ export default ({
                 { text: 'comite', value: '5' },
                 { text: 'directora', value: '6' },
             ],
+            alumno_seleccionado: {},
         }
     },
     components: {
@@ -216,6 +248,10 @@ export default ({
         },
         mostrarDialogo() {
             this.drawerAgregarAlumnos = true
+        },
+        mostrarInfo(alumno) {
+            this.alumno_seleccionado = alumno
+            this.drawerInfoAlumnos = true
         },
         importarDatos() {
             const eliminar_encabezado = []
@@ -269,28 +305,28 @@ export default ({
                         alumnoingresar.correo = this.datosImportados[i][2]
                         if (this.datosImportados[i][3] == "X" || this.datosImportados[i][3] == "x") {
                             alumnoingresar.esalumno = true
-                            alumnoingresar.rolActivo="Alumno"
+                            alumnoingresar.rolActivo = "Alumno"
                         }
                         else {
                             alumnoingresar.esalumno = false
                         }
                         if (this.datosImportados[i][4] == "X" || this.datosImportados[i][4] == "x") {
                             alumnoingresar.esprofe = true
-                            alumnoingresar.rolActivo="Profesor"
+                            alumnoingresar.rolActivo = "Profesor"
                         }
                         else {
                             alumnoingresar.esprofe = false
                         }
                         if (this.datosImportados[i][5] == "X" || this.datosImportados[i][5] == "x") {
                             alumnoingresar.escomite = true
-                            alumnoingresar.rolActivo="Comite"
+                            alumnoingresar.rolActivo = "Comite"
                         }
                         else {
                             alumnoingresar.escomite = false
                         }
                         if (this.datosImportados[i][6] == "X" || this.datosImportados[i][6] == "x") {
                             alumnoingresar.esdirector = true
-                            alumnoingresar.rolActivo="Director"
+                            alumnoingresar.rolActivo = "Director"
                         }
                         else {
                             alumnoingresar.esdirector = false

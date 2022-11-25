@@ -179,18 +179,18 @@ export default {
                         const usuarios = respU.data
                         for (var i = 0; i < this.solicitudes.length; i++) {
                             if (this.solicitudes[i].estado == null) {
+                                var profeguia = usuarios.find(u => u._id == this.solicitudes[i].profeguiaid)
+                                var temarel = temas.find(t => t._id == this.solicitudes[i].temaid)
+                                var alumno = usuarios.find(u => u._id == this.solicitudes[i].alumnoid)
+    
+                                this.solicitudes[i].nombre = temarel.nombre
+                                this.solicitudes[i].descripcion = temarel.descripcion
+                                this.solicitudes[i].alumno = alumno.nombre
+                                this.solicitudes[i].profeguia = profeguia.nombre
                                 this.solicitudes_pendientes++
                             }
-                            var profeguia = usuarios.filter(u => u._id == this.solicitudes[i].profeguiaid)
-                            var temarel = temas.filter(t => t._id == this.solicitudes[i].temaid)
-                            var alumno = usuarios.filter(u => u._id == this.solicitudes[i].alumnoid)
-                            this.solicitudes[i].nombre = temarel[0].nombre
-                            this.solicitudes[i].descripcion = temarel[0].descripcion
-                            this.solicitudes[i].alumno = alumno[0].nombre
-                            this.solicitudes[i].profeguia = profeguia[0].nombre
-
                         }
-                        this.cargando_solicitudes = true
+                        this.cargando_solicitudes = false
                     })
                 }).catch((e) => {
                     console.log(e)

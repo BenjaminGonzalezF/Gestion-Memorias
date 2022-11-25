@@ -14,7 +14,7 @@ const notaSchema = new Schema({
   resultado_comite:Boolean,
   resultado_directora:Boolean,
   resultado_profesor:Boolean,
-  fechacambio:Date,
+  fechacambio:String,
   colaborador:{type: Schema.Types.ObjectId, ref: 'usuarios'},
   postulantes:[{
     id:{type: Schema.Types.ObjectId, ref: 'usuarios'},
@@ -22,6 +22,8 @@ const notaSchema = new Schema({
     img:String,
     modulos_faltantes:[],
     trabaja:Boolean,
+    resultado_profesor_postulante:Boolean,
+    razon:String,
   }],
 });
 

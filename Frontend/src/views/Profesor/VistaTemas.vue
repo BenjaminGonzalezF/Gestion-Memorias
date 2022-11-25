@@ -301,7 +301,7 @@ export default {
                                 tema_crear.descripcion = this.descripcion_temacrear
                                 tema_crear.requisitos = this.requisitos_temacrear
                                 tema_crear.idCreador = localStorage.getItem("key_user")
-                                tema_crear.fechacambio = Date.now()
+                                tema_crear.fechacambio = new Date().toLocaleDateString()
                                 this.axios.post("nuevo_tema", tema_crear).then((resp) => {
                                     this.nombre_temacrear = null
                                     this.descripcion_temacrear = null
