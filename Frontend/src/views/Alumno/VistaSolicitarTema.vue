@@ -39,14 +39,14 @@
                 </v-card>
                 <v-col>
                     <h1>
-                        Datos de interes
+                        ¿Se encuentra trabajando?*****
                     </h1>
                     <v-card height="50" width="80%" color="#FFFFFF">
                         <v-select v-model="estadoselect" :items="estado" label="¿Esta trabajando?"></v-select>
                     </v-card>
                 </v-col>
                 <h1>
-                    Información
+                    Información Solicitud
                 </h1>
                 <v-card height="220" width="80%" color="#F4F4F4">
                     <v-col>
@@ -80,7 +80,13 @@
                                 <v-col>
                                     <p> Verificación </p>
                                     <v-img max-height="100" max-width="120" :src="this.imagenAlumno">
+                                        <template v-slot:placeholder>
+                                            <v-row class="fill-height ma-0" align="center" justify="center">
+                                                <v-progress-circular indeterminate color="white"></v-progress-circular>
+                                            </v-row>
+                                        </template>
                                     </v-img>
+                                    <v-btn @click="AgregarImagen(estadofoto)" color="#f5a42a">Actualizar Imagen </v-btn>
                                 </v-col>
                             </div>
                         </v-card>
@@ -159,15 +165,15 @@
                                                 <p class="center">Subir imagen</p>
                                                 <v-text-field v-model="link" :rules="linkrules" label="Link Imagen"
                                                     required></v-text-field>
-                                                <v-btn color="#f5a42a" @click="subirlink(link)" :disabled="estadofoto">
-                                                    Enviar link
+                                                <v-btn color="#f5a42a" @click="subirlink(link)">
+                                                    Guardar Imagen
                                                 </v-btn>
                                             </v-col>
                                         </v-card>
                                     </v-row>
                                 </div>
                             </v-card>
-                            <v-btn color="#f5a42a" @click="e1 = 3" :disabled="!estadofoto">
+                            <v-btn color="#f5a42a" @click="e1 = 3" :disabled="!urlvalida">
                                 Continuar
                             </v-btn>
                             <v-btn text @click="cerrarint()">
@@ -186,9 +192,6 @@
                             </v-card>
                             <v-btn color="#f5a42a" @click="cerrarint1()">
                                 Finalizar
-                            </v-btn>
-                            <v-btn text @click="cerrarint()">
-                                Cancelar
                             </v-btn>
                         </v-stepper-content>
                     </v-stepper-items>
@@ -549,7 +552,7 @@ export default {
     },
     methods: {
         cargar_datos() {
-            if (this.$store.state.id_tema_solicitar != "nuevo tema") {
+            if (this.$store.state.id_tema_solicitar != "nuevo tema") {//y este if?
                 this.axios.get("todos_temas")
                     .then((respT) => {
                         this.axios.get("todos_usuarios").then((respU) => {
@@ -576,55 +579,40 @@ export default {
                     this.imagenAlumno = this.$store.state.img
                     this.estadofoto = true;
                 }
-                console.log("nuevo tema")
+                //console.log("nuevo tema")
             }
 
         },
         listarsemestres() {
-            //console.log("Tamaño semestres"+semestres1.length) verificar ingreso
             for (var i = 0; i < Semestres.length; i++) {
                 this.semestres.push(Semestres[i])
-                //console.log(this.semestres[i].nombre) verificar ingreso
             }
         },
 
         agregar(nombre) {
             var x = 0;
             var b = true
-            //console.log("Tamaño: "+this.nocursados.length)
             if (this.nocursados.length != 0) {
                 for (var i = 0; i < this.nocursados.length; i++) {
-                    //console.log("for: "+this.nocursados[i])
-                    //console.log("===: "+nombre)
                     if (this.nocursados[i] == nombre) {
                         this.nocursados.splice(i, 1)
-                        //console.log("se elimina")
-                        //console.log("*********************************************************")
                         b = true
                         break;
-
                     } else {
                         b = false
-
                     }
                 }
-            } else {
+            }else {
                 b = false
             }
             if (!b) {
                 for (var i = 0; i < this.semestres.length; i++) {
-                    //console.log("semestre for: "+this.semestres[i].nombre) 
                     for (var a = 0; a < this.semestres[i].ramos.length; a++) {
-                        //console.log("for: "+this.semestres[i].ramos[a].name)
-                        //console.log("===: "+nombre)
                         if (this.semestres[i].ramos[a].name == nombre) {
                             this.nocursados.push(nombre)
-                            //console.log("se agrego correctamente+"+this.semestres[i].ramos[a].name)
-                            //console.log("*********************************************************")
                             x = 1;
                             break;
                         }
-
                     }
                     if (x == 1) {
                         x = 0
@@ -641,11 +629,22 @@ export default {
         cerrarint() {
             this.drawerSolicitud = false;
             this.e1 = 1
+            this.link = null
+            this.urlvalida = null
+
         },
         cerrarint1() {
             this.drawerSolicitud = false;
             this.estadofoto = true;
-
+            this.$store.state.img = this.imagenAlumno
+            this.e1 = 1
+            this.link = null
+            this.urlvalida = null
+            Swal.fire(
+                'Se ha cambiado la imagen',
+                'Se ha cambiado la imagen correctamente!',
+                'success'
+            )
         },
         subirlink(url) {
             console.log("valor vaule: " + url)
@@ -662,21 +661,19 @@ export default {
                 this.imagenAlumno = url
                 console.log("valur " + this.imagenAlumno)
                 this.estadofoto = true;
+                this.axios.get("todos_usuarios").then((respU) => {
+                    const usuarios = respU.data
+                    var alumno = usuarios.filter(u => u._id == localStorage.getItem("key_user"))
+                    alumno[0].img = this.imagenAlumno
+                    this.axios.put(`usuario_ac/${alumno[0]._id}`, alumno[0])
+                })
             } else {
                 //error 
-                console.log("url invalida ingresa otra")
+                //console.log("url invalida ingresa otra")
             }
         },
         enviardatos(nombre, nombreproyecto, nombreprofesor, cursospendientes, estadoselect, estadofoto) {
             if (nombre != null && nombreproyecto != null && nombreprofesor != null && cursospendientes.length != 0 && estadoselect != null && estadofoto != false) {
-                console.log("pasa1")
-                console.log("valor nombre: " + nombre)
-                console.log("valor nombre proyecto: " + nombreproyecto)
-                console.log("valor nombre profesor: " + nombreprofesor)
-                console.log("valor cursos pendientes : " + cursospendientes)
-                console.log("valor trabaja?: " + estadoselect)
-                console.log("valor estado foto: " + estadofoto)
-                console.log("valor link foto2: " + this.imagenAlumno)
                 this.axios.get("todos_usuarios").then((respU) => {
                     this.axios.get("todos_temas").then((respT) => {
                         const usuarios = respU.data
@@ -702,8 +699,6 @@ export default {
                         this.axios.put(`usuario_ac/${alumno[0]._id}`, alumno[0])
                         this.axios.put(`tema_ac/${tema[0]._id}`, tema[0])
                     })
-                    //this.axios.put(`usuario_ac/${alumno[0]._id}`, alumno[0])
-                    //this.axios.put(`tema_ac/${tema[0]._id}`, tema[0])
                 })
                 Swal.fire({
                     icon: 'success',
@@ -714,15 +709,6 @@ export default {
                 this.$store.state.loading = true
                 this.$store.commit('cargar_datos')
             } else {
-                console.log(" == cursos[0]: " + cursospendientes.length)
-                console.log("faltan datos")
-                console.log("valor nombre: " + nombre)
-                console.log("valor nombre proyecto: " + nombreproyecto)
-                console.log("valor nombre profesor: " + nombreprofesor)
-                console.log("valor cursos pendientes : " + cursospendientes)
-                console.log("valor trabaja?: " + estadoselect)
-                console.log("valor estado foto: " + estadofoto)
-                console.log("valor link foto2: " + this.imagenAlumno)
                 if (nombre == null) {
                     Swal.fire({
                         icon: 'error',
