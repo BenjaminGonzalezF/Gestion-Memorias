@@ -90,13 +90,17 @@
                             <v-card-text>
                                 <v-col>
                                     <v-text-field v-model="verificarContraseña" class="ml-12 mr-12"
-                                        label="Nueva Contraseña">
+                                        label="Nueva Contraseña" :rules="ContraRules" required>>
                                     </v-text-field>
                                     <v-text-field v-model="verificarContraseñaNuevamente" class="ml-12 mr-12"
-                                        label="Verificacion Contraseña"></v-text-field>
+                                        label="Verificacion Contraseña" :rules="ContraRules" required
+                                        :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                                        :type="show1 ? 'text' : 'password'">
+                                    </v-text-field>
                                     <v-row>
                                         <v-spacer></v-spacer>
-                                        <v-btn class="white--text" color="teal lighten-2"
+                                        <v-btn color="teal lighten-2" :class="vBtn" class="white--text"
+                                            :disabled="vBtnIngreso"
                                             @click="cambiarContraseña(verificarContraseña, verificarContraseñaNuevamente)">
                                             Guardar Cambios</v-btn>
                                         <v-spacer></v-spacer>
@@ -130,6 +134,7 @@ export default {
     name: "Alumno",
     data() {
         return {
+            show1: false,
             drawer: null,
             drawerSolicitud: false,
             tituloProyecto: null,
@@ -152,8 +157,14 @@ export default {
                 },
             ],
             drawerContrasena: false,
-            verificarContraseña: null,
-            verificarContraseñaNuevamente: null,
+            verificarContraseña: "",
+            verificarContraseñaNuevamente: "",
+            vBtnIngreso: true,
+            errorMessages: '',
+            ContraRules: [
+                v => !!v || 'Este campo no puede quedar vacio',
+                v => v.length >= 8 || 'Minimo 8 caracteres',
+            ],
 
         };
     },
@@ -161,6 +172,24 @@ export default {
         this.cargar_temas()
         this.verificar_inicio()
 
+    },
+    computed: {
+        vBtn() {
+            if (this.verificarContraseña == "" || this.verificarContraseñaNuevamente == "" || this.verificarContraseña == null || this.verificarContraseñaNuevamente == null
+                || this.verificarContraseña.length < 8 || this.verificarContraseñaNuevamente.length < 8) {
+                //console.log("1 " + this.verificarContraseña)
+                //console.log("1 " + this.verificarContraseñaNuevamente)
+                //console.log("1 " + this.verificarContraseña.length)
+                //console.log("1 " + this.verificarContraseñaNuevamente.length)
+                this.vBtnIngreso = true
+            } else {
+                //console.log("2 " + this.verificarContraseña)
+                //console.log("2 " + this.verificarContraseñaNuevamente)
+                //console.log("2 " + this.verificarContraseña.length)
+                //console.log("2 " + this.verificarContraseñaNuevamente.length)
+                this.vBtnIngreso = false
+            }
+        }
     },
     components: { Swal },
     methods: {
@@ -208,16 +237,15 @@ export default {
             }
         },
         verificar_inicio() {
-            console.log(this.$store.state.contrasena)
             this.axios.get("todos_usuarios").then((RespU) => {
                 const usuario = RespU.data
                 var user = usuario.find(u => u._id == localStorage.getItem("key_user"))
-                console.log(user.contrasena)
-                if (user.contrasena == null) {
-                    console.log("si es nuevo")
+                //console.log(user.contrasena)
+                if (user.contrasena == "12345678") {
+                    //console.log("si es nuevo")
                     this.drawerContrasena = true;
                 } else {
-                    console.log("no es nuevo")
+                    //console.log("no es nuevo")
                     this.drawerContrasena = false;
                 }
             })
@@ -239,8 +267,15 @@ export default {
                     'Se ha cambiado la contraseña correctamente!',
                     'success'
                 )
+            } else {
+                Swal.fire(
+                    'Verifique las contraseñas',
+                    'Las contraseñas no son iguales!',
+                    'error'
+                )
             }
-        }
+        },
+
     },
 }
 </script>

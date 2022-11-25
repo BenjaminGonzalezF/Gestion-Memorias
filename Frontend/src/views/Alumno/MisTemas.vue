@@ -64,7 +64,8 @@
                                 <v-text-field v-model="nombre_temacrear" label="Título del tema"
                                     :rules="[() => !!nombre_temacrear || 'Este campo no puede quedar vacio']"
                                     :error-messages="errorMessages" required></v-text-field>
-                                <v-textarea auto-grow v-model="descripcion_temacrear" label="Descripcion del tema" max-height="50"
+                                <v-textarea auto-grow v-model="descripcion_temacrear" label="Descripcion del tema"
+                                    max-height="50"
                                     :rules="[() => !!descripcion_temacrear || 'Este campo no puede quedar vacio']"
                                     :error-messages="errorMessages" required></v-textarea>
                                 <v-select v-model="profesor_temacrear" label="Profesor guia" :items="profesores_guias"
