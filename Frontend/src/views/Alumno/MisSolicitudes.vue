@@ -13,53 +13,53 @@
                     <v-list>
                         <v-list-item v-for="(item, index) in itemsOrdenar" :key="index" link>
                             <v-list-item-title @click="sortBy(item.prop)">{{
-                                item.title
+                                    item.title
                             }}</v-list-item-title>
                         </v-list-item>
                     </v-list>
                 </v-menu>
             </v-layout>
-            <v-card height="500" width="100%" outlined class="overflow-y-auto" >
-            <v-container class="my-3">
-                <v-progress-circular :size="50" color="primary" indeterminate
-                    style="position: absolute;top:20%;left: 50%;" v-if="cargando_temas == true">
-                </v-progress-circular>
-                <div v-for="(project,index) in missolicitudestemas" :key="index">
-                    <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2"
-                        v-if="project.resultado_comite == true && project.resultado_directora == true && project.colaborador == null">
+            <v-card height="500" width="100%" outlined class="overflow-y-auto">
+                <v-container class="my-3">
+                    <v-progress-circular :size="50" color="primary" indeterminate
+                        style="position: absolute;top:20%;left: 50%;" v-if="cargando_temas == true">
+                    </v-progress-circular>
+                    <div v-for="(project, index) in missolicitudestemas" :key="index">
+                        <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2"
+                            v-if="project.resultado_comite == true && project.resultado_directora == true && project.colaborador == null">
 
-                        <v-layout row wrap :class="`pa-3 project ${project.status}`">
-                            <v-flex xs8 md3>
-                                <div class="caption grey--text">Titulo proyecto</div>
-                                <div>{{ project.nombre }}</div>
-                            </v-flex>
-                            <v-flex xs6 md5>
-                                <div class="caption grey--text">Descripcion general proyecto</div>
-                                <div>{{ project.descripcion }}</div>
-                            </v-flex>
-                            <v-flex xs2 sm1 md2>
-                                <div class="caption grey--text">Estado</div>
-                                <div v-if="project.resultado_profesor==null">Pendiente</div>
-                                <div v-if="project.resultado_profesor==true">Aceptado</div>
-                                <div v-if="project.resultado_profesor==false">Rechazado</div>
-                            </v-flex>
-                        </v-layout>
-                    </v-card>
-                </div>
-                <div class="text-center" v-if="cargando_temas == false && mis_solicitudes == 0">
-                    <h1> No has realizado ninguna solicitud</h1>
-                    <v-avatar size="150">
-                        <v-img src="https://media.tenor.com/-wrmUJrUbeoAAAAM/emoji-disintergrating.gif">
-                            <template v-slot:placeholder>
-                                <v-row class="fill-height ma-0" align="center" justify="center">
-                                    <v-progress-circular indeterminate color="white"></v-progress-circular>
-                                </v-row>
-                            </template>
-                        </v-img>
-                    </v-avatar>
-                </div>
-            </v-container>
-        </v-card>
+                            <v-layout row wrap :class="`pa-3 project ${project.status}`">
+                                <v-flex xs8 md3>
+                                    <div class="caption grey--text">Titulo proyecto</div>
+                                    <div>{{ project.nombre }}</div>
+                                </v-flex>
+                                <v-flex xs6 md5>
+                                    <div class="caption grey--text">Descripcion general proyecto</div>
+                                    <div>{{ project.descripcion }}</div>
+                                </v-flex>
+                                <v-flex xs2 sm1 md2>
+                                    <div class="caption grey--text">Estado</div>
+                                    <div v-if="project.resultado_profesor == null">Pendiente</div>
+                                    <div v-if="project.resultado_profesor == true">Aceptado</div>
+                                    <div v-if="project.resultado_profesor == false">Rechazado</div>
+                                </v-flex>
+                            </v-layout>
+                        </v-card>
+                    </div>
+                    <div class="text-center" v-if="cargando_temas == false && mis_solicitudes == 0">
+                        <h1> No has realizado ninguna solicitud</h1>
+                        <v-avatar size="150">
+                            <v-img src="https://media.tenor.com/-wrmUJrUbeoAAAAM/emoji-disintergrating.gif">
+                                <template v-slot:placeholder>
+                                    <v-row class="fill-height ma-0" align="center" justify="center">
+                                        <v-progress-circular indeterminate color="white"></v-progress-circular>
+                                    </v-row>
+                                </template>
+                            </v-img>
+                        </v-avatar>
+                    </div>
+                </v-container>
+            </v-card>
         </div>
     </v-app>
 </template>
@@ -94,7 +94,7 @@ export default {
 
         };
     },
-    components:{
+    components: {
         Icon
     },
     created() {

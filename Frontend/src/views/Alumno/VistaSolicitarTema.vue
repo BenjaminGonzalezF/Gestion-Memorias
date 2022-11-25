@@ -637,8 +637,6 @@ export default {
         },
         AgregarImagen() {
             this.drawerSolicitud = true;
-
-
         },
         cerrarint() {
             this.drawerSolicitud = false;
@@ -700,7 +698,7 @@ export default {
                             modulosfaltantes: cursospendientes,
                             trabaja: trabaja,
                         })
-                        this.$store.state.img=this.imagenAlumno
+                        this.$store.state.img = this.imagenAlumno
                         this.axios.put(`usuario_ac/${alumno[0]._id}`, alumno[0])
                         this.axios.put(`tema_ac/${tema[0]._id}`, tema[0])
                     })
@@ -712,7 +710,7 @@ export default {
                     title: 'Se Ha Enviado La Solicitud',
                     text: 'Se Ha Enviado Correctamente La Solicitud!',
                 })
-                this.$store.state.vistaSeleccionada=1
+                this.$store.state.vistaSeleccionada = 1
                 this.$store.state.loading = true
                 this.$store.commit('cargar_datos')
             } else {
