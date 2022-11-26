@@ -288,25 +288,26 @@ export default {
                         confirmButtonText: 'Si, confirmar!'
                     }).then((result) => {
                         if (result.isConfirmed) {
+                            this.$store.state.loading = true
                             this.axios.get("todos_usuarios").then((resp) => {
                                 const usuarios = resp.data
                                 var comites = usuarios.filter(u => u.escomite == true)
                                 for (var i = 0; i < comites.length; i++) {
                                     tema_crear.votos.push({
                                         refcomite: comites[i]._id,
-                                        voto: null
+                                        voto: null,
                                     })
                                 }
                                 tema_crear.nombre = this.nombre_temacrear
                                 tema_crear.descripcion = this.descripcion_temacrear
                                 tema_crear.requisitos = this.requisitos_temacrear
                                 tema_crear.idCreador = localStorage.getItem("key_user")
-                                tema_crear.fechacambio = Date.now()
+                                tema_crear.fechacambio = new Date().toLocaleDateString()
                                 this.axios.post("nuevo_tema", tema_crear).then((resp) => {
                                     this.nombre_temacrear = null
                                     this.descripcion_temacrear = null
                                     this.requisitos_temacrear = null
-                                    this.$store.state.loading = true
+                                   
                                 })
                             })
                             this.$store.commit('cargar_datos')

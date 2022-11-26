@@ -21,6 +21,7 @@ export default new Vuex.Store({
     esalumno: false,
     esdirector: false,
     escomite: false,
+    esmemorista:false,
     rol:false,
     img: null,
     nombre:null,
@@ -47,6 +48,7 @@ export default new Vuex.Store({
                 this.state.esalumno=usuario_sesion.esalumno
                 this.state.esprofe=usuario_sesion.esprofe
                 this.state.escomite=usuario_sesion.escomite
+                this.state.esmemorista=usuario_sesion.esmemorista
                 if(usuario_sesion.esdirector){
                   this.state.roles.push("Director")
                 }
@@ -74,7 +76,11 @@ export default new Vuex.Store({
                   if(router.history.current.path!=="/profesor"){
                     router.push({ path: "/profesor" })
                   }
-                } else {
+                } else if (usuario_sesion.rolActivo=="Memorista"){
+                  if(router.history.current.path!=="/Memorista"){
+                    router.push({ path: "/Memorista" })
+                  }
+                } else{
                   if(router.history.current.path!=="/Alumno"){
                     router.push({ path: "/Alumno" })
                   }

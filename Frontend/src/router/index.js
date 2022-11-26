@@ -34,6 +34,11 @@ const routes = [
     name: 'directora',
     component: () => import('../views/Directora/VistaDirectora.vue')
   },
+  {
+    path: '/Memorista',
+    name: 'memorista',
+    component: () => import('../views/Memorista/VistaMemorista.vue')
+  },
 ]
 
 const router = new VueRouter({

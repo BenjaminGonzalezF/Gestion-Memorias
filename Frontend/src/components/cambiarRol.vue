@@ -39,7 +39,7 @@ export default {
             dialog: false,
             select: null,
             roles: [
-                'Comite', 'Director', 'Profesor'
+                'Comite', 'Director', 'Profesor','Memorista'
             ]
         }
     },

@@ -1,16 +1,16 @@
 <template>
     <v-app>
-      <v-navigation-drawer right app color="rgb(0, 204, 255)">
+      <v-navigation-drawer right app v-model="drawer" color="rgb(0, 204, 255)">
         <v-layout column class="text-center">
           <v-flex class="mt-6">
             <v-avatar size="150">
               <v-img :src="this.$store.state.img">
-              <template v-slot:placeholder>
-                <v-row class="fill-height ma-0" align="center" justify="center">
-                  <v-progress-circular indeterminate color="white"></v-progress-circular>
-                </v-row>
-              </template>
-            </v-img>
+                <template v-slot:placeholder>
+                  <v-row class="fill-height ma-0" align="center" justify="center">
+                    <v-progress-circular indeterminate color="white"></v-progress-circular>
+                  </v-row>
+                </template>
+              </v-img>
             </v-avatar>
             <p class="white--text subheading-1 text-weight-bold mt-2">
               {{this.$store.state.nombre}}
@@ -21,8 +21,8 @@
             </p>
           </v-flex>
           <v-flex class="mt-3 mb-3">
-          <cambiarRol></cambiarRol>
-        </v-flex>    
+            <cambiarRol></cambiarRol>
+          </v-flex>   
         </v-layout>
         <v-list>
           <v-list-item-group>
@@ -41,6 +41,7 @@
       </v-navigation-drawer>
       <v-app-bar flat app color="rgb(0, 204, 255)">
         <v-img max-height="40" max-width="50" src="@/assets/utal.png">
+
         </v-img>
         <v-app-bar-nav-icon right absolute class="grey--text" @click="drawer = !drawer">
         </v-app-bar-nav-icon>
@@ -48,32 +49,23 @@
       </v-app-bar>
       <loading></loading>
       <v-main v-if="!this.$store.state.loading">
-        <vistaSolicitud v-if="vista==1"></vistaSolicitud>
-        <Estudiantes v-if="vista==2"></Estudiantes>
-        <vistaMemoria v-if="vista==3"></vistaMemoria>
-        <historial v-if="vista==4"></historial>>
+        <comprobante v-if="this.$store.state.vistaSeleccionada==1"></comprobante>
       </v-main>
     </v-app>
   </template>
 
 <script>
-import vistaSolicitud from "./VistaTemasDirectora.vue"
-import vistaMemoria from "./VistaMemoriaDirectora.vue"
-import Estudiantes from './VistaAddUsuarioDirectora.vue';
+import cambiarRol from "@/components/cambiarRol.vue"
 import Loading from '@/components/loading.vue';
-import historial from './HistorialMemoria.vue';
-import cambiarRol from '@/components/cambiarRol.vue';
+import comprobante from './Comprobante.vue'
 
 export default {
     data() {
         return {
             drawer: null,
             items: [
-                { title: "Solicitud de temas", route: '/solicitudTemas', icon: "mdi-folder" },
-                { title: "Añadir usuarios", route: '/solicitudTemas', icon: "mdi-folder" },
-                { title: "Solicitud de memorias", route: '/solicitudTemas', icon: "mdi-folder" },
-                { title: "Historial de memorias", route: '/HistorialMemoria', icon: "mdi-folder"},
-                { title: "Cerrar sesion", icon: "mdi-forum" },
+                { title: "Certificacion memoria", icon:"mdi-folder"},
+                { title: "Cerrar sesion", icon: "mdi-exit-to-app" },
             ],
             hover: "red",
             vista:1,
@@ -87,12 +79,9 @@ export default {
         this.$store.commit('cargar_datos')
     },
     components:{
-        vistaSolicitud,
-        vistaMemoria,
-        Estudiantes,
         Loading,
-        historial,
-        cambiarRol
+        cambiarRol,
+        comprobante
     },
     methods: {
         redirigir(ref) {
@@ -103,14 +92,8 @@ export default {
                     this.$store.state.img=null
                     this.$router.push({ path: "/" })
                 }
-            }else if(ref == "Añadir usuarios"){
-                this.vista=2
-            }else if(ref == "Solicitud de temas"){
-                this.vista=1
-            }else if(ref == "Solicitud de memorias"){
-                this.vista=3
-            }else if(ref == "Historial de memorias"){
-              this.vista=4
+            }else if(ref == "Certificacion memoria"){
+                this.$store.state.vistaSeleccionada=1
             }
         }
     }
