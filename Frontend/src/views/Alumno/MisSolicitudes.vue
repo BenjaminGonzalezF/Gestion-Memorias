@@ -39,9 +39,9 @@
                                 </v-flex>
                                 <v-flex xs2 sm1 md2>
                                     <div class="caption grey--text">Estado</div>
-                                    <div v-if="project.resultado_profesor_postulante == null">Pendiente</div>
-                                    <div v-if="project.resultado_profesor_postulante == true">Aceptado</div>
-                                    <div v-if="project.resultado_profesor_postulante == false">Rechazado</div>
+                                    <div v-if="project.resultado_profesor == null">Pendiente</div>
+                                    <div v-if="project.resultado_profesor == true">Aceptado</div>
+                                    <div v-if="project.resultado_profesor == false">Rechazado</div>
                                 </v-flex>
                             </v-layout>
                         </v-card>
@@ -95,7 +95,7 @@ export default {
         };
     },
     components: {
-        Icon,
+        Icon
     },
     created() {
         this.cargar_missolicitudestemas()
