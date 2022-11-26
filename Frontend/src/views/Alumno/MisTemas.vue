@@ -125,17 +125,17 @@
                                     <span slot="opposite">Rechazado</span>
                                 </v-timeline-item>
                                 <v-timeline-item icon="mdi-clock" color="#bdbdbd"
-                                    v-if="solicitud_seleccionada.resultado_profesor == null">
+                                    v-if="solicitud_seleccionada.resultado_profesor_postulante == null">
                                     <span slot="opposite">Profesor </span>
                                     <span slot="opposite">Pendiente</span>
                                 </v-timeline-item>
                                 <v-timeline-item icon="mdi-checkbox-marked-circle" color="green"
-                                    v-if="solicitud_seleccionada.resultado_profesor == true">
+                                    v-if="solicitud_seleccionada.resultado_profesor_postulante == true">
                                     <span slot="opposite">Profesor </span>
                                     <span slot="opposite">Aceptado</span>
                                 </v-timeline-item>
                                 <v-timeline-item icon="mdi-cancel" color="red"
-                                    v-if="solicitud_seleccionada.resultado_profesor == false">
+                                    v-if="solicitud_seleccionada.resultado_profesor_postulante == false">
                                     <span slot="opposite">Profesor </span>
                                     <span slot="opposite">Rechazado</span>
                                 </v-timeline-item>
@@ -240,6 +240,14 @@ export default {
                         }
                         this.temas = respT.data
                         this.temas = this.temas.filter(T => T.idCreador == localStorage.getItem("key_user"))
+                        for(var i=0; i<this.temas.length;i++){
+                            for(var j=0; j<this.temas[i].postulantes.length;j++){
+                                if(this.temas[i].postulantes[j].id==localStorage.getItem("key_user")){
+                                    this.temas[i].resultado_profesor_postulante=this.temas[i].postulantes[j].resultado_profesor_postulante
+                                    this.temas[i].razon_profesor=this.temas[i].postulantes[j].razon
+                                }
+                            }
+                        }
                         this.cargando_temas = false
                     })
                 })
@@ -307,16 +315,17 @@ export default {
                         confirmButtonText: 'Si, confirmar!'
                     }).then((result) => {
                         if (result.isConfirmed) {
+                            this.$store.state.loading = true
                             this.axios.get("todos_usuarios").then((resp) => {
                                 const usuarios = resp.data
                                 var comites = usuarios.filter(u => u.escomite == true)
                                 for (var i = 0; i < comites.length; i++) {
                                     tema_crear.votos.push({
                                         refcomite: comites[i]._id,
-                                        voto: null
+                                        voto: null,
                                     })
                                 }
-                                var alumno = usuarios.find(u=> u._id == localStorage.getItem("key_user"))
+                                var alumno = usuarios.find(u => u._id == localStorage.getItem("key_user"))
                                 console.log(this.nombre_temacrear)
                                 console.log(this.descripcion_temacrear)
                                 console.log(this.requisitos_temacrear)
@@ -340,16 +349,15 @@ export default {
                                     this.nombre_temacrear = null
                                     this.descripcion_temacrear = null
                                     this.requisitos_temacrear = null
-                                    this.$store.state.loading = true
-                                    this.$store.commit('cargar_datos')
                                 })
                             })
                             Swal.fire({
                                 icon: 'success',
                                 title: 'El Tema Agregado',
-                                text: 'Se ha agregado tema correctamente!',
+                                text: 'Se ha agregado tema correctamente!'
                             })
-
+                            this.$store.commit('cargar_datos')
+                            
                         }
                     })
 

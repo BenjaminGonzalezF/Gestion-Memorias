@@ -671,6 +671,7 @@ export default {
         },
         enviardatos(nombre, nombreproyecto, nombreprofesor, cursospendientes, estadoselect, estadofoto) {
             if (nombre != null && nombreproyecto != null && nombreprofesor != null && cursospendientes.length != 0 && estadoselect != null && estadofoto != false) {
+                this.$store.state.loading = true
                 console.log("pasa1")
                 console.log("valor nombre: " + nombre)
                 console.log("valor nombre proyecto: " + nombreproyecto)
@@ -714,9 +715,8 @@ export default {
                     title: 'Se Ha Enviado La Solicitud',
                     text: 'Se Ha Enviado Correctamente La Solicitud!',
                 })
-                this.$store.state.vistaSeleccionada=1
-                this.$store.state.loading = true
                 this.$store.commit('cargar_datos')
+                this.$store.state.vistaSeleccionada=1
             } else {
                 console.log(" == cursos[0]: " + cursospendientes.length)
                 console.log("faltan datos")

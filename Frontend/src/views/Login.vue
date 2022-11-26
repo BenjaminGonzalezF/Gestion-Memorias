@@ -4,6 +4,7 @@
     <v-main v-if="!this.$store.state.ingresoUsuario && !this.$store.state.loading">
       <v-container class="fondo" fluid>
         <div class="mt-5">
+          <notificacion></notificacion>
           <v-card class="mx-auto" max-width="460" outlined>
             <v-card-title>
               Bienvenido
@@ -32,6 +33,7 @@
 <script>
 import Swal from 'sweetalert2'
 import loading from "@/components/loading.vue"
+import notificacion from "@/components/notificacion.vue"
 export default {
   data() {
     return {
@@ -52,7 +54,8 @@ export default {
   },
   components: {
     loading,
-    Swal
+    Swal,
+    notificacion
   },
   computed: {
     vBtn() {
@@ -85,9 +88,8 @@ export default {
             Swal.fire(
               'Error!',
               'Has ingresado incorrectamente!',
-              'Error'
+              'error'
             )
-            console.log("ingreso incorrecto")
           }
         })
         .catch((e) => {

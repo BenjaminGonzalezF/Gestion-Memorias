@@ -285,6 +285,7 @@ export default ({
                 confirmButtonText: 'Si, aceptar'
             }).then((result) => {
                 if (result.isConfirmed) {
+                    this.$store.state.loading = true
                     for (var i = 0; i < this.datosImportados.length; i++) {
                         var alumnoingresar = {
                             nombre: "",
@@ -297,6 +298,7 @@ export default ({
                             esalumno: null,
                             escomite: null,
                             esdirector: null,
+                            esmemorista:false,
                             rolActivo: "",
                             img: "https://i.ibb.co/T2J4034/download.png",
                         }
@@ -337,9 +339,8 @@ export default ({
                         }).catch((e) => {
                             console.log(e)
                         })
-                        this.$store.state.loading = true
-                        this.$store.commit('cargar_datos')
                     }
+                    this.$store.commit('cargar_datos')
                 }
             })
         }

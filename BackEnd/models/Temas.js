@@ -9,7 +9,7 @@ const notaSchema = new Schema({
   descripcion:String,
   votos:[{
     refcomite:{type: Schema.Types.ObjectId, ref: 'usuarios'},
-    voto:Boolean
+    voto:Boolean,
   }],
   resultado_comite:Boolean,
   resultado_directora:Boolean,

@@ -185,6 +185,7 @@ export default {
                 confirmButtonText: 'Si, confirmar!'
             }).then((result) => {
                 if (result.isConfirmed) {
+                    this.$store.state.loading = true
                     var tema_voto = this.temas.filter(v => v._id==id)
                     if(voto=="aceptar"){
                         for(var i =0; i<tema_voto[0].votos.length; i++){
@@ -207,7 +208,6 @@ export default {
                         .catch((e) => {
                             console.log(e)
                         })
-                    this.$store.state.loading = true
                     this.$store.commit('cargar_datos')
 
                 }

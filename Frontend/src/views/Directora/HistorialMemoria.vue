@@ -191,6 +191,7 @@ export default {
             })
         },
         votar_solicitud(voto, tema) {
+            this.$store.state.loading = true
             if (voto) {
                 this.solicitud_seleccionado = tema
             } else {
@@ -198,7 +199,6 @@ export default {
             }
             this.solicitud_seleccionado.estado = voto
             this.axios.put(`solicitud_ac/${this.solicitud_seleccionado._id}`, this.solicitud_seleccionado)
-            this.$store.state.loading = true
             this.$store.commit('cargar_datos')
         },
         feedback(solicitud) {

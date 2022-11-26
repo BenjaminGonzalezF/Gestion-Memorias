@@ -45,8 +45,7 @@
                                         <v-flex xs2 sm3 md2>
                                             <!-- <div class="caption grey--text">Durum</div> -->
                                             <div class="my-1 text-center">
-                                                <v-btn
-                                                    @click="verSolicitud(project)">
+                                                <v-btn @click="verSolicitud(project)">
                                                     Ver solicitud
                                                 </v-btn>
                                             </div>
@@ -172,10 +171,10 @@
 </template>
   
 <script>
-
+import Swal from 'sweetalert2'
 export default {
-
     components: {
+        Swal
     },
     data() {
         return {
@@ -186,7 +185,7 @@ export default {
             tituloProyecto: null,
             descripcionProyecto: null,
             estudiante: null,
-            estudianteID:null,
+            estudianteID: null,
             matricula: null,
             imagenEstudiante: null,
             fecha: null,
@@ -215,9 +214,9 @@ export default {
                     this.temas = respT.data
                     const usuario = respU.data
                     for (var i = 0; i < this.temas.length; i++) {
-                        if (this.temas[i].idCreador == localStorage.getItem("key_user") && this.temas[i].resultado_profesor==null) {
+                        if (this.temas[i].idCreador == localStorage.getItem("key_user") && this.temas[i].resultado_profesor == null) {
                             for (var j = 0; j < this.temas[i].postulantes.length; j++) {
-                                if(this.temas[i].postulantes[j].resultado_profesor_postulante==null){
+                                if (this.temas[i].postulantes[j].resultado_profesor_postulante == null) {
                                     var postulante_alumno = usuario.find(u => u._id == this.temas[i].postulantes[j].id)
                                     this.temas[i].postulante_alumno = postulante_alumno
                                     solicitud_temas.push({
@@ -236,8 +235,8 @@ export default {
                                     this.temas_pendientes++
                                 }
                             }
-                        } else if (this.temas[i].colaborador == localStorage.getItem("key_user") && this.temas[i].resultado_profesor==null) {
-                            if(this.temas[i].postulantes[0].resultado_profesor_postulante==null){
+                        } else if (this.temas[i].colaborador == localStorage.getItem("key_user") && this.temas[i].resultado_profesor == null) {
+                            if (this.temas[i].postulantes[0].resultado_profesor_postulante == null) {
                                 var alumno = usuario.find(u => u._id == this.temas[i].idCreador)
                                 this.temas[i].postulante_alumno = alumno
                                 solicitud_temas.push({
@@ -264,47 +263,64 @@ export default {
             })
         },
         votar_tema(voto) {
-            if(voto){
-                this.$store.state.loading=true
-                this.axios.get("todos_temas").then((respT)=>{
-                    const temas=respT.data
-                    var tema_cambiar = temas.find(t=>t._id==this.tema_seleccionado)
-                    tema_cambiar.resultado_profesor=voto
-                    tema_cambiar.fechacambio=new Date().toLocaleDateString()
-                    this.axios.put(`tema_ac/${tema_cambiar._id}`, tema_cambiar).then((resp)=>{
-                        if(tema_cambiar.resultado_comite && tema_cambiar.resultado_directora && tema_cambiar.resultado_profesor){
-                            var solicitud_crear={
-                                profeguiaid:null,
-                                alumnoid:null,
-                                temaid:null,
-                                estado:null,
-                                razon:null,
+            Swal.fire({
+                title: 'Estas seguro?',
+                text: "Esta decision no se podra revertir!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    if (voto) {
+                        this.axios.get("todos_temas").then((respT) => {
+                            const temas = respT.data
+                            var tema_cambiar = temas.find(t => t._id == this.tema_seleccionado)
+                            tema_cambiar.resultado_profesor = voto
+                            tema_cambiar.fechacambio = new Date().toLocaleDateString()
+                            this.axios.put(`tema_ac/${tema_cambiar._id}`, tema_cambiar).then((resp) => {
+                                if (tema_cambiar.resultado_comite && tema_cambiar.resultado_directora && tema_cambiar.resultado_profesor) {
+                                    this.$store.state.loading = true
+                                    var solicitud_crear = {
+                                        profeguiaid: null,
+                                        alumnoid: null,
+                                        temaid: null,
+                                        estado: null,
+                                        razon: null,
+                                    }
+                                    solicitud_crear.profeguiaid = localStorage.getItem("key_user")
+                                    solicitud_crear.alumnoid = this.estudianteID
+                                    solicitud_crear.temaid = tema_cambiar._id
+                                    console.log(solicitud_crear)
+                                    this.axios.post("nuevo_solicitud", solicitud_crear)
+                                    this.$store.commit('cargar_datos')
+                                }
+                            })
+                        })
+                    } else {
+                        this.axios.get("todos_temas").then((respT) => {
+                            const temas = respT.data
+                            var tema_cambiar = temas.find(t => t._id == this.tema_seleccionado)
+                            for (var i = 0; i < tema_cambiar.postulantes.length; i++) {
+                                if (tema_cambiar.postulantes[i].id == this.estudianteID) {
+                                    this.$store.state.loading = true
+                                    tema_cambiar.postulantes[i].resultado_profesor_postulante = false
+                                    tema_cambiar.postulantes[i].razon = this.feedbacktext
+                                    this.axios.put(`tema_ac/${tema_cambiar._id}`, tema_cambiar)
+                                    this.$store.commit('cargar_datos')
+                                }
                             }
-                            solicitud_crear.profeguiaid=localStorage.getItem("key_user")
-                            solicitud_crear.alumnoid=this.estudianteID
-                            solicitud_crear.temaid=tema_cambiar._id
-                            console.log(solicitud_crear)
-                            this.axios.post("nuevo_solicitud",solicitud_crear)
-                            this.$store.state.loading=true
-                            this.$store.commit('cargar_datos')
-                        }
-                    })
-                })
-            }else{
-                this.axios.get("todos_temas").then((respT)=>{
-                    const temas=respT.data
-                    var tema_cambiar = temas.find(t=>t._id==this.tema_seleccionado)
-                    for(var i=0; i<tema_cambiar.postulantes.length;i++){
-                        if(tema_cambiar.postulantes[i].id==this.estudianteID){
-                            tema_cambiar.postulantes[i].resultado_profesor_postulante=false
-                            tema_cambiar.postulantes[i].razon=this.feedbacktext
-                            this.axios.put(`tema_ac/${tema_cambiar._id}`, tema_cambiar)
-                            this.$store.state.loading=true
-                            this.$store.commit('cargar_datos')
-                        }
+                        })
                     }
-                })
-            }
+                    Swal.fire(
+                        'Voto realizado!',
+                        'Has votado correctamente.',
+                        'success'
+                    )
+                }
+            })
+
         },
         sortBy(prop) {
             this.temas.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))

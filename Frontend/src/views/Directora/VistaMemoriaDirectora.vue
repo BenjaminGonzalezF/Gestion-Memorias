@@ -20,107 +20,110 @@
                 <v-list>
                     <v-list-item v-for="(item, index) in itemsOrdenar" :key="index" link>
                         <v-list-item-title @click="sortBy(item.prop)">{{
-                            item.title
+                                item.title
                         }}</v-list-item-title>
                     </v-list-item>
                 </v-list>
             </v-menu>
         </v-layout>
-        <v-card height="500" width="100%" outlined class="overflow-y-auto" >
-        <v-container>
-        <v-sheet height="1000" class="overflow-hidden" style="position: relative;" v-if="!this.$store.state.loading">
-            <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;top:20%;left: 50%;"
-                v-if="cargando_solicitudes && solicitudes_pendientes == 0">
-            </v-progress-circular>
-            <div>
-                <v-container class="my-3">
-                    <div v-for="(project, index) in solicitudes" :key="index">
-                        <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2" v-if="project.estado == null">
+        <v-card height="500" width="100%" outlined class="overflow-y-auto">
+            <v-container>
+                <v-sheet height="1000" class="overflow-hidden" style="position: relative;"
+                    v-if="!this.$store.state.loading">
+                    <v-progress-circular :size="50" color="primary" indeterminate
+                        style="position: absolute;top:20%;left: 50%;"
+                        v-if="cargando_solicitudes && solicitudes_pendientes == 0">
+                    </v-progress-circular>
+                    <div>
+                        <v-container class="my-3">
+                            <div v-for="(project, index) in solicitudes" :key="index">
+                                <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2" v-if="project.estado == null">
 
-                            <v-layout row wrap :class="`pa-3 project ${project.status}`">
-                                <v-flex xs8 md2>
-                                    <div class="caption grey--text">Titulo proyecto</div>
-                                    <div>{{ project.nombre }}</div>
-                                </v-flex>
-                                <v-flex xs6 md3>
-                                    <div class="caption grey--text">Descripcion general proyecto</div>
-                                    <div>{{ project.descripcion }}</div>
-                                </v-flex>
-                                <v-flex xs2 sm1 md2>
-                                    <div class="caption grey--text">Alumno</div>
-                                    <div>{{ project.alumno }}</div>
-                                </v-flex>
+                                    <v-layout row wrap :class="`pa-3 project ${project.status}`">
+                                        <v-flex xs8 md2>
+                                            <div class="caption grey--text">Titulo proyecto</div>
+                                            <div>{{ project.nombre }}</div>
+                                        </v-flex>
+                                        <v-flex xs6 md3>
+                                            <div class="caption grey--text">Descripcion general proyecto</div>
+                                            <div>{{ project.descripcion }}</div>
+                                        </v-flex>
+                                        <v-flex xs2 sm1 md2>
+                                            <div class="caption grey--text">Alumno</div>
+                                            <div>{{ project.alumno }}</div>
+                                        </v-flex>
 
-                                <v-flex xs6 sm4 md1>
-                                    <div class="caption grey--text">Profesor guia</div>
-                                    <div>{{ project.profeguia }}</div>
-                                </v-flex>
-                                <v-flex xs2 sm3 md2>
-                                    <!-- <div class="caption grey--text">Durum</div> -->
-                                </v-flex>
-                                <v-flex xs6 sm1 md1>
-                                    <v-tooltip top>
-                                        <template v-slot:activator="{}">
-                                            <div class="text-xs-center">
-                                                <div>
-                                                    <v-spacer></v-spacer>
-                                                    <v-card-actions>
-                                                        <!-- <v-container class="mx-auto mb-n5"> <strong> {{ oferta.alumno }}</strong></v-container> -->
-                                                        <v-btn class="white--text" color="green darken-1" small
-                                                            @click="votar_solicitud(true, project)">aceptar</v-btn>
-                                                        <v-btn class="white--text" color="red lighten-2" small
-                                                            @click="feedback(project)">rechazar</v-btn>
-                                                    </v-card-actions>
-                                                </div>
-                                            </div>
-                                        </template>
-                                    </v-tooltip>
-                                </v-flex>
-                            </v-layout>
-                        </v-card>
+                                        <v-flex xs6 sm4 md1>
+                                            <div class="caption grey--text">Profesor guia</div>
+                                            <div>{{ project.profeguia }}</div>
+                                        </v-flex>
+                                        <v-flex xs2 sm3 md2>
+                                            <!-- <div class="caption grey--text">Durum</div> -->
+                                        </v-flex>
+                                        <v-flex xs6 sm1 md1>
+                                            <v-tooltip top>
+                                                <template v-slot:activator="{}">
+                                                    <div class="text-xs-center">
+                                                        <div>
+                                                            <v-spacer></v-spacer>
+                                                            <v-card-actions>
+                                                                <!-- <v-container class="mx-auto mb-n5"> <strong> {{ oferta.alumno }}</strong></v-container> -->
+                                                                <v-btn class="white--text" color="green darken-1" small
+                                                                    @click="votar_solicitud(true, project)">aceptar
+                                                                </v-btn>
+                                                                <v-btn class="white--text" color="red lighten-2" small
+                                                                    @click="feedback(project)">rechazar</v-btn>
+                                                            </v-card-actions>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                            </v-tooltip>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-card>
+                            </div>
+                        </v-container>
+                        <v-dialog v-model="drawerFeedback" max-width="600">
+                            <v-card>
+                                <v-card-title>
+                                    <span class="text-h5">Feedback solicitud</span>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-container>
+                                        <v-flex>
+                                            <v-textarea v-model="feedbacktext" counter="300">
+                                                <template v-slot:label>
+                                                    <div>
+                                                        Deje sus comentarios
+                                                    </div>
+                                                </template>
+                                            </v-textarea>
+                                        </v-flex>
+                                    </v-container>
+                                </v-card-text>
+                                <v-card-actions class="justify-center">
+                                    <v-btn @click="votar_solicitud(false, null)">
+                                        Rechazar solicitud
+                                    </v-btn>
+
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
                     </div>
-                </v-container>
-                <v-dialog v-model="drawerFeedback" max-width="600">
-                    <v-card>
-                        <v-card-title>
-                            <span class="text-h5">Feedback solicitud</span>
-                        </v-card-title>
-                        <v-card-text>
-                            <v-container>
-                                <v-flex>
-                                    <v-textarea v-model="feedbacktext" counter="300">
-                                        <template v-slot:label>
-                                            <div>
-                                                Deje sus comentarios
-                                            </div>
-                                        </template>
-                                    </v-textarea>
-                                </v-flex>
-                            </v-container>
-                        </v-card-text>
-                        <v-card-actions class="justify-center">
-                            <v-btn @click="votar_solicitud(false, null)">
-                                Rechazar solicitud
-                            </v-btn>
-
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-            </div>
-            <div class="text-center" v-if="cargando_solicitudes == false && solicitudes_pendientes == 0">
-                <h1> No tienes Solicitudes pendientes</h1>
-                <v-avatar size="150">
-                    <v-img src="https://media.tenor.com/-wrmUJrUbeoAAAAM/emoji-disintergrating.gif">
-                        <template v-slot:placeholder>
-                            <v-row class="fill-height ma-0" align="center" justify="center">
-                                <v-progress-circular indeterminate color="white"></v-progress-circular>
-                            </v-row>
-                        </template>
-                    </v-img>
-                </v-avatar>
-            </div>
-        </v-sheet>
-        </v-container>
+                    <div class="text-center" v-if="cargando_solicitudes == false && solicitudes_pendientes == 0">
+                        <h1> No tienes Solicitudes pendientes</h1>
+                        <v-avatar size="150">
+                            <v-img src="https://media.tenor.com/-wrmUJrUbeoAAAAM/emoji-disintergrating.gif">
+                                <template v-slot:placeholder>
+                                    <v-row class="fill-height ma-0" align="center" justify="center">
+                                        <v-progress-circular indeterminate color="white"></v-progress-circular>
+                                    </v-row>
+                                </template>
+                            </v-img>
+                        </v-avatar>
+                    </div>
+                </v-sheet>
+            </v-container>
         </v-card>
 
     </div>
@@ -128,6 +131,7 @@
 
 <script>
 import loading from "@/components/loading.vue"
+import Swal from 'sweetalert2'
 export default {
     name: 'Solicitudes',
     data() {
@@ -164,7 +168,8 @@ export default {
         };
     },
     components: {
-        loading
+        loading,
+        Swal
     },
     created() {
         this.cargar_solicitudes()
@@ -182,7 +187,7 @@ export default {
                                 var profeguia = usuarios.find(u => u._id == this.solicitudes[i].profeguiaid)
                                 var temarel = temas.find(t => t._id == this.solicitudes[i].temaid)
                                 var alumno = usuarios.find(u => u._id == this.solicitudes[i].alumnoid)
-    
+
                                 this.solicitudes[i].nombre = temarel.nombre
                                 this.solicitudes[i].descripcion = temarel.descripcion
                                 this.solicitudes[i].alumno = alumno.nombre
@@ -200,15 +205,32 @@ export default {
             })
         },
         votar_solicitud(voto, tema) {
-            if (voto) {
-                this.solicitud_seleccionado = tema
-            } else {
-                this.solicitud_seleccionado.razon = this.feedbacktext
-            }
-            this.solicitud_seleccionado.estado = voto
-            this.axios.put(`solicitud_ac/${this.solicitud_seleccionado._id}`, this.solicitud_seleccionado)
-            this.$store.state.loading = true
-            this.$store.commit('cargar_datos')
+            Swal.fire({
+                title: 'Estas seguro?',
+                text: "Los cambios no se podran revertir!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.$store.state.loading = true
+                    if (voto) {
+                        this.solicitud_seleccionado = tema
+                    } else {
+                        this.solicitud_seleccionado.razon = this.feedbacktext
+                    }
+                    this.solicitud_seleccionado.estado = voto
+                    this.axios.put(`solicitud_ac/${this.solicitud_seleccionado._id}`, this.solicitud_seleccionado)
+                    this.$store.commit('cargar_datos')
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                }
+            })
         },
         feedback(solicitud) {
             this.solicitud_seleccionado = solicitud
