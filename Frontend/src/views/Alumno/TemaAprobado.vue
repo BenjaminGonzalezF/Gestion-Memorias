@@ -87,7 +87,7 @@ export default {
             pdf
                 .setFont("helvetica")
                 .setFontSize(16)
-                .text(13, 60, "                                         Certificado Acreditación")
+                .text(75, 60, "Certificado Acreditación")
                 .text(13, 61, "_____________________________________________________________")
 
             pdf
