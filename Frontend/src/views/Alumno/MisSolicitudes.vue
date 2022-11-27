@@ -1,6 +1,9 @@
 <template>
     <v-app>
         <div class="Oferta de temas">
+            <div class="one"> 
+            <h1>Alumnos: Mis Solicirudes</h1> 
+            </div>
             <v-layout row class="mx-1">
                 <v-spacer></v-spacer>
                 <v-menu offset-y>
@@ -39,9 +42,9 @@
                                 </v-flex>
                                 <v-flex xs2 sm1 md2>
                                     <div class="caption grey--text">Estado</div>
-                                    <div v-if="project.resultado_profesor_postulante == null">Pendiente</div>
-                                    <div v-if="project.resultado_profesor_postulante == true">Aceptado</div>
-                                    <div v-if="project.resultado_profesor_postulante == false">Rechazado</div>
+                                    <div v-if="project.resultado_profesor == null">Pendiente</div>
+                                    <div v-if="project.resultado_profesor == true">Aceptado</div>
+                                    <div v-if="project.resultado_profesor == false">Rechazado</div>
                                 </v-flex>
                             </v-layout>
                         </v-card>
@@ -95,7 +98,7 @@ export default {
         };
     },
     components: {
-        Icon,
+        Icon
     },
     created() {
         this.cargar_missolicitudestemas()
@@ -139,4 +142,32 @@ export default {
 .v-list-item:hover {
     background: #f5a42a;
 }
+
+.one h1 { 
+  text-align: center; 
+  text-transform: uppercase; 
+  padding-bottom: 5px; 
+} 
+.one h1:before { 
+  width: 28px; 
+  height: 5px; 
+  display: block; 
+  content: ""; 
+  position: absolute; 
+  bottom: 3px; 
+  left: 50%; 
+  margin-left: -14px; 
+  background-color: #f5a42a; 
+} 
+.one h1:after { 
+  width: 100px; 
+  height: 1px; 
+  display: block; 
+  content: ""; 
+  position: relative; 
+  margin-top: 25px; 
+  left: 50%; 
+  margin-left: -50px; 
+  background-color: #f5a42a; 
+} 
 </style>

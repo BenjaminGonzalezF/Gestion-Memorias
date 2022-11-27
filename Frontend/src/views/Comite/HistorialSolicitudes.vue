@@ -1,5 +1,8 @@
 <template>
     <div class="Solicitudes">
+        <div class="one"> 
+            <h1>Comité Curricular: Historial Solicitudes de Memorias</h1> 
+            </div>
         <v-layout row class="mx-1">
             <v-col cols="12" sm="6" md="4">
                 <v-autocomplete max-width="400" rounded solo-inverted v-model="buscar"
@@ -206,27 +209,27 @@ export default {
                 unit: "cm",
                 format: "letter"
             });
-            var tituloTema= tema.nombre
-            var colaborador= tema.nombreCreador
-            var resultado= null
-            if(tema.resultado_comite== true){
-                resultado= "Aprobado"
-            }else{
-                resultado = "Rechazado"
+            var tituloTema = tema.nombre
+            var colaborador = tema.nombreCreador
+            var resultado = null
+            if (tema.resultado_comite == true) {
+                resultado = "Aprobada"
+            } else {
+                resultado = "Rechazada"
             }
 
-             var comite1 = null
-             var comite2 = null
-             var comite3 = null
-             for(var i=0;i<tema.votos.length;i++){
-                if(i==0){
-                    comite1=tema.votos[i].nombrecomite
-                }else if(i==1){
-                    comite2=tema.votos[i].nombrecomite
-                }else if(i==2){
-                    comite3=tema.votos[i].nombrecomite
+            var comite1 = null
+            var comite2 = null
+            var comite3 = null
+            for (var i = 0; i < tema.votos.length; i++) {
+                if (i == 0) {
+                    comite1 = tema.votos[i].nombrecomite
+                } else if (i == 1) {
+                    comite2 = tema.votos[i].nombrecomite
+                } else if (i == 2) {
+                    comite3 = tema.votos[i].nombrecomite
                 }
-             }
+            }
             var img = new Image;
             var img2 = new Image;
 
@@ -242,48 +245,66 @@ export default {
             img.crossOrigin = "";
             img.src = "//i.imgur.com/2QXaKmk.png";
             img2.src = "//i.imgur.com/KEhaByh.jpg";
-            pdf.setFontSize(18).text("Acta Veredicto Del Comite", 1, 5.0);
-            pdf.setLineWidth(0.01).line(0.5, 5.1, 20.0, 5.1);
+            pdf.setFontSize(18).text("Resolución Comité", 7.5, 5.0);
+            pdf.setLineWidth(0.01).line(1, 5.1, 20.0, 5.1);
             pdf
                 .setFont("helvetica")
                 .setFontSize(12)
-                .text("Luego de una exhaustiva reunión de los integrantes del comtité en la cual se ha logrado llegar a una conclusión, " +
+                .text("Luego de una exhaustiva reunión de los integrantes del comité en la cual se ha logrado llegar a una conclusión, " +
                     " se presentan los resultados de la votación de la solicitud del tema "
                     + tituloTema + " propuesto por " + colaborador +
-                    ". ", 0.5, 6.5, { maxWidth: "20.5" });
+                    ". ", 1.3, 6.5, { maxWidth: "17.5" });
             pdf
                 .setFont("helvetica")
                 .setFontSize(12)
-                .text("Por consiguiente se muestran los intregantes del comité que votaron:", 0.6, 8.5, { align: "left", maxWidth: "20.5" });
-            pdf
-                .setFont("helvetica")
-                .setFontSize(12)
-
-                .text("1.- "+ comite1 , 0.5, 10, { align: "left", maxWidth: "20.5" });
+                .text("Por consiguiente se muestran los intregantes del comité que votaron:", 1.3, 8.5, { align: "left", maxWidth: "20.5" });
             pdf
                 .setFont("helvetica")
                 .setFontSize(12)
 
-                .text("2.-"+ comite2, 0.5, 11, { align: "left", maxWidth: "20.5" });
+                .text("1.- " + comite1, 1.9, 10, { align: "left", maxWidth: "15.5" });
             pdf
                 .setFont("helvetica")
                 .setFontSize(12)
 
-                .text("3.-"+ comite3, 0.5, 12, { align: "left", maxWidth: "20.5" });
+                .text("2.-" + comite2, 1.9, 11, { align: "left", maxWidth: "15.5" });
             pdf
                 .setFont("helvetica")
                 .setFontSize(12)
 
-                .text("Dando asi como resultado que la propuesta es " + resultado+ ". ", 0.5, 13, { align: "left", maxWidth: "20.5" });
-
-
+                .text("3.-" + comite3, 1.9, 12, { align: "left", maxWidth: "15.5" });
             pdf
                 .setFont("helvetica")
                 .setFontSize(12)
 
-                .text("Directora de carrera" , 8.5, 20.5, { align: "left", maxWidth: "20.5" });
+                .text("Dando asi como resultado que la propuesta es " + resultado + ". ", 1.3, 13.5, { align: "left", maxWidth: "15.5" });
 
-                pdf.setLineWidth(0.01).line(5.5, 20, 15, 20);
+            pdf.setLineWidth(0.01).line(3.5, 17.5, 9.5, 17.5);
+            pdf
+                .setFont("helvetica")
+                .setFontSize(12)
+                .text(comite1, 5, 18, { align: "left", maxWidth: "15.5" });
+
+
+            pdf.setLineWidth(0.01).line(11.5, 17.5, 17.5, 17.5);
+            pdf
+                .setFont("helvetica")
+                .setFontSize(12)
+                .text(comite2, 12.5, 18, { align: "left", maxWidth: "15.5" });
+            
+
+            pdf.setLineWidth(0.01).line(11.5, 20, 17.5, 20);
+            pdf
+                .setFont("helvetica")
+                .setFontSize(12)
+                .text("Directora de carrera", 12.5, 20.5, { align: "left", maxWidth: "15.5" });
+
+            pdf.setLineWidth(0.01).line(3.5, 20, 9.5, 20);
+            pdf
+                .setFont("helvetica")
+                .setFontSize(12)
+                .text(comite3, 4.5, 20.5, { align: "left", maxWidth: "15.5" });
+            
             pdf
                 .setFont("times")
                 .setFontSize(10)
@@ -321,4 +342,33 @@ export default {
 .v-list-item:hover {
     background: #f5a42a;
 }
+
+
+.one h1 { 
+  text-align: center; 
+  text-transform: uppercase; 
+  padding-bottom: 5px; 
+} 
+.one h1:before { 
+  width: 28px; 
+  height: 5px; 
+  display: block; 
+  content: ""; 
+  position: absolute; 
+  bottom: 3px; 
+  left: 50%; 
+  margin-left: -14px; 
+  background-color: #f5a42a; 
+} 
+.one h1:after { 
+  width: 100px; 
+  height: 1px; 
+  display: block; 
+  content: ""; 
+  position: relative; 
+  margin-top: 25px; 
+  left: 50%; 
+  margin-left: -50px; 
+  background-color: #f5a42a; 
+} 
 </style>

@@ -50,10 +50,10 @@
       <v-spacer></v-spacer>
     </v-app-bar>
     <loading></loading>
-    <v-main v-if="!this.$store.state.loading">
+    <v-container  v-if="!this.$store.state.loading" fluid>
       <vistaSolicitud v-if="vista == 1"></vistaSolicitud>
       <vistaHistorialSolicitudes v-if="vista == 2"></vistaHistorialSolicitudes>
-    </v-main>
+    </v-container>
   </v-app>
 </template>
   
