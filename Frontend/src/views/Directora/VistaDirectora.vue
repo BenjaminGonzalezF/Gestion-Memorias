@@ -47,12 +47,12 @@
         <v-spacer></v-spacer>
       </v-app-bar>
       <loading></loading>
-      <v-main v-if="!this.$store.state.loading">
+      <v-container  v-if="!this.$store.state.loading" fluid>
         <vistaSolicitud v-if="vista==1"></vistaSolicitud>
         <Estudiantes v-if="vista==2"></Estudiantes>
         <vistaMemoria v-if="vista==3"></vistaMemoria>
         <historial v-if="vista==4"></historial>>
-      </v-main>
+      </v-container>
     </v-app>
   </template>
 

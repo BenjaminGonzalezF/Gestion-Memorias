@@ -48,13 +48,13 @@
         <v-spacer></v-spacer>
       </v-app-bar>
       <loading></loading>
-      <v-main v-if="!this.$store.state.loading">
+      <v-container  v-if="!this.$store.state.loading" fluid>
         <OfertaTemas v-if="this.$store.state.vistaSeleccionada==1"></OfertaTemas>
         <MisTemas v-if="this.$store.state.vistaSeleccionada==2"></MisTemas>
         <vistaSolicitar v-if=" this.$store.state.vistaSeleccionada==3"></vistaSolicitar>
         <MisSolicitudes v-if=" this.$store.state.vistaSeleccionada==4"></MisSolicitudes>
         <AprobadoTema v-if=" this.$store.state.vistaSeleccionada==5"></AprobadoTema>
-      </v-main>
+      </v-container>
     </v-app>
   </template>
 

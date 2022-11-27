@@ -48,9 +48,9 @@
         <v-spacer></v-spacer>
       </v-app-bar>
       <loading></loading>
-      <v-main v-if="!this.$store.state.loading">
+      <v-container  v-if="!this.$store.state.loading" fluid>
         <comprobante v-if="this.$store.state.vistaSeleccionada==1"></comprobante>
-      </v-main>
+      </v-container>
     </v-app>
   </template>
 

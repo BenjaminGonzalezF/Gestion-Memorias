@@ -47,10 +47,10 @@
       <v-spacer></v-spacer>
     </v-app-bar>
     <loading></loading>
-    <v-main v-if="!this.$store.state.loading">
+    <v-container  v-if="!this.$store.state.loading" fluid>
       <vistaSolicitud v-if="vista==1"></vistaSolicitud>
       <vistaTemas v-if = "vista==2"></vistaTemas>
-    </v-main>
+    </v-container>
   </v-app>
 </template>
 
