@@ -3,8 +3,8 @@
         <div class="Oferta de temas">
             <div class="one"> 
             <h1>Alumnos: Temas Ofrecidos</h1> 
-            </div>
             <notificacion></notificacion>
+            </div>
             <v-layout row class="mx-1">
                 <v-spacer></v-spacer>
                 <v-menu offset-y>

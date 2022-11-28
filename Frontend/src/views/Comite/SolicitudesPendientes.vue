@@ -2,8 +2,8 @@
     <div class="Solicitudes">
         <div class="one">
             <h1>Comité Curricular: Solicitudes de Memoria Pendientes</h1>
+            <notificacion></notificacion>
         </div>
-        <notificacion></notificacion>
         <v-layout row class="mx-1">
             <v-spacer></v-spacer>
             <v-menu offset-y>

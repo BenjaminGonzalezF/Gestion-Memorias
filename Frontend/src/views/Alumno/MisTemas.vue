@@ -1,9 +1,9 @@
 <template>
     <div class="Temas">
-        <div class="one"> 
+        <div class="one mb-7"> 
             <h1>Alumnos: Mis Temas</h1> 
-            </div>
             <notificacion></notificacion>
+            </div>
         <v-layout row class="mx-1">
             <v-btn depressed color="#f5a42a" dark small
                 @click="agregar_temas(false, nombre_temacrear1, descripcion_temacrear1, profesor_temacrear1)">

@@ -2,8 +2,8 @@
     <div class="Solicitudes">
         <div class="one"> 
             <h1>Comité Curricular: Historial Solicitudes de Memorias</h1> 
-            </div>
             <notificacion></notificacion>
+            </div>
         <v-layout row class="mx-1">
             <v-col cols="12" sm="6" md="4">
                 <v-autocomplete max-width="400" rounded solo-inverted v-model="buscar"

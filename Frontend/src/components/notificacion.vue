@@ -33,7 +33,9 @@ export default {
                 notificacion_ordenadas.push({
                     notificacion: this.notificaciones[i].notificacion
                 })
-                this.cantidad_notificaciones++
+                if(this.notificaciones[i].visto==false){
+                    this.cantidad_notificaciones++
+                }
             }
             this.notificaciones = notificacion_ordenadas
         },
@@ -46,7 +48,17 @@ export default {
         },
         verNotificaciones() {
             // Actualizar en la bd -pendiente
-            this.cantidad_notificaciones = 0
+            this.axios.get("todos_notificaciones").then((respN)=>{
+                const notificaciones = respN.data
+                var mis_notificaciones = notificaciones.filter(n=> n.id_ref==localStorage.getItem("key_user"))
+                for(var i=0; i<mis_notificaciones.length;i++){
+                    mis_notificaciones[i].visto=true
+                    this.axios.put(`notificacion_ac/${mis_notificaciones[i]._id}`, mis_notificaciones[i])
+                }
+                this.notificaciones=mis_notificaciones
+                this.ordenarNotificaciones()
+                this.cantidad_notificaciones = 0
+            })
         }
     }
 }

@@ -6,8 +6,8 @@
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
             <div class="one"> 
             <h1>Direccion de Escuela: Agregar Usuario</h1> 
-            </div>
             <notificacion></notificacion>
+            </div>
             <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;
             top:20%;
             left: 50%;" v-if="usuarios.length == 0">

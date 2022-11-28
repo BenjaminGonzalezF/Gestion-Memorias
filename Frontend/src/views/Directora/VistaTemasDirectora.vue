@@ -2,8 +2,8 @@
     <div class="Solicitudes">
         <div class="one">
             <h1>Direccion de Escuela: Temas de Memorias</h1>
+            <notificacion></notificacion>
         </div>
-        <notificacion></notificacion>
         <v-layout row class="mx-1">
             <v-spacer></v-spacer>
             <v-btn-toggle v-model="toggle" dense class="mr-2" style="max-height: 20px !important">
@@ -168,6 +168,12 @@ export default {
                 notificacion.id_ref = tema_votado.idCreador
                 notificacion.notificacion = "La directora a aprobado tu tema " + tema_votado.nombre
                 this.axios.post("nuevo_notificacion", notificacion)
+                // Si el tema lo creo un alumno, hay que enviarle la notificacion al profesor el cual selecciono
+                if(tema_votado.colaborador!=null){
+                    notificacion.id_ref = tema_votado.colaborador
+                    notificacion.notificacion = "Tienes una solicitud del tema " + tema_votado.nombre
+                    this.axios.post("nuevo_notificacion", notificacion)
+                }
             }else{
                 // Notificacion a la directora
                 notificacion.id_ref = localStorage.getItem("key_user")

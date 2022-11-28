@@ -2,8 +2,8 @@
     <div class="Solicitudes">
         <div class="one"> 
             <h1>Direccion de Escuela: Solicitudes de Memorias</h1> 
-            </div>
             <notificacion></notificacion>
+            </div>
         <v-layout row class="mx-1">
             <v-spacer></v-spacer>
             <v-btn-toggle v-model="toggle" dense class="mr-2" style="max-height: 20px !important">
