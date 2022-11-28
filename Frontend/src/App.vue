@@ -3,11 +3,44 @@
     <v-main>
     <router-view/>
   </v-main>
-    <v-footer color="272727" padless>
-      <v-col class="grey py-4 text-center white--text" cols="12">
-        {{ new Date().getFullYear() }} — <strong>Utal</strong>
-      </v-col>
-    </v-footer>
+  <v-footer
+    dark
+    padless
+   
+  >
+    <v-card
+      class="flex " 
+      flat
+      tile
+      
+      
+    >
+    
+      <v-card-title class="py-3 white--text text-center">
+        <strong class="subheading "  >Contactanos en  </strong>
+
+        <v-spacer></v-spacer>
+
+        <v-btn
+          v-for="icon in icons"
+          :key="icon"
+          class="mx-4"
+          dark
+          icon
+        >
+          <v-icon size="24px">
+            {{ icon }}
+          </v-icon>
+        </v-btn>
+      </v-card-title>
+
+
+      <v-card-text class="py-3 white--text text-center">
+        {{ new Date().getFullYear() }} — <strong>Sistema de Memorias Utalca</strong>
+      </v-card-text>
+    </v-card>
+  </v-footer>
+  <!-- Footer -->
   </v-app>
 </template>
 
@@ -20,6 +53,13 @@ export default {
     comite:[],
     profesores:[],
     alumnos:[],
+
+    icons: [
+        'mdi-facebook',
+        'mdi-twitter',
+        'mdi-linkedin',
+        'mdi-instagram',
+      ],
   }),
   destroyed() {
     console.log("App eliminado");

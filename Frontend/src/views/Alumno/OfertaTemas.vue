@@ -1,6 +1,10 @@
 <template>
     <v-app>
         <div class="Oferta de temas">
+            <div class="one"> 
+            <h1>Alumnos: Temas Ofrecidos</h1> 
+            <notificacion></notificacion>
+            </div>
             <v-layout row class="mx-1">
                 <v-spacer></v-spacer>
                 <v-menu offset-y>
@@ -26,7 +30,7 @@
                     </v-progress-circular>
                     <div v-for="project in temas" :key="project._id">
                         <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2" height="60%" width="100%"
-                            v-if="project.resultado_comite == true && project.resultado_directora == true && project.colaborador == null">
+                        v-if="project.resultado_comite == true && project.resultado_directora == true && project.colaborador == null && project.resultado_profesor == null">
                             <v-layout row wrap :class="`pa-3 project ${project.status}`">
                                 <v-flex xs8 md3>
                                     <div class="caption grey--text">Titulo proyecto</div>
@@ -129,7 +133,7 @@
 
 <script>
 import Swal from 'sweetalert2'
-
+import notificacion from "@/components/notificacion.vue"
 export default {
     name: "Alumno",
     data() {
@@ -191,7 +195,7 @@ export default {
             }
         }
     },
-    components: { Swal },
+    components: { Swal,notificacion },
     methods: {
         cargar_temas() {
             this.axios.get("todos_temas")
@@ -202,7 +206,7 @@ export default {
                         for (var i = 0; i < this.temas.length; i++) {
                             const creador = usuario.filter(u => u._id == this.temas[i].idCreador)
                             this.temas[i].nombrecreador = creador[0].nombre
-                            if (this.temas[i].resultado_comite && this.temas[i].resultado_directora && this.temas[i].colaborador == null) {
+                            if (this.temas[i].resultado_comite && this.temas[i].resultado_directora && this.temas[i].colaborador == null && this.temas[i].resultado_profesor == null) {
                                 this.oferta_temas++;
                             }
                         }
@@ -284,4 +288,32 @@ export default {
 .v-list-item:hover {
     background: #f5a42a;
 }
+
+.one h1 { 
+  text-align: center; 
+  text-transform: uppercase; 
+  padding-bottom: 5px; 
+} 
+.one h1:before { 
+  width: 28px; 
+  height: 5px; 
+  display: block; 
+  content: ""; 
+  position: absolute; 
+  bottom: 3px; 
+  left: 50%; 
+  margin-left: -14px; 
+  background-color: #f5a42a; 
+} 
+.one h1:after { 
+  width: 100px; 
+  height: 1px; 
+  display: block; 
+  content: ""; 
+  position: relative; 
+  margin-top: 25px; 
+  left: 50%; 
+  margin-left: -50px; 
+  background-color: #f5a42a; 
+} 
 </style>

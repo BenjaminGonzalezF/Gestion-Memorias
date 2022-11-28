@@ -1,5 +1,8 @@
 <template>
     <v-app>
+        <div class="one"> 
+            <h1>Alumnos: Solicirtudes de memoria</h1> 
+            </div>
         <div align="center">
             <v-col lass="px-4">
                 <h1>
@@ -551,6 +554,26 @@ export default {
         this.listarsemestres();
     },
     methods: {
+        enviarNotificacion(){
+            var notificacion={
+                notificacion:null,
+                visto:false,
+                id_ref:null
+            }
+            // Notificacion al alumno
+            notificacion.id_ref=localStorage.getItem("key_user")
+            notificacion.notificacion="Has creado el tema "+this.nombre_temacrear
+            this.axios.post("nuevo_notificacion",notificacion)
+
+            // Notificacion al profesor
+            this.axios.get("todos_temas").then((resp)=>{
+                const temas = resp.data
+                var tema_solicitar  = temas.find(t=> t._id == this.$store.state.id_tema_solicitar)
+                notificacion.id_ref= tema_solicitar.idCreador
+                notificacion.notificacion="El usuario "+this.$store.state.nombre+" ha creado el tema "+this.nombre_temacrear
+                this.axios.post("nuevo_notificacion",notificacion)
+            })
+        },
         cargar_datos() {
             if (this.$store.state.id_tema_solicitar != "nuevo tema") {//y este if?
                 this.axios.get("todos_temas")
@@ -694,12 +717,15 @@ export default {
                             img: this.imagenAlumno,
                             modulosfaltantes: cursospendientes,
                             trabaja: trabaja,
+                            resultado_profesor_postulante:null,
+                            razon:null,
                         })
                         this.$store.state.img = this.imagenAlumno
                         this.axios.put(`usuario_ac/${alumno[0]._id}`, alumno[0])
                         this.axios.put(`tema_ac/${tema[0]._id}`, tema[0])
                     })
                 })
+                this.enviarNotificacion()
                 Swal.fire({
                     icon: 'success',
                     title: 'Se Ha Enviado La Solicitud',
@@ -749,8 +775,38 @@ export default {
             }
 
         },
-
     },
 }
 
 </script>
+
+<style>
+
+.one h1 { 
+  text-align: center; 
+  text-transform: uppercase; 
+  padding-bottom: 5px; 
+} 
+.one h1:before { 
+  width: 28px; 
+  height: 5px; 
+  display: block; 
+  content: ""; 
+  position: absolute; 
+  bottom: 3px; 
+  left: 50%; 
+  margin-left: -14px; 
+  background-color: #f5a42a; 
+} 
+.one h1:after { 
+  width: 100px; 
+  height: 1px; 
+  display: block; 
+  content: ""; 
+  position: relative; 
+  margin-top: 25px; 
+  left: 50%; 
+  margin-left: -50px; 
+  background-color: #f5a42a; 
+} 
+</style>

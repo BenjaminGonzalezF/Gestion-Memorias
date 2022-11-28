@@ -1,5 +1,9 @@
 <template>
     <div class="Solicitudes">
+        <div class="one"> 
+            <h1>Comité Curricular: Historial Solicitudes de Memorias</h1> 
+            <notificacion></notificacion>
+            </div>
         <v-layout row class="mx-1">
             <v-col cols="12" sm="6" md="4">
                 <v-autocomplete max-width="400" rounded solo-inverted v-model="buscar"
@@ -136,10 +140,12 @@ import Swal from 'sweetalert2'
 import loading from '@/components/loading.vue';
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas';
+import notificacion from "@/components/notificacion.vue"
 export default {
     name: 'Solicitudes',
     components: {
         loading,
+        notificacion
     },
     data() {
         return {
@@ -339,4 +345,33 @@ export default {
 .v-list-item:hover {
     background: #f5a42a;
 }
+
+
+.one h1 { 
+  text-align: center; 
+  text-transform: uppercase; 
+  padding-bottom: 5px; 
+} 
+.one h1:before { 
+  width: 28px; 
+  height: 5px; 
+  display: block; 
+  content: ""; 
+  position: absolute; 
+  bottom: 3px; 
+  left: 50%; 
+  margin-left: -14px; 
+  background-color: #f5a42a; 
+} 
+.one h1:after { 
+  width: 100px; 
+  height: 1px; 
+  display: block; 
+  content: ""; 
+  position: relative; 
+  margin-top: 25px; 
+  left: 50%; 
+  margin-left: -50px; 
+  background-color: #f5a42a; 
+} 
 </style>

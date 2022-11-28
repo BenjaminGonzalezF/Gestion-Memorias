@@ -47,11 +47,10 @@
       <v-spacer></v-spacer>
     </v-app-bar>
     <loading></loading>
-    <v-main v-if="!this.$store.state.loading">
+    <v-container  v-if="!this.$store.state.loading" fluid>
       <vistaSolicitud v-if="vista==1"></vistaSolicitud>
       <vistaTemas v-if = "vista==2"></vistaTemas>
-      <vistaSolicitudAlumnos  v-if = "vista==3"></vistaSolicitudAlumnos>
-    </v-main>
+    </v-container>
   </v-app>
 </template>
 
@@ -59,7 +58,6 @@
 
 import Loading from '@/components/loading.vue';
 import vistaSolicitud from './VistaSolicitudProfesor.vue'
-import vistaSolicitudAlumnos from './vistaSolicitudAlumno.vue'
 import vistaTemas from './VistaTemas.vue'
 import cambiarRol from '@/components/cambiarRol.vue';
 
@@ -68,8 +66,7 @@ export default {
       return {
           drawer: null,
           items: [
-              { title: "Solicitud mis temas", icon: "mdi-folder" },
-              { title: "Solicitudes temas alumnos", icon: "mdi-folder" },
+              { title: "Solicitud temas", icon: "mdi-folder" },
               {title: "Mis temas", icon: "mdi-folder"},
               { title: "Cerrar sesion", icon: "mdi-forum" },
           ],
@@ -89,7 +86,6 @@ export default {
       vistaSolicitud,
       vistaTemas,
       cambiarRol,
-      vistaSolicitudAlumnos
   },
   methods: {
       redirigir(ref) {
@@ -100,14 +96,11 @@ export default {
                   this.$store.state.img=null
                   this.$router.push({ path: "/" })
               }
-          }else if(ref == "Solicitud mis temas"){
+          }else if(ref == "Solicitud temas"){
               this.vista=1
           }
           else if(ref == "Mis temas"){
               this.vista=2
-          }
-          else if(ref == "Solicitudes temas alumnos"){
-              this.vista=3
           }
       }
   }

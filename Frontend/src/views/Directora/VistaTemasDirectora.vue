@@ -1,5 +1,9 @@
 <template>
     <div class="Solicitudes">
+        <div class="one">
+            <h1>Direccion de Escuela: Temas de Memorias</h1>
+            <notificacion></notificacion>
+        </div>
         <v-layout row class="mx-1">
             <v-spacer></v-spacer>
             <v-btn-toggle v-model="toggle" dense class="mr-2" style="max-height: 20px !important">
@@ -105,7 +109,9 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
 import loading from "@/components/loading.vue"
+import notificacion from "@/components/notificacion.vue"
 export default {
     name: 'Solicitudes',
     data() {
@@ -139,12 +145,46 @@ export default {
         };
     },
     components: {
-        loading
+        loading,
+        Swal,
+        notificacion
     },
     created() {
         this.cargar_temas()
     },
     methods: {
+        enviarNotificacion(tema_votado, voto) {
+            var notificacion = {
+                notificacion: null,
+                visto: false,
+                id_ref: null
+            }
+            if(voto){
+                // Notificacion a la directora
+                notificacion.id_ref = localStorage.getItem("key_user")
+                notificacion.notificacion = "Has aprobado el tema " + tema_votado.nombre
+                this.axios.post("nuevo_notificacion", notificacion)
+                // Notificacion al creador del tema
+                notificacion.id_ref = tema_votado.idCreador
+                notificacion.notificacion = "La directora a aprobado tu tema " + tema_votado.nombre
+                this.axios.post("nuevo_notificacion", notificacion)
+                // Si el tema lo creo un alumno, hay que enviarle la notificacion al profesor el cual selecciono
+                if(tema_votado.colaborador!=null){
+                    notificacion.id_ref = tema_votado.colaborador
+                    notificacion.notificacion = "Tienes una solicitud del tema " + tema_votado.nombre
+                    this.axios.post("nuevo_notificacion", notificacion)
+                }
+            }else{
+                // Notificacion a la directora
+                notificacion.id_ref = localStorage.getItem("key_user")
+                notificacion.notificacion = "Has rechazado el tema " + tema_votado.nombre
+                this.axios.post("nuevo_notificacion", notificacion)
+                // Notificacion al creador del tema
+                notificacion.id_ref = tema_votado.idCreador
+                notificacion.notificacion = "La directora a rechazado tu tema " + tema_votado.nombre
+                this.axios.post("nuevo_notificacion", notificacion)
+            }
+        },
         cargar_temas() {
             this.axios.get("todos_usuarios").then((respU) => {
                 this.axios.get("todos_temas").then((respT) => {
@@ -153,7 +193,7 @@ export default {
                     for (var i = 0; i < this.temas.length; i++) {
                         var creador = usuarios.filter(u => u._id == this.temas[i].idCreador)
                         this.temas[i].nombrecreador = creador[0].nombre
-                        if (this.temas[i].resultado_comite != null && this.temas[i].resultado_directora == null) {
+                        if (this.temas[i].resultado_comite == true && this.temas[i].resultado_directora == null) {
                             this.temas_pendientes++
                         }
                     }
@@ -166,11 +206,30 @@ export default {
             })
         },
         votar_solicitud(voto, tema) {
-            tema.resultado_directora = voto
-            this.axios.put(`tema_ac/${tema._id}`, tema).then((resp) => {
+            Swal.fire({
+                title: 'Estas seguro?',
+                text: "No se podran revertir los cambios!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.$store.state.loading = true
+                    tema.resultado_directora = voto
+                    this.enviarNotificacion(tema,voto)
+                    this.axios.put(`tema_ac/${tema._id}`, tema).then((resp) => {
+                    })
+                    this.$store.commit('cargar_datos')
+                    Swal.fire(
+                        'Voto realizado!',
+                        'Has votado correctamente.',
+                        'success'
+                    )
+                }
             })
-            this.$store.state.loading = true
-            this.$store.commit('cargar_datos')
+
         },
         verSolicitud(id, titulo, descripcion, estudiante, fecha) {
             this.drawerSolicitud = true
@@ -216,5 +275,36 @@ export default {
 <style>
 .v-list-item:hover {
     background: #f5a42a;
+}
+
+
+.one h1 {
+    text-align: center;
+    text-transform: uppercase;
+    padding-bottom: 5px;
+}
+
+.one h1:before {
+    width: 28px;
+    height: 5px;
+    display: block;
+    content: "";
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    margin-left: -14px;
+    background-color: #f5a42a;
+}
+
+.one h1:after {
+    width: 100px;
+    height: 1px;
+    display: block;
+    content: "";
+    position: relative;
+    margin-top: 25px;
+    left: 50%;
+    margin-left: -50px;
+    background-color: #f5a42a;
 }
 </style>

@@ -1,5 +1,9 @@
 <template>
     <div class="Temas">
+        <div class="one mb-7"> 
+            <h1>Docente: Mis Temas</h1> 
+            <notificacion></notificacion>
+            </div>
         <v-layout row class="mx-1">
             <v-btn depressed color="#f5a42a" dark small
                 @click="agregar_temas(false, nombre_temacrear1, descripcion_temacrear1)">
@@ -189,10 +193,12 @@
 
 import { Icon } from '@iconify/vue2';
 import Swal from 'sweetalert2'
+import notificacion from "@/components/notificacion.vue"
 export default {
     components: {
         Icon,
-        Swal
+        Swal,
+        notificacion
     },
     data() {
         return {
@@ -226,6 +232,27 @@ export default {
         this.cargar_temas_profe()
     },
     methods: {
+        enviarNotificacion(){
+            var notificacion={
+                notificacion:null,
+                visto:false,
+                id_ref:null
+            }
+             // Notificacion al profesor
+            notificacion.id_ref=localStorage.getItem("key_user")
+            notificacion.notificacion="Has creado el tema "+this.nombre_temacrear
+            this.axios.post("nuevo_notificacion",notificacion)
+             // Notificacion a los del comite
+            this.axios.get("todos_usuarios").then((respU)=>{
+                const usuarios = respU.data
+                var comites = usuarios.filter(u=> u.escomite==true)
+                for(var i=0; comites.length;i++){
+                    notificacion.id_ref=comites[i]._id
+                    notificacion.notificacion="El profesor "+this.$store.state.nombre+" ha creado el tema "+this.nombre_temacrear
+                    this.axios.post("nuevo_notificacion",notificacion)
+                }
+            })
+        },
         cargar_temas_profe() {
             this.axios.get("todos_temas")
                 .then((respT) => {
@@ -288,27 +315,29 @@ export default {
                         confirmButtonText: 'Si, confirmar!'
                     }).then((result) => {
                         if (result.isConfirmed) {
+                            this.$store.state.loading = true
                             this.axios.get("todos_usuarios").then((resp) => {
                                 const usuarios = resp.data
                                 var comites = usuarios.filter(u => u.escomite == true)
                                 for (var i = 0; i < comites.length; i++) {
                                     tema_crear.votos.push({
                                         refcomite: comites[i]._id,
-                                        voto: null
+                                        voto: null,
                                     })
                                 }
                                 tema_crear.nombre = this.nombre_temacrear
                                 tema_crear.descripcion = this.descripcion_temacrear
                                 tema_crear.requisitos = this.requisitos_temacrear
                                 tema_crear.idCreador = localStorage.getItem("key_user")
-                                tema_crear.fechacambio = Date.now()
+                                tema_crear.fechacambio = new Date().toLocaleDateString()
                                 this.axios.post("nuevo_tema", tema_crear).then((resp) => {
                                     this.nombre_temacrear = null
                                     this.descripcion_temacrear = null
                                     this.requisitos_temacrear = null
-                                    this.$store.state.loading = true
+                                   
                                 })
                             })
+                            this.enviarNotificacion()
                             this.$store.commit('cargar_datos')
                             Swal.fire({
                                 icon: 'success',
@@ -358,3 +387,34 @@ export default {
 }
 
 </script>
+
+<style>
+
+.one h1 { 
+  text-align: center; 
+  text-transform: uppercase; 
+  padding-bottom: 5px; 
+} 
+.one h1:before { 
+  width: 28px; 
+  height: 5px; 
+  display: block; 
+  content: ""; 
+  position: absolute; 
+  bottom: 3px; 
+  left: 50%; 
+  margin-left: -14px; 
+  background-color: #f5a42a; 
+} 
+.one h1:after { 
+  width: 100px; 
+  height: 1px; 
+  display: block; 
+  content: ""; 
+  position: relative; 
+  margin-top: 25px; 
+  left: 50%; 
+  margin-left: -50px; 
+  background-color: #f5a42a; 
+} 
+</style>

@@ -12,6 +12,7 @@ const notaSchema = new Schema({
   esalumno:Boolean,
   escomite:Boolean,
   esdirector:Boolean,
+  esmemorista:Boolean,
   rolActivo:String,
   img:String,
 });

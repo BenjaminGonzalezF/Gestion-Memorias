@@ -4,6 +4,10 @@
         <loading></loading>
 
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
+            <div class="one"> 
+            <h1>Direccion de Escuela: Agregar Usuario</h1> 
+            <notificacion></notificacion>
+            </div>
             <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;
             top:20%;
             left: 50%;" v-if="usuarios.length == 0">
@@ -42,6 +46,10 @@
 
                         <v-data-table :items="usuarios" :headers="headers" :search="search" :items-per-page="5"
                             v-if="usuarios.length > 0">
+                            <template v-slot:item._id="{ item }">
+                                <v-btn color="light-blue accent-2 white--text" @click="mostrarInfo(item)">ver más
+                                </v-btn>
+                            </template>
                         </v-data-table>
 
                     </v-card>
@@ -158,6 +166,34 @@
                         </v-stepper-items>
                     </v-stepper>
                 </v-dialog>
+                <!-- dialogo de mas informacion del usuario -->
+                <v-dialog v-model="drawerInfoAlumnos" width=50%>
+                    <v-scroll-y-transition mode="out-in">
+                        <v-card class="d-flex text-center" flat>
+                            <v-card-text>
+                                <v-avatar class="mt-4" size="150">
+                                    <v-img :src="alumno_seleccionado.img">
+                                        <template v-slot:placeholder>
+                                            <v-row class="fill-height ma-0" align="center" justify="center">
+                                                <v-progress-circular indeterminate color="black"></v-progress-circular>
+                                            </v-row>
+                                        </template>
+                                    </v-img>
+                                </v-avatar>
+                                <h3 class="text-h5 mb-2">
+                                    {{ alumno_seleccionado.nombre }}
+                                </h3>
+                                <div class="blue--text mb-2">
+                                    {{ alumno_seleccionado.correo }}
+                                </div>
+                                <div class=" mb-2">
+                                    {{ alumno_seleccionado.matricula }}
+                                </div>
+                                <!-- falta agregar los roles que tienen -->
+                            </v-card-text>
+                        </v-card>
+                    </v-scroll-y-transition>
+                </v-dialog>
             </v-container>
         </v-sheet>
     </div>
@@ -168,6 +204,7 @@ import readXLS from "read-excel-file"
 import exportFromJSON from "export-from-json"
 import loading from '@/components/loading.vue';
 import Swal from 'sweetalert2'
+import notificacion from "@/components/notificacion.vue"
 export default ({
     data() {
         return {
@@ -175,15 +212,14 @@ export default ({
             e1: 1,
             drawer: null,
             drawerAgregarAlumnos: null,
+            drawerInfoAlumnos: null,
             datosImportados: [],
             items: [],
             usuarios: [],
             headers: [
-                { text: 'IMG', value: 'img' },
-                { text: 'ID', value: '_id' },
                 { text: 'NOMBRE', value: 'nombre' },
-                { text: 'PROFESOR', value: 'profesor' },
-                { text: 'ALUMNO', value: 'alumno' },
+                { text: 'CORREO', value: 'correo' },
+                { text: 'INFORMACION', value: '_id' },
             ],
             headers_table: [
                 { text: 'nombre', value: '0' },
@@ -194,17 +230,30 @@ export default ({
                 { text: 'comite', value: '5' },
                 { text: 'directora', value: '6' },
             ],
+            alumno_seleccionado: {},
         }
     },
     components: {
         readXLS,
         loading,
-        Swal
+        Swal,
+        notificacion
     },
     created() {
         this.cargar_usuarios()
     },
     methods: {
+        enviarNotificacion(){
+            var notificacion={
+                notificacion:null,
+                visto:false,
+                id_ref:null
+            }
+             // Notificacion a la directora
+            notificacion.id_ref=localStorage.getItem("key_user")
+            notificacion.notificacion="Has creado nuevos usuarios"
+            this.axios.post("nuevo_notificacion",notificacion)
+        },
         cargar_usuarios() {
             this.axios.get("todos_usuarios")
                 .then((response) => {
@@ -216,6 +265,10 @@ export default ({
         },
         mostrarDialogo() {
             this.drawerAgregarAlumnos = true
+        },
+        mostrarInfo(alumno) {
+            this.alumno_seleccionado = alumno
+            this.drawerInfoAlumnos = true
         },
         importarDatos() {
             const eliminar_encabezado = []
@@ -249,6 +302,7 @@ export default ({
                 confirmButtonText: 'Si, aceptar'
             }).then((result) => {
                 if (result.isConfirmed) {
+                    this.$store.state.loading = true
                     for (var i = 0; i < this.datosImportados.length; i++) {
                         var alumnoingresar = {
                             nombre: "",
@@ -261,6 +315,7 @@ export default ({
                             esalumno: null,
                             escomite: null,
                             esdirector: null,
+                            esmemorista:false,
                             rolActivo: "",
                             img: "https://i.ibb.co/T2J4034/download.png",
                         }
@@ -269,44 +324,74 @@ export default ({
                         alumnoingresar.correo = this.datosImportados[i][2]
                         if (this.datosImportados[i][3] == "X" || this.datosImportados[i][3] == "x") {
                             alumnoingresar.esalumno = true
-                            alumnoingresar.rolActivo="Alumno"
+                            alumnoingresar.rolActivo = "Alumno"
                         }
                         else {
                             alumnoingresar.esalumno = false
                         }
                         if (this.datosImportados[i][4] == "X" || this.datosImportados[i][4] == "x") {
                             alumnoingresar.esprofe = true
-                            alumnoingresar.rolActivo="Profesor"
+                            alumnoingresar.rolActivo = "Profesor"
                         }
                         else {
                             alumnoingresar.esprofe = false
                         }
                         if (this.datosImportados[i][5] == "X" || this.datosImportados[i][5] == "x") {
                             alumnoingresar.escomite = true
-                            alumnoingresar.rolActivo="Comite"
+                            alumnoingresar.rolActivo = "Comite"
                         }
                         else {
                             alumnoingresar.escomite = false
                         }
                         if (this.datosImportados[i][6] == "X" || this.datosImportados[i][6] == "x") {
                             alumnoingresar.esdirector = true
-                            alumnoingresar.rolActivo="Director"
+                            alumnoingresar.rolActivo = "Director"
                         }
                         else {
                             alumnoingresar.esdirector = false
                         }
                         this.e1 = 1
+                        this.enviarNotificacion()
                         this.axios.post("nuevo_usuario", alumnoingresar).then(() => {
 
                         }).catch((e) => {
                             console.log(e)
                         })
-                        this.$store.state.loading = true
-                        this.$store.commit('cargar_datos')
                     }
+                    this.$store.commit('cargar_datos')
                 }
             })
         }
     }
 })
 </script>
+
+<style>
+.one h1 { 
+  text-align: center; 
+  text-transform: uppercase; 
+  padding-bottom: 5px; 
+} 
+.one h1:before { 
+  width: 28px; 
+  height: 5px; 
+  display: block; 
+  content: ""; 
+  position: absolute; 
+  bottom: 3px; 
+  left: 50%; 
+  margin-left: -14px; 
+  background-color: #f5a42a; 
+} 
+.one h1:after { 
+  width: 100px; 
+  height: 1px; 
+  display: block; 
+  content: ""; 
+  position: relative; 
+  margin-top: 25px; 
+  left: 50%; 
+  margin-left: -50px; 
+  background-color: #f5a42a; 
+} 
+</style>

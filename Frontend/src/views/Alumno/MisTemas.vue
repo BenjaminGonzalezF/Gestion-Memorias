@@ -1,5 +1,9 @@
 <template>
     <div class="Temas">
+        <div class="one mb-7"> 
+            <h1>Alumnos: Mis Temas</h1> 
+            <notificacion></notificacion>
+            </div>
         <v-layout row class="mx-1">
             <v-btn depressed color="#f5a42a" dark small
                 @click="agregar_temas(false, nombre_temacrear1, descripcion_temacrear1, profesor_temacrear1)">
@@ -86,7 +90,7 @@
                         </v-container>
                     </v-card>
                 </v-dialog>
-                <!-- dialogo para añadir un requisito -->
+                <!-- dialogo para ver el estado del tema -->
                 <v-dialog v-model="drawerEstado" max-width="500">
                     <v-card max-width="500">
                         <v-card-title>
@@ -125,17 +129,17 @@
                                     <span slot="opposite">Rechazado</span>
                                 </v-timeline-item>
                                 <v-timeline-item icon="mdi-clock" color="#bdbdbd"
-                                    v-if="solicitud_seleccionada.resultado_profesor == null">
+                                    v-if="solicitud_seleccionada.resultado_profesor_postulante == null">
                                     <span slot="opposite">Profesor </span>
                                     <span slot="opposite">Pendiente</span>
                                 </v-timeline-item>
                                 <v-timeline-item icon="mdi-checkbox-marked-circle" color="green"
-                                    v-if="solicitud_seleccionada.resultado_profesor == true">
+                                    v-if="solicitud_seleccionada.resultado_profesor_postulante == true">
                                     <span slot="opposite">Profesor </span>
                                     <span slot="opposite">Aceptado</span>
                                 </v-timeline-item>
                                 <v-timeline-item icon="mdi-cancel" color="red"
-                                    v-if="solicitud_seleccionada.resultado_profesor == false">
+                                    v-if="solicitud_seleccionada.resultado_profesor_postulante == false">
                                     <span slot="opposite">Profesor </span>
                                     <span slot="opposite">Rechazado</span>
                                 </v-timeline-item>
@@ -182,12 +186,14 @@
 
 import { Icon } from '@iconify/vue2';
 import Swal from 'sweetalert2'
+import notificacion from "@/components/notificacion.vue"
 
 export default {
     name: "Temas",
     components: {
         Icon,
-        Swal
+        Swal,
+        notificacion
     },
     data() {
         return {
@@ -226,6 +232,27 @@ export default {
         this.cargar_temas_profe()
     },
     methods: {
+        enviarNotificacion(){
+            var notificacion={
+                notificacion:null,
+                visto:false,
+                id_ref:null
+            }
+             // Notificacion al alumno
+            notificacion.id_ref=localStorage.getItem("key_user")
+            notificacion.notificacion="Has creado el tema "+this.nombre_temacrear
+            this.axios.post("nuevo_notificacion",notificacion)
+             // Notificacion a los del comite
+            this.axios.get("todos_usuarios").then((respU)=>{
+                const usuarios = respU.data
+                var comites = usuarios.filter(u=> u.escomite==true)
+                for(var i=0; comites.length;i++){
+                    notificacion.id_ref=comites[i]._id
+                    notificacion.notificacion="El usuario "+this.$store.state.nombre+" ha creado el tema "+this.nombre_temacrear
+                    this.axios.post("nuevo_notificacion",notificacion)
+                }
+            })
+        },
         cargar_temas_profe() {
             this.axios.get("todos_temas")
                 .then((respT) => {
@@ -240,6 +267,14 @@ export default {
                         }
                         this.temas = respT.data
                         this.temas = this.temas.filter(T => T.idCreador == localStorage.getItem("key_user"))
+                        for(var i=0; i<this.temas.length;i++){
+                            for(var j=0; j<this.temas[i].postulantes.length;j++){
+                                if(this.temas[i].postulantes[j].id==localStorage.getItem("key_user")){
+                                    this.temas[i].resultado_profesor_postulante=this.temas[i].postulantes[j].resultado_profesor_postulante
+                                    this.temas[i].razon_profesor=this.temas[i].postulantes[j].razon
+                                }
+                            }
+                        }
                         this.cargando_temas = false
                     })
                 })
@@ -307,15 +342,17 @@ export default {
                         confirmButtonText: 'Si, confirmar!'
                     }).then((result) => {
                         if (result.isConfirmed) {
+                            this.$store.state.loading = true
                             this.axios.get("todos_usuarios").then((resp) => {
                                 const usuarios = resp.data
                                 var comites = usuarios.filter(u => u.escomite == true)
                                 for (var i = 0; i < comites.length; i++) {
                                     tema_crear.votos.push({
                                         refcomite: comites[i]._id,
-                                        voto: null
+                                        voto: null,
                                     })
                                 }
+                                var alumno = usuarios.find(u => u._id == localStorage.getItem("key_user"))
                                 console.log(this.nombre_temacrear)
                                 console.log(this.descripcion_temacrear)
                                 console.log(this.requisitos_temacrear)
@@ -324,22 +361,31 @@ export default {
                                 tema_crear.requisitos = this.requisitos_temacrear
                                 tema_crear.idCreador = localStorage.getItem("key_user")
                                 tema_crear.colaborador = this.profesor_temacrear
-                                tema_crear.fechacambio = Date.now()
+                                tema_crear.fechacambio = new Date().toLocaleDateString()
+                                tema_crear.postulantes = {
+                                    id: localStorage.getItem("key_user"),
+                                    nombre: alumno.nombre,
+                                    img: alumno.img,
+                                    modulos_faltantes: alumno.modulosfaltantes,
+                                    trabaja: alumno.trabaja,
+                                    resultado_profesor_postulante: null,
+                                    razon: null,
+                                }
                                 console.log(tema_crear)
                                 this.axios.post("nuevo_tema", tema_crear).then((resp) => {
                                     this.nombre_temacrear = null
                                     this.descripcion_temacrear = null
                                     this.requisitos_temacrear = null
-                                    this.$store.state.loading = true
-                                    this.$store.commit('cargar_datos')
                                 })
                             })
+                            this.enviarNotificacion()
                             Swal.fire({
                                 icon: 'success',
                                 title: 'El Tema Agregado',
-                                text: 'Se ha agregado tema correctamente!',
+                                text: 'Se ha agregado tema correctamente!'
                             })
-
+                            this.$store.commit('cargar_datos')
+                            
                         }
                     })
 
@@ -377,10 +423,42 @@ export default {
         verEstado(solicitud) {
             this.drawerEstado = true
             this.solicitud_seleccionada = solicitud
-        }
+        },
+        
     },
 
 
 }
 
 </script>
+
+<style>
+
+.one h1 { 
+  text-align: center; 
+  text-transform: uppercase; 
+  padding-bottom: 5px; 
+} 
+.one h1:before { 
+  width: 28px; 
+  height: 5px; 
+  display: block; 
+  content: ""; 
+  position: absolute; 
+  bottom: 3px; 
+  left: 50%; 
+  margin-left: -14px; 
+  background-color: #f5a42a; 
+} 
+.one h1:after { 
+  width: 100px; 
+  height: 1px; 
+  display: block; 
+  content: ""; 
+  position: relative; 
+  margin-top: 25px; 
+  left: 50%; 
+  margin-left: -50px; 
+  background-color: #f5a42a; 
+} 
+</style>

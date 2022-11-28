@@ -1,6 +1,6 @@
 <template>
     <v-app>
-      <v-navigation-drawer right app color="rgb(0, 204, 255)">
+      <v-navigation-drawer right app color="rgb(0, 204, 255)" v-model="drawer">
         <v-layout column class="text-center">
           <v-flex class="mt-6">
             <v-avatar size="150">
@@ -41,19 +41,18 @@
       </v-navigation-drawer>
       <v-app-bar flat app color="rgb(0, 204, 255)">
         <v-img max-height="40" max-width="50" src="@/assets/utal.png">
-  
         </v-img>
         <v-app-bar-nav-icon right absolute class="grey--text" @click="drawer = !drawer">
         </v-app-bar-nav-icon>
         <v-spacer></v-spacer>
       </v-app-bar>
       <loading></loading>
-      <v-main v-if="!this.$store.state.loading">
+      <v-container  v-if="!this.$store.state.loading" fluid>
         <vistaSolicitud v-if="vista==1"></vistaSolicitud>
         <Estudiantes v-if="vista==2"></Estudiantes>
         <vistaMemoria v-if="vista==3"></vistaMemoria>
         <historial v-if="vista==4"></historial>>
-      </v-main>
+      </v-container>
     </v-app>
   </template>
 

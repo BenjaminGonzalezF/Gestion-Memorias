@@ -52,7 +52,7 @@ export default {
   },
   components: {
     loading,
-    Swal
+    Swal,
   },
   computed: {
     vBtn() {
@@ -85,9 +85,8 @@ export default {
             Swal.fire(
               'Error!',
               'Has ingresado incorrectamente!',
-              'Error'
+              'error'
             )
-            console.log("ingreso incorrecto")
           }
         })
         .catch((e) => {
