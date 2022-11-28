@@ -42,10 +42,10 @@
                 </v-card>
                 <v-col>
                     <h1>
-                        ¿Se encuentra trabajando?*****
+                        Disponibilidad
                     </h1>
                     <v-card height="50" width="80%" color="#FFFFFF">
-                        <v-select v-model="estadoselect" :items="estado" label="¿Esta trabajando?"></v-select>
+                        <v-select v-model="estadoselect" :items="estado" label="Seleccionar"></v-select>
                     </v-card>
                 </v-col>
                 <h1>
@@ -68,7 +68,7 @@
                                     Profesor Guia: {{ nombreprofesor }}
                                 </p>
                                 <p>
-                                    Cursos pendientes {{ nocursados }}
+                                    Cursos pendientes: {{ cursos }}
                                 </p>
                             </v-col>
                         </v-card>
@@ -144,10 +144,11 @@
                                                 <v-img max-height="150" max-width="250"
                                                     src="https://previews.123rf.com/images/xmarchant/xmarchant0612/xmarchant061200005/695441-retrato-hombre-frente-a-la-c%C3%A1mara.jpg">
                                                     <template v-slot:placeholder>
-                                            <v-row class="fill-height ma-0" align="center" justify="center">
-                                                <v-progress-circular indeterminate color="white"></v-progress-circular>
-                                            </v-row>
-                                        </template>
+                                                        <v-row class="fill-height ma-0" align="center" justify="center">
+                                                            <v-progress-circular indeterminate color="white">
+                                                            </v-progress-circular>
+                                                        </v-row>
+                                                    </template>
                                                 </v-img>
                                             </v-col>
                                         </v-card>
@@ -520,7 +521,7 @@ let Semestres = [
         nombre: "Semestre 10",
         ramos: [
             {
-                name: "Foemulación de Proyecto de Titulación",
+                name: "Formulación de Proyecto de Titulación",
                 selected: null
             },
             {
@@ -559,7 +560,7 @@ export default {
             ],
             drawerSolicitud: false,
             e1: 1,
-            estado: ['Trabaja', 'No trabaja'],
+            estado: ['Trabajando', 'Solo Estudiando'],
             estadofoto: false,
             link: null,
             linkrules: [
@@ -574,6 +575,7 @@ export default {
             imagenAlumno: null,
             urlvalida: null,
             errorMessages: '',
+            cursos: null
         };
     },
     created() {
@@ -582,22 +584,22 @@ export default {
     },
     computed: {
         subirlink(url) {
-            console.log("Inicio: " + this.urlvalida)
+            //console.log("Inicio: " + this.urlvalida)
             if (this.link == "" || this.link == null) {
-                console.log("pasa else1")
+                //console.log("pasa else1")
                 this.urlvalida = false
             } else {
                 console.log("pasa if")
                 var validUrl = /^(ht|f)tps?:\/\/\w+([\.\-\w]+)?\.[a-z]{2,10}(:\d{2,5})?(\/.*)?$/i
                 if (validUrl.test(this.link)) {
-                    console.log("pasa if2")
+                    //console.log("pasa if2")
                     this.urlvalida = true
                 } else {
-                    console.log("pasa else2")
+                    //console.log("pasa else2")
                     this.urlvalida = false
                 }
             }
-            console.log("Fin: " + this.urlvalida)
+            //console.log("Fin: " + this.urlvalida)
         }
     },
     methods: {
@@ -691,6 +693,22 @@ export default {
 
                 }
             }
+            //console.log(this.nocursados.length)
+            if (this.nocursados.length == 1) {
+                this.cursos = this.nocursados[0]
+            }
+            if (this.nocursados.length == 2) {
+                //console.log("pasa1")
+                this.cursos = this.nocursados[0] + "-" + this.nocursados[1]
+
+            } if (this.nocursados.length == 3) {
+                //console.log("pasa2")
+                this.cursos = this.nocursados[0] + "-" + this.nocursados[1] + "..."
+            }
+
+            //console.log(this.cursos);
+            //console.log("orig: "+this.nocursados);
+
 
         },
         AgregarImagen() {
@@ -706,7 +724,7 @@ export default {
         subirimagen() {
             if (this.urlvalida) {
                 this.imagenAlumno = this.link
-                console.log("valur " + this.imagenAlumno)
+                //console.log("valur " + this.imagenAlumno)
                 this.estadofoto = true;
                 this.axios.get("todos_usuarios").then((respU) => {
                     const usuarios = respU.data
@@ -735,7 +753,6 @@ export default {
 
             }
 
-
         },
         enviardatos(nombre, nombreproyecto, nombreprofesor, cursospendientes, estadoselect, estadofoto) {
             if (nombre != null && nombreproyecto != null && nombreprofesor != null && cursospendientes.length != 0 && estadoselect != null && estadofoto != false) {
@@ -748,7 +765,7 @@ export default {
                         alumno[0].img = this.imagenAlumno
                         alumno[0].modulosfaltantes = cursospendientes
                         var trabaja = null
-                        if (this.estadoselect == "Trabaja") {
+                        if (this.estadoselect == "Trabajando") {
                             trabaja = true
                         } else {
                             trabaja = false
@@ -799,7 +816,7 @@ export default {
                     Swal.fire({
                         icon: 'error',
                         title: 'Datos incorrectos...',
-                        text: 'Es necesario ingresar los cursos pendientes para continnuar!',
+                        text: 'Es necesario ingresar los cursos pendientes para continuar!',
                     })
                 } else if (estadoselect == null) {
                     Swal.fire({
@@ -811,7 +828,7 @@ export default {
                     Swal.fire({
                         icon: 'error',
                         title: 'Datos incorrectos...',
-                        text: 'Es necesario ingresar la imagen para continnuar!',
+                        text: 'Es necesario ingresar la imagen para continuar!',
                     })
                 }
             }
