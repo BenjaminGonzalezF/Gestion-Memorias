@@ -90,7 +90,7 @@
                         </v-container>
                     </v-card>
                 </v-dialog>
-                <!-- dialogo para añadir un requisito -->
+                <!-- dialogo para ver el estado del tema -->
                 <v-dialog v-model="drawerEstado" max-width="500">
                     <v-card max-width="500">
                         <v-card-title>
