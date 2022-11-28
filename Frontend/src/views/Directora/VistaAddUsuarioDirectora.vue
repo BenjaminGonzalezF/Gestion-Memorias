@@ -6,6 +6,7 @@
         <v-sheet height="1000" class="overflow-hidden" style="position: relative;">
             <div class="one"> 
             <h1>Direccion de Escuela: Agregar Usuario</h1> 
+            <notificacion></notificacion>
             </div>
             <v-progress-circular :size="50" color="primary" indeterminate style="position: absolute;
             top:20%;
@@ -203,6 +204,7 @@ import readXLS from "read-excel-file"
 import exportFromJSON from "export-from-json"
 import loading from '@/components/loading.vue';
 import Swal from 'sweetalert2'
+import notificacion from "@/components/notificacion.vue"
 export default ({
     data() {
         return {
@@ -234,12 +236,24 @@ export default ({
     components: {
         readXLS,
         loading,
-        Swal
+        Swal,
+        notificacion
     },
     created() {
         this.cargar_usuarios()
     },
     methods: {
+        enviarNotificacion(){
+            var notificacion={
+                notificacion:null,
+                visto:false,
+                id_ref:null
+            }
+             // Notificacion a la directora
+            notificacion.id_ref=localStorage.getItem("key_user")
+            notificacion.notificacion="Has creado nuevos usuarios"
+            this.axios.post("nuevo_notificacion",notificacion)
+        },
         cargar_usuarios() {
             this.axios.get("todos_usuarios")
                 .then((response) => {
@@ -337,6 +351,7 @@ export default ({
                             alumnoingresar.esdirector = false
                         }
                         this.e1 = 1
+                        this.enviarNotificacion()
                         this.axios.post("nuevo_usuario", alumnoingresar).then(() => {
 
                         }).catch((e) => {

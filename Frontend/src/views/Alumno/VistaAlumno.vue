@@ -1,62 +1,81 @@
 <template>
-    <v-app>
-      <v-navigation-drawer right app v-model="drawer" color="rgb(0, 204, 255)">
-        <v-layout column class="text-center">
-          <v-flex class="mt-6">
-            <v-avatar size="150">
-              <v-img :src="this.$store.state.img">
-                <template v-slot:placeholder>
-                  <v-row class="fill-height ma-0" align="center" justify="center">
-                    <v-progress-circular indeterminate color="white"></v-progress-circular>
-                  </v-row>
-                </template>
-              </v-img>
-            </v-avatar>
-            <p class="white--text subheading-1 text-weight-bold mt-2">
-              {{this.$store.state.nombre}}
-            </p>
-            <v-progress-circular class="mb-2" size="20" indeterminate color="white" v-if="this.$store.state.loading"></v-progress-circular>
-            <p class="white--text subheading-1 text-weight-bold" v-else>
-              {{this.$store.state.rol}}
-            </p>
-          </v-flex>
-          <v-flex class="mt-3 mb-3">
-            <cambiarRol></cambiarRol>
-          </v-flex>   
-        </v-layout>
-        <v-list>
-          <v-list-item-group>
-            <v-list-item v-for="(link, key) in items" :key="key" @click="redirigir(link.title)">
-              <v-list-item-icon>
-                <v-icon class="white--text">{{ link.icon }}</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title class="white--text">{{
-                    link.title
-                }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
-      </v-navigation-drawer>
-      <v-app-bar flat app color="rgb(0, 204, 255)">
-        <v-img max-height="40" max-width="50" src="@/assets/utal.png">
+  <v-app>
+    <v-navigation-drawer right app v-model="drawer" color="rgb(0, 204, 255)">
+      <v-layout column class="text-center">
+        <v-flex class="mt-6">
+          <v-avatar size="150">
+            <v-img :src="this.$store.state.img">
+              <template v-slot:placeholder>
+                <v-row class="fill-height ma-0" align="center" justify="center">
+                  <v-progress-circular indeterminate color="white"></v-progress-circular>
+                </v-row>
+              </template>
+            </v-img>
+          </v-avatar>
+          <p class="white--text subheading-1 text-weight-bold mt-2">
+            {{ this.$store.state.nombre }}
+          </p>
+          <v-progress-circular class="mb-2" size="20" indeterminate color="white" v-if="this.$store.state.loading">
+          </v-progress-circular>
+          <p class="white--text subheading-1 text-weight-bold" v-else>
+            {{ this.$store.state.rol }}
+          </p>
+        </v-flex>
+        <v-flex class="mt-3 mb-3">
+          <cambiarRol></cambiarRol>
+        </v-flex>
+      </v-layout>
+      <v-list>
+        <v-list-item-group v-if="this.$store.state.esalumno && !this.$store.state.esmemorista">
+          <v-list-item v-for="(link, key) in alumno" :key="key" @click="redirigir(link.title)">
+            <v-list-item-icon>
+              <v-icon class="white--text">{{ link.icon }}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title class="white--text">{{
+                  link.title
+              }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+        <v-list-item-group v-if="this.$store.state.esmemorista">
+          <v-list-item v-for="(link, key) in memorista" :key="key" @click="redirigir(link.title)">
+            <v-list-item-icon>
+              <v-icon class="white--text">{{ link.icon }}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title class="white--text">{{
+                  link.title
+              }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
+    <v-app-bar flat app color="rgb(0, 204, 255)">
+      <v-img max-height="40" max-width="50" src="@/assets/utal.png">
 
-        </v-img>
-        <v-app-bar-nav-icon right absolute class="grey--text" @click="drawer = !drawer">
-        </v-app-bar-nav-icon>
-        <v-spacer></v-spacer>
-      </v-app-bar>
-      <loading></loading>
-      <v-container  v-if="!this.$store.state.loading" fluid>
-        <OfertaTemas v-if="this.$store.state.vistaSeleccionada==1"></OfertaTemas>
-        <MisTemas v-if="this.$store.state.vistaSeleccionada==2"></MisTemas>
-        <vistaSolicitar v-if=" this.$store.state.vistaSeleccionada==3"></vistaSolicitar>
-        <MisSolicitudes v-if=" this.$store.state.vistaSeleccionada==4"></MisSolicitudes>
-        <AprobadoTema v-if=" this.$store.state.vistaSeleccionada==5"></AprobadoTema>
-      </v-container>
-    </v-app>
-  </template>
+      </v-img>
+      <v-app-bar-nav-icon right absolute class="grey--text" @click="drawer = !drawer">
+      </v-app-bar-nav-icon>
+      <v-spacer></v-spacer>
+    </v-app-bar>
+    <loading></loading>
+    <v-container v-if="!this.$store.state.loading" fluid>
+      <div v-if="this.$store.state.esalumno && !this.$store.state.esmemorista">
+        <OfertaTemas v-if="this.$store.state.vistaSeleccionada == 1"></OfertaTemas>
+        <MisTemas v-if="this.$store.state.vistaSeleccionada == 2"></MisTemas>
+        <vistaSolicitar v-if="this.$store.state.vistaSeleccionada == 3"></vistaSolicitar>
+        <MisSolicitudes v-if="this.$store.state.vistaSeleccionada == 4"></MisSolicitudes>
+      </div>
+      <div v-if="this.$store.state.esmemorista">
+        <MisTemas v-if="this.$store.state.vistaSeleccionada == 1"></MisTemas>
+        <MisSolicitudes v-if="this.$store.state.vistaSeleccionada == 2"></MisSolicitudes>
+        <AprobadoTema v-if="this.$store.state.vistaSeleccionada == 3"></AprobadoTema>
+      </div>
+    </v-container>
+  </v-app>
+</template>
 
 <script>
 import OfertaTemas from "./OfertaTemas.vue"
@@ -69,62 +88,82 @@ import cambiarRol from "@/components/cambiarRol.vue"
 import Loading from '@/components/loading.vue';
 
 export default {
-    data() {
-        return {
-            drawer: null,
-            items: [
-                { title: "Oferta de Temas", icon: "mdi-folder" },
-                { title: "Mis Temas", icon: "mdi-folder" },
-                { title: "Mis Solicitudes", icon: "mdi-folder" },
-                { title: "Comprobante certificado", icon:"mdi-folder"},
-                { title: "Cerrar sesion", icon: "mdi-exit-to-app" },
-            ],
-            hover: "red",
-            vista:1,
-        }
-    },
-    destroyed() {
-        console.log("Login eliminado");
-    },
-    beforeCreate() {
-        this.$store.state.loading = true
-        this.$store.commit('cargar_datos')
-    },
-    components:{
-        OfertaTemas,
-        Loading,
-        MisTemas,
-        vistaSolicitar,
-        cambiarRol,
-        MisSolicitudes,
-        AprobadoTema
-    },
-    methods: {
-        redirigir(ref) {
-            if (ref == "Cerrar sesion") {
-                if (this.$route.path !== "/Alumno" || this.$route.path !== "/solicitudTemas") {
-                    localStorage.clear();
-                    this.$store.state.nombre=null
-                    this.$store.state.img=null
-                    this.$router.push({ path: "/" })
-                }
-            }else if(ref == "Oferta de Temas"){
-                this.$store.state.vistaSeleccionada=1
-            }else if(ref == "Mis Temas"){
-                this.$store.state.vistaSeleccionada=2
-            }else if(ref == "Mis Solicitudes"){
-                this.$store.state.vistaSeleccionada=4
-            }else if(ref== "Comprobante certificado"){
-              this.$store.state.vistaSeleccionada=5
-            }
-        }
+  data() {
+    return {
+      drawer: null,
+      alumno: [
+        { title: "Oferta de Temas", icon: "mdi-folder" },
+        { title: "Mis Temas", icon: "mdi-folder" },
+        { title: "Mis Solicitudes", icon: "mdi-folder" },
+        { title: "Cerrar sesion", icon: "mdi-exit-to-app" },
+      ],
+      memorista: [
+        { title: "Mis Temas", icon: "mdi-folder" },
+        { title: "Mis Solicitudes", icon: "mdi-folder" },
+        { title: "Comprobante certificado", icon: "mdi-folder" },
+        { title: "Cerrar sesion", icon: "mdi-exit-to-app" },
+      ],
+      hover: "red",
+      vista: 1,
     }
+  },
+  destroyed() {
+    console.log("Login eliminado");
+  },
+  beforeCreate() {
+    this.$store.state.loading = true
+    this.$store.commit('cargar_datos')
+  },
+  components: {
+    OfertaTemas,
+    Loading,
+    MisTemas,
+    vistaSolicitar,
+    cambiarRol,
+    MisSolicitudes,
+    AprobadoTema
+  },
+  methods: {
+    redirigir(ref) {
+      if (this.$store.state.esmemorista) {
+        if (ref == "Cerrar sesion") {
+          if (this.$route.path !== "/Alumno" || this.$route.path !== "/solicitudTemas") {
+            localStorage.clear();
+            this.$store.state.nombre = null
+            this.$store.state.img = null
+            this.$router.push({ path: "/" })
+          }
+        } else if (ref == "Mis Temas") {
+          this.$store.state.vistaSeleccionada = 1
+        } else if (ref == "Mis Solicitudes") {
+          this.$store.state.vistaSeleccionada = 2
+        } else if (ref == "Comprobante certificado") {
+          this.$store.state.vistaSeleccionada = 3
+        }
+      } else {
+        if (ref == "Cerrar sesion") {
+          if (this.$route.path !== "/Alumno" || this.$route.path !== "/solicitudTemas") {
+            localStorage.clear();
+            this.$store.state.nombre = null
+            this.$store.state.img = null
+            this.$router.push({ path: "/" })
+          }
+        } else if (ref == "Oferta de Temas") {
+          this.$store.state.vistaSeleccionada = 1
+        } else if (ref == "Mis Temas") {
+          this.$store.state.vistaSeleccionada = 2
+        } else if (ref == "Mis Solicitudes") {
+          this.$store.state.vistaSeleccionada = 4
+        }
+      }
+    }
+  }
 }
 
 </script> 
  
 <style>
 .v-list-item:hover {
-     background: #FF0182;
- }
+  background: #FF0182;
+}
 </style>

@@ -2,6 +2,7 @@
     <div class="Solicitudes">
         <div class="one"> 
             <h1>Direccion de Escuela: Solicitudes de Memorias</h1> 
+            <notificacion></notificacion>
             </div>
         <v-layout row class="mx-1">
             <v-spacer></v-spacer>
@@ -135,6 +136,7 @@
 <script>
 import loading from "@/components/loading.vue"
 import Swal from 'sweetalert2'
+import notificacion from "@/components/notificacion.vue"
 export default {
     name: 'Solicitudes',
     data() {
@@ -172,12 +174,43 @@ export default {
     },
     components: {
         loading,
-        Swal
+        Swal,
+        notificacion
     },
     created() {
         this.cargar_solicitudes()
     },
     methods: {
+        enviarNotificacion(solicitud_votada, voto) {
+            var notificacion = {
+                notificacion: null,
+                visto: false,
+                id_ref: null
+            }
+            this.axios.get("todos_temas").then((respT)=>{
+                const temas = respT.data
+                solicitud_tema_votado=temas.find(t=> t._id == solicitud_votada.temaid)
+                if(voto){
+                    // Notificacion a la directora
+                    notificacion.id_ref = localStorage.getItem("key_user")
+                    notificacion.notificacion = "Has aprobado la solicitud del tema " + solicitud_tema_votado.nombre
+                    this.axios.post("nuevo_notificacion", notificacion)
+                    // Notificacion al creador del tema
+                    notificacion.id_ref = tema_votado.idCreador
+                    notificacion.notificacion = "La directora a aprobado la solicitud del tema " + solicitud_tema_votado.nombre
+                    this.axios.post("nuevo_notificacion", notificacion)
+                }else{
+                    // Notificacion a la directora
+                    notificacion.id_ref = localStorage.getItem("key_user")
+                    notificacion.notificacion = "Has rechazado la solicitud del tema " + solicitud_tema_votado.nombre
+                    this.axios.post("nuevo_notificacion", notificacion)
+                    // Notificacion al creador del tema
+                    notificacion.id_ref = tema_votado.idCreador
+                    notificacion.notificacion = "La directora a rechazado la solicitud del tema " + solicitud_tema_votado.nombre
+                    this.axios.post("nuevo_notificacion", notificacion)
+                }
+            })
+        },
         cargar_solicitudes() {
             this.axios.get("todos_usuarios").then((respU) => {
                 this.axios.get("todos_temas").then((respT) => {
