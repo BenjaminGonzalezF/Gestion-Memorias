@@ -1,8 +1,9 @@
 <template>
     <div class="Solicitudes">
-        <div class="one"> 
-            <h1>Direccion de Escuela: Temas de Memorias</h1> 
-            </div>
+        <div class="one">
+            <h1>Direccion de Escuela: Temas de Memorias</h1>
+        </div>
+        <notificacion></notificacion>
         <v-layout row class="mx-1">
             <v-spacer></v-spacer>
             <v-btn-toggle v-model="toggle" dense class="mr-2" style="max-height: 20px !important">
@@ -110,6 +111,7 @@
 <script>
 import Swal from 'sweetalert2'
 import loading from "@/components/loading.vue"
+import notificacion from "@/components/notificacion.vue"
 export default {
     name: 'Solicitudes',
     data() {
@@ -144,12 +146,39 @@ export default {
     },
     components: {
         loading,
-        Swal
+        Swal,
+        notificacion
     },
     created() {
         this.cargar_temas()
     },
     methods: {
+        enviarNotificacion(tema_votado, voto) {
+            var notificacion = {
+                notificacion: null,
+                visto: false,
+                id_ref: null
+            }
+            if(voto){
+                // Notificacion a la directora
+                notificacion.id_ref = localStorage.getItem("key_user")
+                notificacion.notificacion = "Has aprobado el tema " + tema_votado.nombre
+                this.axios.post("nuevo_notificacion", notificacion)
+                // Notificacion al creador del tema
+                notificacion.id_ref = tema_votado.idCreador
+                notificacion.notificacion = "La directora a aprobado tu tema " + tema_votado.nombre
+                this.axios.post("nuevo_notificacion", notificacion)
+            }else{
+                // Notificacion a la directora
+                notificacion.id_ref = localStorage.getItem("key_user")
+                notificacion.notificacion = "Has rechazado el tema " + tema_votado.nombre
+                this.axios.post("nuevo_notificacion", notificacion)
+                // Notificacion al creador del tema
+                notificacion.id_ref = tema_votado.idCreador
+                notificacion.notificacion = "La directora a rechazado tu tema " + tema_votado.nombre
+                this.axios.post("nuevo_notificacion", notificacion)
+            }
+        },
         cargar_temas() {
             this.axios.get("todos_usuarios").then((respU) => {
                 this.axios.get("todos_temas").then((respT) => {
@@ -183,6 +212,7 @@ export default {
                 if (result.isConfirmed) {
                     this.$store.state.loading = true
                     tema.resultado_directora = voto
+                    this.enviarNotificacion(tema,voto)
                     this.axios.put(`tema_ac/${tema._id}`, tema).then((resp) => {
                     })
                     this.$store.commit('cargar_datos')
@@ -242,31 +272,33 @@ export default {
 }
 
 
-.one h1 { 
-  text-align: center; 
-  text-transform: uppercase; 
-  padding-bottom: 5px; 
-} 
-.one h1:before { 
-  width: 28px; 
-  height: 5px; 
-  display: block; 
-  content: ""; 
-  position: absolute; 
-  bottom: 3px; 
-  left: 50%; 
-  margin-left: -14px; 
-  background-color: #f5a42a; 
-} 
-.one h1:after { 
-  width: 100px; 
-  height: 1px; 
-  display: block; 
-  content: ""; 
-  position: relative; 
-  margin-top: 25px; 
-  left: 50%; 
-  margin-left: -50px; 
-  background-color: #f5a42a; 
-} 
+.one h1 {
+    text-align: center;
+    text-transform: uppercase;
+    padding-bottom: 5px;
+}
+
+.one h1:before {
+    width: 28px;
+    height: 5px;
+    display: block;
+    content: "";
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    margin-left: -14px;
+    background-color: #f5a42a;
+}
+
+.one h1:after {
+    width: 100px;
+    height: 1px;
+    display: block;
+    content: "";
+    position: relative;
+    margin-top: 25px;
+    left: 50%;
+    margin-left: -50px;
+    background-color: #f5a42a;
+}
 </style>

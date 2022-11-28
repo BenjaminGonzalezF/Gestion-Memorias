@@ -2,7 +2,8 @@
     <div class="Solicitudes">
         <div class="one"> 
             <h1>Direccion de Escuela: Historial</h1> 
-            </div>
+        </div>
+        <notificacion></notificacion>
         <v-layout row class="mx-1">
             <v-spacer></v-spacer>
             <v-btn-toggle v-model="toggle" dense class="mr-2" style="max-height: 20px !important">
@@ -114,6 +115,7 @@
 
 <script>
 import loading from "@/components/loading.vue"
+import notificacion from "@/components/notificacion.vue"
 export default {
     name: 'Solicitudes',
     data() {
@@ -150,7 +152,8 @@ export default {
         };
     },
     components: {
-        loading
+        loading,
+        notificacion
     },
     created() {
         this.cargar_solicitudes()

@@ -3,6 +3,7 @@
         <div class="one"> 
             <h1>Docente: Mis Temas</h1> 
             </div>
+            <notificacion></notificacion>
         <v-layout row class="mx-1">
             <v-btn depressed color="#f5a42a" dark small
                 @click="agregar_temas(false, nombre_temacrear1, descripcion_temacrear1)">
@@ -192,10 +193,12 @@
 
 import { Icon } from '@iconify/vue2';
 import Swal from 'sweetalert2'
+import notificacion from "@/components/notificacion.vue"
 export default {
     components: {
         Icon,
-        Swal
+        Swal,
+        notificacion
     },
     data() {
         return {
@@ -229,6 +232,27 @@ export default {
         this.cargar_temas_profe()
     },
     methods: {
+        enviarNotificacion(){
+            var notificacion={
+                notificacion:null,
+                visto:false,
+                id_ref:null
+            }
+             // Notificacion al profesor
+            notificacion.id_ref=localStorage.getItem("key_user")
+            notificacion.notificacion="Has creado el tema "+this.nombre_temacrear
+            this.axios.post("nuevo_notificacion",notificacion)
+             // Notificacion a los del comite
+            this.axios.get("todos_usuarios").then((respU)=>{
+                const usuarios = respU.data
+                var comites = usuarios.filter(u=> u.escomite==true)
+                for(var i=0; comites.length;i++){
+                    notificacion.id_ref=comites[i]._id
+                    notificacion.notificacion="El profesor "+this.$store.state.nombre+" ha creado el tema "+this.nombre_temacrear
+                    this.axios.post("nuevo_notificacion",notificacion)
+                }
+            })
+        },
         cargar_temas_profe() {
             this.axios.get("todos_temas")
                 .then((respT) => {
@@ -313,6 +337,7 @@ export default {
                                    
                                 })
                             })
+                            this.enviarNotificacion()
                             this.$store.commit('cargar_datos')
                             Swal.fire({
                                 icon: 'success',

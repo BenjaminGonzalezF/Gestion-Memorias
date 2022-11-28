@@ -11,8 +11,8 @@
             <v-banner class="justify-center text-h5 white--text" sticky color="rgb(0, 204, 255)">
                 <h4 class="mr-4">Notificaciones</h4>
             </v-banner>
-            <v-card-text v-for="(item, i) in items" :key="i">
-                <div>{{ item.title }}</div>
+            <v-card-text v-for="(item, i) in notificaciones" :key="i">
+                <div>{{ item.notificacion }}</div>
             </v-card-text>
         </v-card>
     </v-menu>
@@ -20,41 +20,32 @@
 <script>
 export default {
     data: () => ({
-        items: [
-            { title: 'Notificacion 1' },
-            { title: 'Notificacion 2' },
-            { title: 'Notificacion 3' },
-            { title: 'Notificacion 4' },
-            { title: 'Notificacion 5' },
-            { title: 'Notificacion 6' },
-            { title: 'Notificacion 7' },
-            { title: 'Notificacion 8' },
-            { title: 'Notificacion 9' },
-            { title: 'Notificacion 10' },
-            { title: 'Notificacion 11' },
-            { title: 'Notificacion 12' },
-            { title: 'Notificacion 13' },
-            { title: 'Notificacion 14' },
-            { title: 'Notificacion 15' },
-            { title: 'Notificacion 16' },
-        ],
+        notificaciones:[],
         cantidad_notificaciones: 0,
     }),
     created() {
-        this.ordenarNotificaciones()
+        this.cargar_notificaciones()
     },
     methods: {
         ordenarNotificaciones() {
-            var items_ordenados = []
-            for (var i = (this.items.length - 1); i >= 0; i--) {
-                items_ordenados.push({
-                    title: this.items[i].title
+            var notificacion_ordenadas = []
+            for (var i = (this.notificaciones.length - 1); i >= 0; i--) {
+                notificacion_ordenadas.push({
+                    notificacion: this.notificaciones[i].notificacion
                 })
                 this.cantidad_notificaciones++
             }
-            this.items = items_ordenados
+            this.notificaciones = notificacion_ordenadas
+        },
+        cargar_notificaciones(){
+            this.axios.get("todos_notificaciones").then((respN)=>{
+                this.notificaciones = respN.data
+                this.notificaciones = this.notificaciones.filter(n=> n.id_ref==localStorage.getItem("key_user"))
+                this.ordenarNotificaciones()
+            })
         },
         verNotificaciones() {
+            // Actualizar en la bd -pendiente
             this.cantidad_notificaciones = 0
         }
     }

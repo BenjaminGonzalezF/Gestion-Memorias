@@ -4,6 +4,7 @@
             <div class="one"> 
             <h1>Alumnos: Temas Ofrecidos</h1> 
             </div>
+            <notificacion></notificacion>
             <v-layout row class="mx-1">
                 <v-spacer></v-spacer>
                 <v-menu offset-y>
@@ -132,7 +133,7 @@
 
 <script>
 import Swal from 'sweetalert2'
-
+import notificacion from "@/components/notificacion.vue"
 export default {
     name: "Alumno",
     data() {
@@ -194,7 +195,7 @@ export default {
             }
         }
     },
-    components: { Swal },
+    components: { Swal,notificacion },
     methods: {
         cargar_temas() {
             this.axios.get("todos_temas")

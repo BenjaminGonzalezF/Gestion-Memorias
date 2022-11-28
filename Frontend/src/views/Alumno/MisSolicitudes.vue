@@ -4,6 +4,7 @@
             <div class="one"> 
             <h1>Alumnos: Mis Solicirudes</h1> 
             </div>
+            <notificacion></notificacion>
             <v-layout row class="mx-1">
                 <v-spacer></v-spacer>
                 <v-menu offset-y>
@@ -69,6 +70,7 @@
 
 <script>
 import { Icon } from '@iconify/vue2';
+import notificacion from "@/components/notificacion.vue"
 export default {
     name: "Alumno",
     data() {
@@ -98,7 +100,8 @@ export default {
         };
     },
     components: {
-        Icon
+        Icon,
+        notificacion
     },
     created() {
         this.cargar_missolicitudestemas()
