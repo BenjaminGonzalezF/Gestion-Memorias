@@ -3,12 +3,12 @@
         <div class="one"> 
             <h1>Direccion de Escuela: Historial</h1> 
             </div>
-        <v-layout row class="mx-1">
+        <v-layout row class="mx-6">
             <v-spacer></v-spacer>
             <v-menu offset-y>
                 <v-spacer></v-spacer>
                 <template v-slot:activator="{ on, attrs }">
-                    <v-btn depressed color="rgb(0, 204, 255)" class="mb-5" dark small v-bind="attrs" v-on="on">
+                    <v-btn depressed color="#f5a42a" class="mb-5" dark small v-bind="attrs" v-on="on">
                         Ordenar
                         <v-icon right small>mdi-sort</v-icon>
                     </v-btn>

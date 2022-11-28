@@ -4,7 +4,7 @@
             <div class="one"> 
             <h1>Alumnos: Mis Solicirudes</h1> 
             </div>
-            <v-layout row class="mx-1">
+            <v-layout row class="mx-6">
                 <v-spacer></v-spacer>
                 <v-menu offset-y>
                     <template v-slot:activator="{ on, attrs }">

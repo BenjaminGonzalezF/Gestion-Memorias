@@ -1,9 +1,10 @@
 <template>
     <div class="Solicitudes">
-        <div class="one"> 
+        
+        <v-layout row class="mx-1">
+            <div class="one"> 
             <h1>Direccion de Escuela: Solicitudes de Memorias</h1> 
             </div>
-        <v-layout row class="mx-1">
             <v-spacer></v-spacer>
             <v-btn-toggle v-model="toggle" dense class="mr-2" style="max-height: 20px !important">
                 <v-btn small color="#f5a42a" :disabled="toggle === 0">

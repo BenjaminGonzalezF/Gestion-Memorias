@@ -14,7 +14,7 @@
                         <v-spacer></v-spacer>
                         <v-menu offset-y>
                             <template v-slot:activator="{ on, attrs }">
-                                <v-btn depressed color="rgb(0, 204, 255)" class="mb-5" dark small v-bind="attrs"
+                                <v-btn depressed color="#f5a42a" class="mb-5" dark small v-bind="attrs"
                                     v-on="on">
                                     Ordenar
                                     <v-icon right small>mdi-sort</v-icon>

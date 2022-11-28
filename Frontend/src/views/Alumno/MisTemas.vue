@@ -3,7 +3,7 @@
         <div class="one"> 
             <h1>Alumnos: Mis Temas</h1> 
             </div>
-        <v-layout row class="mx-1">
+        <v-layout row class="mx-6">
             <v-btn depressed color="#f5a42a" dark small
                 @click="agregar_temas(false, nombre_temacrear1, descripcion_temacrear1, profesor_temacrear1)">
                 Agregar tema
