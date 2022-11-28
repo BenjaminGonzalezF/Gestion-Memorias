@@ -554,6 +554,26 @@ export default {
         this.listarsemestres();
     },
     methods: {
+        enviarNotificacion(){
+            var notificacion={
+                notificacion:null,
+                visto:false,
+                id_ref:null
+            }
+            // Notificacion al alumno
+            notificacion.id_ref=localStorage.getItem("key_user")
+            notificacion.notificacion="Has creado el tema "+this.nombre_temacrear
+            this.axios.post("nuevo_notificacion",notificacion)
+
+            // Notificacion al profesor
+            this.axios.get("todos_temas").then((resp)=>{
+                const temas = resp.data
+                var tema_solicitar  = temas.find(t=> t._id == this.$store.state.id_tema_solicitar)
+                notificacion.id_ref= tema_solicitar.idCreador
+                notificacion.notificacion="El usuario "+this.$store.state.nombre+" ha creado el tema "+this.nombre_temacrear
+                this.axios.post("nuevo_notificacion",notificacion)
+            })
+        },
         cargar_datos() {
             if (this.$store.state.id_tema_solicitar != "nuevo tema") {//y este if?
                 this.axios.get("todos_temas")
@@ -705,6 +725,7 @@ export default {
                         this.axios.put(`tema_ac/${tema[0]._id}`, tema[0])
                     })
                 })
+                this.enviarNotificacion()
                 Swal.fire({
                     icon: 'success',
                     title: 'Se Ha Enviado La Solicitud',
@@ -754,7 +775,6 @@ export default {
             }
 
         },
-
     },
 }
 

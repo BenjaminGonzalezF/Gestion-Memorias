@@ -76,11 +76,7 @@ export default new Vuex.Store({
                   if(router.history.current.path!=="/profesor"){
                     router.push({ path: "/profesor" })
                   }
-                } else if (usuario_sesion.rolActivo=="Memorista"){
-                  if(router.history.current.path!=="/Memorista"){
-                    router.push({ path: "/Memorista" })
-                  }
-                } else{
+                } else{ // Alumno o memorista
                   if(router.history.current.path!=="/Alumno"){
                     router.push({ path: "/Alumno" })
                   }

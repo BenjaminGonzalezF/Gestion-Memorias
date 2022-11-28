@@ -1,6 +1,6 @@
 <template>
     <v-app>
-      <v-navigation-drawer right app color="rgb(0, 204, 255)">
+      <v-navigation-drawer right app color="rgb(0, 204, 255)" v-model="drawer">
         <v-layout column class="text-center">
           <v-flex class="mt-6">
             <v-avatar size="150">

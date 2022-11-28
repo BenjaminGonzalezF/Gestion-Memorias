@@ -1,8 +1,9 @@
 <template>
     <div class="Solicitudes">
-        <div class="one"> 
-            <h1>Docente: Mis Solicitudes</h1> 
-            </div>
+        <div class="one">
+            <h1>Docente: Mis Solicitudes</h1>
+            <notificacion></notificacion>
+        </div>
         <v-layout row class="mx-1">
             <v-spacer></v-spacer>
             <v-menu offset-y>
@@ -175,9 +176,11 @@
   
 <script>
 import Swal from 'sweetalert2'
+import notificacion from "@/components/notificacion.vue"
 export default {
     components: {
-        Swal
+        Swal,
+        notificacion
     },
     data() {
         return {
@@ -210,6 +213,50 @@ export default {
         this.cargar_temas()
     },
     methods: {
+        enviarNotificacion(nombre_tema, voto, postulantes) {
+            var notificacion = {
+                notificacion: null,
+                visto: false,
+                id_ref: null
+            }
+            if (voto) {
+                // Notificacion al profesor
+                notificacion.id_ref = localStorage.getItem("key_user")
+                notificacion.notificacion = "Has votado el tema " + nombre_tema
+                this.axios.post("nuevo_notificacion", notificacion)
+                // Notificacion al alumno al que aprobo el tema, y notificacion a todos los alumnos que tenian una solicitud pendiente a ese tema
+                this.axios.get("todos_usuarios").then((respU) => {
+                    const usuarios = respU.data
+                    var alumno = usuarios.find(u => u._id == this.estudianteID)
+                    notificacion.id_ref = alumno._id
+                    notificacion.notificacion = "El profesor " + this.$store.state.nombre + " ha aceptado el tema " + nombre_tema
+                    this.axios.post("nuevo_notificacion", notificacion)
+                    for (var i = 0; i < postulantes.length; i++) {
+                        if (postulantes[i].id != this.estudianteID) {
+                            var postulante_rechazado = usuarios.find(u => u._id == postulantes[i].id)
+                            notificacion.id_ref = postulante_rechazado._id
+                            notificacion.notificacion = "El profesor " + this.$store.state.nombre + " ha rechazado tu solicitud sobre el tema " + nombre_tema
+                            this.axios.post("nuevo_notificacion", notificacion)
+                        }
+                    }
+
+                })
+            } else {
+                // Notificacion al profesor
+                notificacion.id_ref = localStorage.getItem("key_user")
+                notificacion.notificacion = "Has votado el tema " + nombre_tema
+                this.axios.post("nuevo_notificacion", notificacion)
+                // Notificacion al alumno al que aprobo el tema, y notificacion a todos los alumnos que tenian una solicitud pendiente a ese tema
+                this.axios.get("todos_usuarios").then((respU) => {
+                    const usuarios = respU.data
+                    var alumno = usuarios.find(u => u._id == this.estudianteID)
+                    notificacion.id_ref = alumno._id
+                    notificacion.notificacion = "El profesor " + this.$store.state.nombre + " ha rechazado tu solicitud sobre el tema " + nombre_tema
+                    this.axios.post("nuevo_notificacion", notificacion)
+                })
+            }
+
+        },
         cargar_temas() {
             this.axios.get("todos_temas").then((respT) => {
                 this.axios.get("todos_usuarios").then((respU) => {
@@ -282,6 +329,14 @@ export default {
                             var tema_cambiar = temas.find(t => t._id == this.tema_seleccionado)
                             tema_cambiar.resultado_profesor = voto
                             tema_cambiar.fechacambio = new Date().toLocaleDateString()
+                            this.enviarNotificacion(tema_cambiar.nombre, true, tema_cambiar.postulantes)
+                            for (var i = 0; i < tema_cambiar.postulantes.length; i++) {
+                                if (tema_cambiar.postulantes[i].id != this.estudianteID) {
+                                    tema_cambiar.postulantes[i].resultado_profesor_postulante = false
+                                    tema_cambiar.postulantes[i].razon = "La solicitud se aprobo a otro estudiante"
+                                    this.axios.put(`tema_ac/${tema_cambiar._id}`, tema_cambiar)
+                                }
+                            }  
                             this.axios.put(`tema_ac/${tema_cambiar._id}`, tema_cambiar).then((resp) => {
                                 if (tema_cambiar.resultado_comite && tema_cambiar.resultado_directora && tema_cambiar.resultado_profesor) {
                                     this.$store.state.loading = true
@@ -305,6 +360,7 @@ export default {
                         this.axios.get("todos_temas").then((respT) => {
                             const temas = respT.data
                             var tema_cambiar = temas.find(t => t._id == this.tema_seleccionado)
+                            this.enviarNotificacion(tema_cambiar.nombre, false, null)
                             for (var i = 0; i < tema_cambiar.postulantes.length; i++) {
                                 if (tema_cambiar.postulantes[i].id == this.estudianteID) {
                                     this.$store.state.loading = true
@@ -364,31 +420,33 @@ export default {
     background: #f5a42a;
 }
 
-.one h1 { 
-  text-align: center; 
-  text-transform: uppercase; 
-  padding-bottom: 5px; 
-} 
-.one h1:before { 
-  width: 28px; 
-  height: 5px; 
-  display: block; 
-  content: ""; 
-  position: absolute; 
-  bottom: 3px; 
-  left: 50%; 
-  margin-left: -14px; 
-  background-color: #f5a42a; 
-} 
-.one h1:after { 
-  width: 100px; 
-  height: 1px; 
-  display: block; 
-  content: ""; 
-  position: relative; 
-  margin-top: 25px; 
-  left: 50%; 
-  margin-left: -50px; 
-  background-color: #f5a42a; 
-} 
+.one h1 {
+    text-align: center;
+    text-transform: uppercase;
+    padding-bottom: 5px;
+}
+
+.one h1:before {
+    width: 28px;
+    height: 5px;
+    display: block;
+    content: "";
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    margin-left: -14px;
+    background-color: #f5a42a;
+}
+
+.one h1:after {
+    width: 100px;
+    height: 1px;
+    display: block;
+    content: "";
+    position: relative;
+    margin-top: 25px;
+    left: 50%;
+    margin-left: -50px;
+    background-color: #f5a42a;
+}
 </style>

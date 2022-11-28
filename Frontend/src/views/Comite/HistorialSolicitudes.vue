@@ -2,6 +2,7 @@
     <div class="Solicitudes">
         <div class="one"> 
             <h1>Comité Curricular: Historial Solicitudes de Memorias</h1> 
+            <notificacion></notificacion>
             </div>
         <v-layout row class="mx-1">
             <v-col cols="12" sm="6" md="4">
@@ -139,10 +140,12 @@ import Swal from 'sweetalert2'
 import loading from '@/components/loading.vue';
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas';
+import notificacion from "@/components/notificacion.vue"
 export default {
     name: 'Solicitudes',
     components: {
         loading,
+        notificacion
     },
     data() {
         return {
