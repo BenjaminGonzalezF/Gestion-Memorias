@@ -694,6 +694,9 @@ export default {
                 }
             }
             //console.log(this.nocursados.length)
+            if (this.nocursados.length == 0) {
+                this.cursos =""
+            }
             if (this.nocursados.length == 1) {
                 this.cursos = this.nocursados[0]
             }
