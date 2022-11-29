@@ -1,4 +1,5 @@
 <template>
+    
     <div class="Solicitudes">
         <div class="one"> 
             <h1>Direccion de Escuela: Solicitudes de Memorias</h1> 
