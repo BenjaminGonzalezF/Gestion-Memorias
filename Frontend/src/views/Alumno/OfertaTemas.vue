@@ -101,14 +101,14 @@
                                         :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                                         :type="show1 ? 'text' : 'password'">
                                     </v-text-field>
-                                    <v-row>
-                                        <v-spacer></v-spacer>
-                                        <v-btn color="#f5a42a" :class="vBtn" class="white--text" :disabled="vBtnIngreso"
-                                            @click="cambiarContraseña(verificarContraseña, verificarContraseñaNuevamente)">
-                                            Guardar Cambios</v-btn>
-                                        <v-spacer></v-spacer>
-                                    </v-row>
                                 </v-col>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="#f5a42a" :class="vBtn" class="white--text" :disabled="vBtnIngreso"
+                                        @click="cambiarContraseña(verificarContraseña, verificarContraseñaNuevamente)">
+                                        Guardar Cambios</v-btn>
+                                    <v-spacer></v-spacer>
+                                </v-card-actions>
                             </v-card-text>
                         </v-card>
                     </v-dialog>
@@ -180,16 +180,8 @@ export default {
         vBtn() {
             if (this.verificarContraseña == "" || this.verificarContraseñaNuevamente == "" || this.verificarContraseña == null || this.verificarContraseñaNuevamente == null
                 || this.verificarContraseña.length < 8 || this.verificarContraseñaNuevamente.length < 8) {
-                //console.log("1 " + this.verificarContraseña)
-                //console.log("1 " + this.verificarContraseñaNuevamente)
-                //console.log("1 " + this.verificarContraseña.length)
-                //console.log("1 " + this.verificarContraseñaNuevamente.length)
                 this.vBtnIngreso = true
             } else {
-                //console.log("2 " + this.verificarContraseña)
-                //console.log("2 " + this.verificarContraseñaNuevamente)
-                //console.log("2 " + this.verificarContraseña.length)
-                //console.log("2 " + this.verificarContraseñaNuevamente.length)
                 this.vBtnIngreso = false
             }
         }
@@ -245,10 +237,8 @@ export default {
                 var user = usuario.find(u => u._id == localStorage.getItem("key_user"))
                 //console.log(user.contrasena)
                 if (user.contrasena == "12345") {
-                    //console.log("si es nuevo")
                     this.drawerContrasena = true;
                 } else {
-                    //console.log("no es nuevo")
                     this.drawerContrasena = false;
                 }
             })

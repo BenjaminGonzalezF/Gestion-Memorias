@@ -693,7 +693,6 @@ export default {
 
                 }
             }
-            //console.log(this.nocursados.length)
             if (this.nocursados.length == 0) {
                 this.cursos =""
             }
@@ -701,17 +700,11 @@ export default {
                 this.cursos = this.nocursados[0]
             }
             if (this.nocursados.length == 2) {
-                //console.log("pasa1")
                 this.cursos = this.nocursados[0] + "-" + this.nocursados[1]
 
             } if (this.nocursados.length == 3) {
-                //console.log("pasa2")
                 this.cursos = this.nocursados[0] + "-" + this.nocursados[1] + "..."
             }
-
-            //console.log(this.cursos);
-            //console.log("orig: "+this.nocursados);
-
 
         },
         AgregarImagen() {
