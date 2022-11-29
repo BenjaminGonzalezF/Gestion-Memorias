@@ -167,11 +167,11 @@
                     </v-stepper>
                 </v-dialog>
                 <!-- dialogo de mas informacion del usuario -->
-                <v-dialog v-model="drawerInfoAlumnos" width=50%>
+                <v-dialog v-model="drawerInfoAlumnos" width=20%>
                     <v-scroll-y-transition mode="out-in">
                         <v-card class="d-flex text-center" flat>
                             <v-card-text>
-                                <v-avatar class="mt-4" size="150">
+                                <v-avatar class="my-4" size="150">
                                     <v-img :src="alumno_seleccionado.img">
                                         <template v-slot:placeholder>
                                             <v-row class="fill-height ma-0" align="center" justify="center">
@@ -180,16 +180,25 @@
                                         </template>
                                     </v-img>
                                 </v-avatar>
-                                <h3 class="text-h5 mb-2">
+                                <h3 class="text-h5 my-3">
                                     {{ alumno_seleccionado.nombre }}
                                 </h3>
-                                <div class="blue--text mb-2">
-                                    {{ alumno_seleccionado.correo }}
+                                <v-divider></v-divider>
+                                    <div>
+                                        <h4>{{alumno_seleccionado.rolActivo}}</h4>
+                                    </div>
+                                <v-divider></v-divider>
+                                
+                                <div class="my-4">
+                                    <div class="blue--text my-1">
+                                        <h4>{{ alumno_seleccionado.correo }}</h4> 
+                                    </div>
+                                    <div class=" mb-2">
+                                        <h4>{{ alumno_seleccionado.matricula }}</h4>
+                                    </div>
+                                    <!-- falta agregar los roles que tienen -->
                                 </div>
-                                <div class=" mb-2">
-                                    {{ alumno_seleccionado.matricula }}
-                                </div>
-                                <!-- falta agregar los roles que tienen -->
+                                
                             </v-card-text>
                         </v-card>
                     </v-scroll-y-transition>
