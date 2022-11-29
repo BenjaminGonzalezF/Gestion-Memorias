@@ -55,7 +55,7 @@
                                             <!-- <div class="caption grey--text">Durum</div> -->
                                             <div class="my-1 text-center">
                                                 <v-btn
-                                                    @click="verSolicitud(project.nombre, project.descripcion, project.nombreCreador, project.fechacambio)">
+                                                    @click="verSolicitud(project.nombre, project.descripcion, project.nombreCreador, project.fechacambio, project.requisitos)">
                                                     Ver más
                                                 </v-btn>
                                             </div>
@@ -86,36 +86,44 @@
                                     </v-layout>
                                 </v-card>
                             </div>
-                            <v-dialog v-model="drawerSolicitud" max-width="900">
-                                <v-container class="grey lighten-5">
-                                    <v-card>
-                                        <v-card-title>
-                                            <span class="text-h5">Datos proyecto</span>
-                                        </v-card-title>
-                                        <v-card-text>
-                                            <v-container>
-                                                <v-flex>
-                                                    <div class="caption black--text">Titulo proyecto:</div>
-                                                    <div>{{ tituloProyecto }}</div>
-                                                </v-flex>
-                                                <v-flex>
-                                                    <div class="caption black--text">Descripcion general proyecto:
-                                                    </div>
-                                                    <div>{{ descripcionProyecto }}</div>
-                                                </v-flex>
-                                                <v-flex>
-                                                    <div class="caption black--text">Creador:</div>
-                                                    <div>{{ estudiante }}</div>
-                                                </v-flex>
-
-                                                <v-flex>
-                                                    <div class="caption black--text">fecha:</div>
-                                                    <div>{{ fecha }}</div>
-                                                </v-flex>
-                                            </v-container>
-                                        </v-card-text>
-                                    </v-card>
-                                </v-container>
+                            <v-dialog v-model="drawerSolicitud" max-width="400">
+                                <v-card max-width="400">
+                                    <v-container class="grey lighten-5" >
+                                        <v-row >
+                                            <v-col >
+                                                <v-card max-height="400">
+                                                    <v-card-title>
+                                                        <span class="text-h5">Datos proyecto</span>
+                                                    </v-card-title>
+                                                    <v-card-text>
+                                                        <v-container>
+                                                            <v-flex>
+                                                                <div class="caption black--text">Titulo proyecto:</div>
+                                                                <div>{{ tituloProyecto }}</div>
+                                                            </v-flex>
+                                                            <v-flex>
+                                                                <div class="caption black--text">Descripcion general
+                                                                    proyecto:
+                                                                </div>
+                                                                <div>{{ descripcionProyecto }}</div>
+                                                            </v-flex>
+                                                            <v-flex>
+                                                                <div class="caption black--text">Requisitos:</div>
+                                                                <div v-for="(requisito, index) in requisitos" :key="index">
+                                                                <li> {{requisito}} </li>
+                                                                </div>
+                                                            </v-flex>
+                                                            <v-flex>
+                                                                <div class="caption black--text">Estudiante:</div>
+                                                                <div>{{ estudiante }}</div>
+                                                            </v-flex>
+                                                        </v-container>
+                                                    </v-card-text>
+                                                </v-card>
+                                            </v-col>
+                                        </v-row>
+                                    </v-container>
+                                </v-card>
                             </v-dialog>
                         </v-container>
                     </div>
@@ -226,7 +234,7 @@ export default {
             var votosRechazo = null
 
             for (var i = 0; i < tema.votos.length; i++) {
-                if (false == tema.votos[i].voto_usuario_sesion) {
+                if (true == tema.votos[i].voto) {
                     votosApruebo = votosApruebo + 1
                 } else {
                     votosRechazo = votosRechazo + 1
@@ -291,14 +299,7 @@ export default {
 
                 .text("3.-" + comite3, 1.9, 12, { align: "left", maxWidth: "15.5" });
 
-            if (votosRechazo == 3) {
-                pdf
-                    .setFont("helvetica")
-                    .setFontSize(12)
-
-                    .text("Tras el recuento de los votos, se a conseguido de forma unánime que la propuesta es "
-                        + resultado + ". ", 1.3, 13.5, { align: "left", maxWidth: "15.5" });
-            } else if (votosApruebo == 3) {
+            if (votosRechazo == 3 || votosApruebo == 3) {
                 pdf
                     .setFont("helvetica")
                     .setFontSize(12)
@@ -310,10 +311,9 @@ export default {
                     .setFont("helvetica")
                     .setFontSize(12)
 
-                    .text("Tras el recuento de los votos, con "+ votosApruebo + " votos aprobado y "+votosRechazo+ " votos rechazado, se a conseguido que la propuesta es "
+                    .text("Tras el recuento de los votos, con "+ votosApruebo + " voto aprobado y "+votosRechazo+ " voto rechazado, se a conseguido que la propuesta es "
                         + resultado + ". ", 1.3, 13.5, { align: "left", maxWidth: "15.5" });
             }
-            
             
             
 
@@ -355,12 +355,13 @@ export default {
         sortBy(prop) {
             this.solicitudes.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
         },
-        verSolicitud(titulo, descripcion, estudiante, fecha) {
+        verSolicitud(titulo, descripcion, estudiante, fecha,requisitos) {
             this.drawerSolicitud = true
             this.tituloProyecto = titulo
             this.descripcionProyecto = descripcion
             this.estudiante = estudiante
             this.fecha = fecha
+            this.requisitos = requisitos
         },
         getChipColor(color) {
             if (color == 'completado') return 'green accent-3'
