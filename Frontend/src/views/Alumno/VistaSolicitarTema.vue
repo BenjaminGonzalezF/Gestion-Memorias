@@ -1,9 +1,8 @@
 <template>
     <v-app>
-        
-        <div class="one"> 
-            <h1>Alumnos: Solicirtudes de memoria</h1> 
-            </div>
+        <div class="one">
+            <h1>Alumnos: Solicirtudes de memoria</h1>
+        </div>
         <div align="center">
             <v-col lass="px-4">
                 <h1>
@@ -43,10 +42,10 @@
                 </v-card>
                 <v-col>
                     <h1>
-                        ¿Se encuentra trabajando?*****
+                        Disponibilidad
                     </h1>
                     <v-card height="50" width="80%" color="#FFFFFF">
-                        <v-select v-model="estadoselect" :items="estado" label="¿Esta trabajando?"></v-select>
+                        <v-select v-model="estadoselect" :items="estado" label="Seleccionar"></v-select>
                     </v-card>
                 </v-col>
                 <h1>
@@ -58,6 +57,7 @@
                     <v-row justify="space-around">
                         <v-card height="200" width="50%">
                             <v-col>
+                                <v-col></v-col>
                                 <p>
                                     Alumno: {{ nombrecompleto }}
                                 </p>
@@ -68,7 +68,7 @@
                                     Profesor Guia: {{ nombreprofesor }}
                                 </p>
                                 <p>
-                                    Cursos pendientes {{ nocursados }}
+                                    Cursos pendientes: {{ cursos }}
                                 </p>
                             </v-col>
                         </v-card>
@@ -83,26 +83,32 @@
                             <div v-show="estadofoto">
                                 <v-col>
                                     <p> Verificación </p>
-                                    <v-img max-height="100" max-width="120" :src="this.imagenAlumno">
+                                    <v-img max-height="80" max-width="120" :src="this.imagenAlumno">
                                         <template v-slot:placeholder>
                                             <v-row class="fill-height ma-0" align="center" justify="center">
                                                 <v-progress-circular indeterminate color="white"></v-progress-circular>
                                             </v-row>
                                         </template>
                                     </v-img>
-                                    <v-btn @click="AgregarImagen(estadofoto)" color="#f5a42a">Actualizar Imagen </v-btn>
+                                    <v-col>
+
+                                    </v-col>
+                                    <v-btn @click="AgregarImagen(estadofoto)" color="#f5a42a">
+                                        Actualizar Imagen
+                                    </v-btn>
                                 </v-col>
                             </div>
                         </v-card>
                     </v-row>
                     <v-col>
                     </v-col>
-                    <v-btn color="#f5a42a"
-                        @click="enviardatos(nombrecompleto, nombretema, nombreprofesor, nocursados, estadoselect, estadofoto)">
-                        Enviar Solicitud
-                    </v-btn>
+
                 </v-card>
             </v-col>
+            <v-btn color="#f5a42a"
+                @click="enviardatos(nombrecompleto, nombretema, nombreprofesor, nocursados, estadoselect, estadofoto)">
+                Enviar Solicitud
+            </v-btn>
             <v-dialog v-model="drawerSolicitud" max-width="1000">
                 <v-stepper v-model="e1">
                     <v-stepper-header>
@@ -126,7 +132,7 @@
                                     <v-row justify="space-around">
                                         <v-card height="250" width="45%">
                                             <v-col></v-col>
-                                            <p class="mt-10">
+                                            <p class="ma-15">
                                                 Para continuar con la solicitud es necesario ingresar una foto (estilo
                                                 cédula de identidad)
                                             </p>
@@ -137,6 +143,12 @@
                                                 <p>Ejemplo de foto:</p>
                                                 <v-img max-height="150" max-width="250"
                                                     src="https://previews.123rf.com/images/xmarchant/xmarchant0612/xmarchant061200005/695441-retrato-hombre-frente-a-la-c%C3%A1mara.jpg">
+                                                    <template v-slot:placeholder>
+                                                        <v-row class="fill-height ma-0" align="center" justify="center">
+                                                            <v-progress-circular indeterminate color="white">
+                                                            </v-progress-circular>
+                                                        </v-row>
+                                                    </template>
                                                 </v-img>
                                             </v-col>
                                         </v-card>
@@ -158,7 +170,7 @@
                                     <v-row justify="space-around">
                                         <v-card height="250" width="45%">
                                             <v-col></v-col>
-                                            <p class="mt-10">
+                                            <p class="ma-10">
                                                 A continuación se tiene que subir su imagen en alguna plataforma de
                                                 almacenacimento de datos
                                                 (Google Drive, Mega, One drive) y luego subir el link de la imagen
@@ -166,12 +178,10 @@
                                         </v-card>
                                         <v-card height="250" width="45%">
                                             <v-col>
-                                                <p class="center">Subir imagen</p>
-                                                <v-text-field v-model="link" :rules="linkrules" label="Link Imagen"
-                                                    required></v-text-field>
-                                                <v-btn color="#f5a42a" @click="subirlink(link)">
-                                                    Guardar Imagen
-                                                </v-btn>
+                                                <p class="mt-5">Subir imagen</p>
+                                                <v-text-field :class="subirlink" v-model="link" :rules="linkrules"
+                                                    label="Link Imagen" required></v-text-field>
+
                                             </v-col>
                                         </v-card>
                                     </v-row>
@@ -188,13 +198,30 @@
                             <v-card height="300px" color="#F4F4F4">
                                 <div align="center">
                                     <v-col></v-col>
-                                    <v-col></v-col>
-                                    <v-col></v-col>
-                                    <v-col></v-col>
-                                    <p class="mt-5">Aceptado correctamente </p>
+                                    <v-row justify="space-around">
+                                        <v-card height="250" width="45%">
+                                            <v-col></v-col>
+                                            <p class="ma-15">
+                                                Se visualiza la imagen y para realizar los cambios seleccionar finalizar
+                                            </p>
+                                        </v-card>
+                                        <v-card height="250" width="45%">
+                                            <v-col>
+                                                <p class="mt-5">Visualizar imagen</p>
+                                                <v-img max-height="150" max-width="250" :src="this.link">
+                                                    <template v-slot:placeholder>
+                                                        <v-row class="fill-height ma-0" align="center" justify="center">
+                                                            <v-progress-circular indeterminate color="white">
+                                                            </v-progress-circular>
+                                                        </v-row>
+                                                    </template>
+                                                </v-img>
+                                            </v-col>
+                                        </v-card>
+                                    </v-row>
                                 </div>
                             </v-card>
-                            <v-btn color="#f5a42a" @click="cerrarint1()">
+                            <v-btn color="#f5a42a" @click="subirimagen()">
                                 Finalizar
                             </v-btn>
                         </v-stepper-content>
@@ -495,7 +522,7 @@ let Semestres = [
         nombre: "Semestre 10",
         ramos: [
             {
-                name: "Foemulación de Proyecto de Titulación",
+                name: "Formulación de Proyecto de Titulación",
                 selected: null
             },
             {
@@ -534,12 +561,12 @@ export default {
             ],
             drawerSolicitud: false,
             e1: 1,
-            estado: ['Trabaja', 'No trabaja'],
+            estado: ['Trabajando', 'Solo Estudiando'],
             estadofoto: false,
             link: null,
             linkrules: [
                 v => !!v || 'Link es obligatorio',
-                //v => (v && v.length <= 10) || 'Name must be less than 10 characters',
+                v => this.urlvalida || 'Link inválido'
             ],
             nombrecompleto: null,
             nombretema: null,
@@ -549,18 +576,39 @@ export default {
             imagenAlumno: null,
             urlvalida: null,
             errorMessages: '',
+            cursos: null
         };
     },
     created() {
         this.cargar_datos()
         this.listarsemestres();
     },
+    computed: {
+        subirlink(url) {
+            //console.log("Inicio: " + this.urlvalida)
+            if (this.link == "" || this.link == null) {
+                //console.log("pasa else1")
+                this.urlvalida = false
+            } else {
+                console.log("pasa if")
+                var validUrl = /^(ht|f)tps?:\/\/\w+([\.\-\w]+)?\.[a-z]{2,10}(:\d{2,5})?(\/.*)?$/i
+                if (validUrl.test(this.link)) {
+                    //console.log("pasa if2")
+                    this.urlvalida = true
+                } else {
+                    //console.log("pasa else2")
+                    this.urlvalida = false
+                }
+            }
+            //console.log("Fin: " + this.urlvalida)
+        }
+    },
     methods: {
-        enviarNotificacion(){
-            var notificacion={
-                notificacion:null,
-                visto:false,
-                id_ref:null
+        enviarNotificacion() {
+            var notificacion = {
+                notificacion: null,
+                visto: false,
+                id_ref: null
             }
             // Notificacion al alumno
             notificacion.id_ref=localStorage.getItem("key_user")
@@ -568,7 +616,7 @@ export default {
             this.axios.post("nuevo_notificacion",notificacion)
 
             // Notificacion al profesor
-            this.axios.get("todos_temas").then((resp)=>{
+            this.axios.get("todos_temas").then((resp) => {
                 const temas = resp.data
                 var tema_solicitar  = temas.find(t=> t._id == this.$store.state.id_tema_solicitar)
                 notificacion.id_ref= tema_solicitar.idCreador
@@ -627,7 +675,7 @@ export default {
                         b = false
                     }
                 }
-            }else {
+            } else {
                 b = false
             }
             if (!b) {
@@ -646,6 +694,18 @@ export default {
 
                 }
             }
+            if (this.nocursados.length == 0) {
+                this.cursos =""
+            }
+            if (this.nocursados.length == 1) {
+                this.cursos = this.nocursados[0]
+            }
+            if (this.nocursados.length == 2) {
+                this.cursos = this.nocursados[0] + "-" + this.nocursados[1]
+
+            } if (this.nocursados.length == 3) {
+                this.cursos = this.nocursados[0] + "-" + this.nocursados[1] + "..."
+            }
 
         },
         AgregarImagen() {
@@ -658,33 +718,10 @@ export default {
             this.urlvalida = null
 
         },
-        cerrarint1() {
-            this.drawerSolicitud = false;
-            this.estadofoto = true;
-            this.$store.state.img = this.imagenAlumno
-            this.e1 = 1
-            this.link = null
-            this.urlvalida = null
-            Swal.fire(
-                'Se ha cambiado la imagen',
-                'Se ha cambiado la imagen correctamente!',
-                'success'
-            )
-        },
-        subirlink(url) {
-            console.log("valor vaule: " + url)
-            //guardar value que es el link en la vase de datos
-            //si se guarda correctamente
-            var validUrl = /^(ht|f)tps?:\/\/\w+([\.\-\w]+)?\.[a-z]{2,10}(:\d{2,5})?(\/.*)?$/i
-            if (validUrl.test(url)) {
-                this.urlvalida = true
-            } else {
-                this.urlvalida = false
-            }
-            console.log("validaurl : " + this.urlvalida)
+        subirimagen() {
             if (this.urlvalida) {
-                this.imagenAlumno = url
-                console.log("valur " + this.imagenAlumno)
+                this.imagenAlumno = this.link
+                //console.log("valur " + this.imagenAlumno)
                 this.estadofoto = true;
                 this.axios.get("todos_usuarios").then((respU) => {
                     const usuarios = respU.data
@@ -692,10 +729,27 @@ export default {
                     alumno[0].img = this.imagenAlumno
                     this.axios.put(`usuario_ac/${alumno[0]._id}`, alumno[0])
                 })
+                this.drawerSolicitud = false;
+                this.estadofoto = true;
+                this.$store.state.img = this.imagenAlumno
+                this.e1 = 1
+                this.link = null
+                this.urlvalida = null
+                Swal.fire(
+                    'Se ha cambiado la imagen',
+                    'Se ha cambiado la imagen correctamente!',
+                    'success'
+                )
             } else {
-                //error 
-                //console.log("url invalida ingresa otra")
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Datos incorrectos...',
+                    text: 'Ingrese otro link!',
+                })
+
+
             }
+
         },
         enviardatos(nombre, nombreproyecto, nombreprofesor, cursospendientes, estadoselect, estadofoto) {
             if (nombre != null && nombreproyecto != null && nombreprofesor != null && cursospendientes.length != 0 && estadoselect != null && estadofoto != false) {
@@ -708,7 +762,7 @@ export default {
                         alumno[0].img = this.imagenAlumno
                         alumno[0].modulosfaltantes = cursospendientes
                         var trabaja = null
-                        if (this.estadoselect == "Trabaja") {
+                        if (this.estadoselect == "Trabajando") {
                             trabaja = true
                         } else {
                             trabaja = false
@@ -719,8 +773,8 @@ export default {
                             img: this.imagenAlumno,
                             modulosfaltantes: cursospendientes,
                             trabaja: trabaja,
-                            resultado_profesor_postulante:null,
-                            razon:null,
+                            resultado_profesor_postulante: null,
+                            razon: null,
                         })
                         this.$store.state.img = this.imagenAlumno
                         this.axios.put(`usuario_ac/${alumno[0]._id}`, alumno[0])
@@ -759,7 +813,7 @@ export default {
                     Swal.fire({
                         icon: 'error',
                         title: 'Datos incorrectos...',
-                        text: 'Es necesario ingresar los cursos pendientes para continnuar!',
+                        text: 'Es necesario ingresar los cursos pendientes para continuar!',
                     })
                 } else if (estadoselect == null) {
                     Swal.fire({
@@ -771,7 +825,7 @@ export default {
                     Swal.fire({
                         icon: 'error',
                         title: 'Datos incorrectos...',
-                        text: 'Es necesario ingresar la imagen para continnuar!',
+                        text: 'Es necesario ingresar la imagen para continuar!',
                     })
                 }
             }
@@ -783,32 +837,33 @@ export default {
 </script>
 
 <style>
+.one h1 {
+    text-align: center;
+    text-transform: uppercase;
+    padding-bottom: 5px;
+}
 
-.one h1 { 
-  text-align: center; 
-  text-transform: uppercase; 
-  padding-bottom: 5px; 
-} 
-.one h1:before { 
-  width: 28px; 
-  height: 5px; 
-  display: block; 
-  content: ""; 
-  position: absolute; 
-  bottom: 3px; 
-  left: 50%; 
-  margin-left: -14px; 
-  background-color: #f5a42a; 
-} 
-.one h1:after { 
-  width: 100px; 
-  height: 1px; 
-  display: block; 
-  content: ""; 
-  position: relative; 
-  margin-top: 25px; 
-  left: 50%; 
-  margin-left: -50px; 
-  background-color: #f5a42a; 
-} 
+.one h1:before {
+    width: 28px;
+    height: 5px;
+    display: block;
+    content: "";
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    margin-left: -14px;
+    background-color: #f5a42a;
+}
+
+.one h1:after {
+    width: 100px;
+    height: 1px;
+    display: block;
+    content: "";
+    position: relative;
+    margin-top: 25px;
+    left: 50%;
+    margin-left: -50px;
+    background-color: #f5a42a;
+}
 </style>
