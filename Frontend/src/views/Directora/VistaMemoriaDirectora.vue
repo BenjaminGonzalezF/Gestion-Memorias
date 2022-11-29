@@ -254,6 +254,12 @@ export default {
                     this.$store.state.loading = true
                     if (voto) {
                         this.solicitud_seleccionado = tema
+                        this.axios.get("todos_usuarios").then((respU)=>{
+                            const usuarios = respU.data
+                            var alumno = usuarios.find(u=> u._id == this.solicitud_seleccionado.alumnoid)
+                            alumno.esmemorista=true
+                            this.axios.put(`usuario_ac/${alumno._id}`, alumno)
+                        })
                     } else {
                         this.solicitud_seleccionado.razon = this.feedbacktext
                     }
@@ -261,8 +267,8 @@ export default {
                     this.axios.put(`solicitud_ac/${this.solicitud_seleccionado._id}`, this.solicitud_seleccionado)
                     this.$store.commit('cargar_datos')
                     Swal.fire(
-                        'Deleted!',
-                        'Your file has been deleted.',
+                        'Has votado!',
+                        'Votaste correctamente.',
                         'success'
                     )
                 }

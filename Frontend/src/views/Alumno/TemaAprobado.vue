@@ -28,16 +28,16 @@
                         <v-card height="200" width="50%">
                             <v-col>
                                 <p>
-                                    Alumno: {{ nombrecompleto }}
+                                    Alumno: {{ tema.nombrealumno }}
                                 </p>
                                 <p>
-                                    Tema: {{ nombretema }}
+                                    Tema: {{ tema.nombretema }}
                                 </p>
                                 <p>
-                                    Profesor Guia: {{ nombreprofesor }}
+                                    Profesor Guia: {{ tema.profeguia }}
                                 </p>
                                 <p>
-                                    Detalles Del Tema: {{ descripcion }}
+                                    Detalles Del Tema: {{ tema.descripciontema }}
                                 </p>
                             </v-col>
                         </v-card>
@@ -68,11 +68,12 @@
                                         <v-card height="250" width="45%">
                                             <v-col></v-col>
                                             <p class="mt-10">
-                                                Para continuar con la solicitud es necesario que descargue el archivo PDF
+                                                Para continuar con la solicitud es necesario que descargue el archivo
+                                                PDF
                                             </p>
                                         </v-card>
                                         <v-card height="250" width="45%" color="#00CCFF">
-                                            <div class ="botonPDF">
+                                            <div class="botonPDF">
                                                 <v-btn color="#f5a42a" v-on:click="createPDF()">PDF<v-img
                                                         max-height="20" max-width="20" height="5%" width="auto"
                                                         src="@/assets/download.png">
@@ -106,7 +107,7 @@
                                         <v-card height="250" width="45%">
                                             <v-col>
                                                 <p class="center">Subir Archivo PDF</p>
-                                                <v-text-field v-model="link" :rules="linkrules" label="Link Imagen"
+                                                <v-text-field v-model="link" label="Link Imagen"
                                                     required></v-text-field>
                                                 <v-btn color="#f5a42a" @click="subirlink(link)">
                                                     Enviar link
@@ -156,9 +157,16 @@ export default {
     data() {
         return {
             idTema: "",
-            tema: {},
+            tema: {
+                nombrealumno:null,
+                nombretema:null,
+                profeguia:null,
+                descripciontema:null,
+            },
             participantes: [],
             drawerSolicitud: null,
+            e1:1,
+            link:null,
         }
     },
     created() {
@@ -167,14 +175,23 @@ export default {
     },
     methods: {
         obtenerTema(temaId) {
-            this.axios.get('tema/' + temaId).then((response) => {
-                this.tema = response.data;
-                this.tema.postulantes.forEach(element => {
-                    console.log(element);
-                    this.participantes.push(element.nombre);
-                });
-
-            });
+            this.axios.get("todos_solicitudes").then((respS) => {
+                const solicitudes = respS.data
+                var solicitud_aprobada = solicitudes.find(s=> s.alumnoid==localStorage.getItem("key_user") && s.estado==true)
+                this.axios.get("todos_usuarios").then((respU)=>{
+                    this.axios.get("todos_temas").then((respT)=>{
+                        const usuarios = respU.data
+                        const temas = respT.data
+                        var alumno_memorista = usuarios.find(u=> u._id == solicitud_aprobada.alumnoid)
+                        var profeguia = usuarios.find(u=> u._id == solicitud_aprobada.profeguiaid)
+                        var tema_alumno = temas.find(t=> t._id == solicitud_aprobada.temaid)
+                        this.tema.nombrealumno = alumno_memorista.nombre
+                        this.tema.nombretema = tema_alumno.nombre
+                        this.tema.profeguia = profeguia.nombre
+                        this.tema.descripciontema=tema_alumno.descripcion
+                    })
+                })
+            })
         },
         createPDF() {
             var pdf = new jsPDF('p', 'mm', 'letter');

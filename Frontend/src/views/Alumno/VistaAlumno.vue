@@ -69,9 +69,7 @@
         <MisSolicitudes v-if="this.$store.state.vistaSeleccionada == 4"></MisSolicitudes>
       </div>
       <div v-if="this.$store.state.esmemorista">
-        <MisTemas v-if="this.$store.state.vistaSeleccionada == 1"></MisTemas>
-        <MisSolicitudes v-if="this.$store.state.vistaSeleccionada == 2"></MisSolicitudes>
-        <AprobadoTema v-if="this.$store.state.vistaSeleccionada == 3"></AprobadoTema>
+        <AprobadoTema v-if="this.$store.state.vistaSeleccionada == 1"></AprobadoTema>
       </div>
     </v-container>
   </v-app>
@@ -98,8 +96,6 @@ export default {
         { title: "Cerrar sesion", icon: "mdi-exit-to-app" },
       ],
       memorista: [
-        { title: "Mis Temas", icon: "mdi-folder" },
-        { title: "Mis Solicitudes", icon: "mdi-folder" },
         { title: "Comprobante certificado", icon: "mdi-folder" },
         { title: "Cerrar sesion", icon: "mdi-exit-to-app" },
       ],
@@ -111,6 +107,7 @@ export default {
     console.log("Login eliminado");
   },
   beforeCreate() {
+    this.$store.state.vistaSeleccionada = 1
     this.$store.state.loading = true
     this.$store.commit('cargar_datos')
   },
@@ -133,12 +130,8 @@ export default {
             this.$store.state.img = null
             this.$router.push({ path: "/" })
           }
-        } else if (ref == "Mis Temas") {
-          this.$store.state.vistaSeleccionada = 1
-        } else if (ref == "Mis Solicitudes") {
-          this.$store.state.vistaSeleccionada = 2
         } else if (ref == "Comprobante certificado") {
-          this.$store.state.vistaSeleccionada = 3
+          this.$store.state.vistaSeleccionada = 1
         }
       } else {
         if (ref == "Cerrar sesion") {

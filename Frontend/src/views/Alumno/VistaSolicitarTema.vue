@@ -562,7 +562,7 @@ export default {
             }
             // Notificacion al alumno
             notificacion.id_ref=localStorage.getItem("key_user")
-            notificacion.notificacion="Has creado el tema "+this.nombre_temacrear
+            notificacion.notificacion="Has creado el tema "+this.nombretema
             this.axios.post("nuevo_notificacion",notificacion)
 
             // Notificacion al profesor
@@ -570,7 +570,7 @@ export default {
                 const temas = resp.data
                 var tema_solicitar  = temas.find(t=> t._id == this.$store.state.id_tema_solicitar)
                 notificacion.id_ref= tema_solicitar.idCreador
-                notificacion.notificacion="El usuario "+this.$store.state.nombre+" ha creado el tema "+this.nombre_temacrear
+                notificacion.notificacion="El usuario "+this.$store.state.nombre+" ha creado el tema "+this.nombretema
                 this.axios.post("nuevo_notificacion",notificacion)
             })
         },

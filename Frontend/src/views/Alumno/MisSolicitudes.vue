@@ -30,7 +30,7 @@
                     </v-progress-circular>
                     <div v-for="(project, index) in missolicitudestemas" :key="index">
                         <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2"
-                            v-if="project.resultado_comite == true && project.resultado_directora == true && project.colaborador == null">
+                            v-if="project.resultado_comite == true && project.resultado_directora == true && (project.colaborador == null || project.colaborador == id_user)">
                             <v-layout row wrap :class="`pa-3 project ${project.status}`">
                                 <v-flex xs8 md3>
                                     <div class="caption grey--text">Titulo proyecto</div>
@@ -137,6 +137,7 @@ export default {
                     prop: "fecha",
                 },
             ],
+            id_user:null,
 
         };
     },
@@ -149,6 +150,7 @@ export default {
     },
     methods: {
         cargar_missolicitudestemas() {
+            this.id_user=localStorage.getItem("key_user")
             this.axios.get("todos_temas")
                 .then((respT) => {
                     var MisSolicitudes = []
