@@ -86,36 +86,36 @@
                                     </v-layout>
                                 </v-card>
                             </div>
-                            <v-dialog v-model="drawerSolicitud" max-width="400">
-                                <v-card max-width="400">
+                            <v-dialog v-model="drawerSolicitud" max-width=50%>
+                                <v-card max-width=100%>
                                     <v-container class="grey lighten-5" >
                                         <v-row >
                                             <v-col >
-                                                <v-card max-height="400">
+                                                <v-card max-height=100%>
                                                     <v-card-title>
-                                                        <span class="text-h5">Datos proyecto</span>
+                                                        <span class="text-h3">Datos proyecto</span>
                                                     </v-card-title>
                                                     <v-card-text>
                                                         <v-container>
                                                             <v-flex>
-                                                                <div class="caption black--text">Titulo proyecto:</div>
-                                                                <div>{{ tituloProyecto }}</div>
+                                                                <div class="caption black--text"><h2>Titulo proyecto:</h2></div>
+                                                                <div> <h4> {{ tituloProyecto }}</h4></div>
                                                             </v-flex>
                                                             <v-flex>
-                                                                <div class="caption black--text">Descripcion general
-                                                                    proyecto:
+                                                                <div class="caption black--text"><h2> Descripcion general
+                                                                    proyecto:</h2>
                                                                 </div>
-                                                                <div>{{ descripcionProyecto }}</div>
+                                                                <div> <h4> {{ descripcionProyecto }}</h4> </div>
                                                             </v-flex>
                                                             <v-flex>
-                                                                <div class="caption black--text">Requisitos:</div>
+                                                                <div class="caption black--text"><h2>Requisitos:</h2></div>
                                                                 <div v-for="(requisito, index) in requisitos" :key="index">
-                                                                <li> {{requisito}} </li>
+                                                                 <h4> <li> {{requisito}} </li> </h4> 
                                                                 </div>
                                                             </v-flex>
                                                             <v-flex>
-                                                                <div class="caption black--text">Estudiante:</div>
-                                                                <div>{{ estudiante }}</div>
+                                                                <div class="caption black--text"><h2>Estudiante:</h2></div>
+                                                                <div> <h4> {{ estudiante }}</h4></div>
                                                             </v-flex>
                                                         </v-container>
                                                     </v-card-text>
