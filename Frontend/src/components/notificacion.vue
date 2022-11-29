@@ -25,6 +25,7 @@ export default {
     }),
     created() {
         this.cargar_notificaciones()
+        
     },
     methods: {
         ordenarNotificaciones() {
