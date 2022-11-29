@@ -33,7 +33,6 @@
         <v-card height="500" width="100%" outlined class="overflow-y-auto">
             <v-container class="my-3">
                 <v-container class="my-3">
-
                     <v-progress-circular :size="50" color="primary" indeterminate
                         style="position: absolute;top:20%;left: 50%;" v-if="cargando_temas == true">
                     </v-progress-circular>
@@ -129,17 +128,17 @@
                                     <span slot="opposite">Rechazado</span>
                                 </v-timeline-item>
                                 <v-timeline-item icon="mdi-clock" color="#bdbdbd"
-                                    v-if="solicitud_seleccionada.resultado_profesor_postulante == null">
+                                    v-if="solicitud_seleccionada.resultado_profesor == null">
                                     <span slot="opposite">Profesor </span>
                                     <span slot="opposite">Pendiente</span>
                                 </v-timeline-item>
                                 <v-timeline-item icon="mdi-checkbox-marked-circle" color="green"
-                                    v-if="solicitud_seleccionada.resultado_profesor_postulante == true">
+                                    v-if="solicitud_seleccionada.resultado_profesor == true">
                                     <span slot="opposite">Profesor </span>
                                     <span slot="opposite">Aceptado</span>
                                 </v-timeline-item>
                                 <v-timeline-item icon="mdi-cancel" color="red"
-                                    v-if="solicitud_seleccionada.resultado_profesor_postulante == false">
+                                    v-if="solicitud_seleccionada.resultado_profesor == false">
                                     <span slot="opposite">Profesor </span>
                                     <span slot="opposite">Rechazado</span>
                                 </v-timeline-item>
@@ -267,14 +266,6 @@ export default {
                         }
                         this.temas = respT.data
                         this.temas = this.temas.filter(T => T.idCreador == localStorage.getItem("key_user"))
-                        for(var i=0; i<this.temas.length;i++){
-                            for(var j=0; j<this.temas[i].postulantes.length;j++){
-                                if(this.temas[i].postulantes[j].id==localStorage.getItem("key_user")){
-                                    this.temas[i].resultado_profesor_postulante=this.temas[i].postulantes[j].resultado_profesor_postulante
-                                    this.temas[i].razon_profesor=this.temas[i].postulantes[j].razon
-                                }
-                            }
-                        }
                         this.cargando_temas = false
                     })
                 })
