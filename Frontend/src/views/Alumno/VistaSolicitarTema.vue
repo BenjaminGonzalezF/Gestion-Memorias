@@ -1,5 +1,6 @@
 <template>
     <v-app>
+        
         <div class="one"> 
             <h1>Alumnos: Solicirtudes de memoria</h1> 
             </div>
@@ -201,6 +202,7 @@
                 </v-stepper>
             </v-dialog>
         </div>
+    
     </v-app>
 </template>
 

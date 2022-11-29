@@ -1,10 +1,10 @@
 <template>
     <div class="Solicitudes">
-        <div class="one">
-            <h1>Docente: Mis Solicitudes</h1>
+        <div class="one"> 
+            <h1>Docente: Mis Solicitudes</h1> 
             <notificacion></notificacion>
-        </div>
-        <v-layout row class="mx-1">
+            </div>
+        <v-layout row class="mx-6">
             <v-spacer></v-spacer>
             <v-menu offset-y>
                 <template v-slot:activator="{ on, attrs }">

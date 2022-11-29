@@ -27,7 +27,7 @@
 
                     <v-menu offset-y>
                         <template v-slot:activator="{}">
-                            <v-btn color="pink" class="mb-5 white--text" @click="mostrarDialogo()">
+                            <v-btn color="#f5a42a" class="mb-5 white--text" @click="mostrarDialogo()">
                                 Agregar Usuarios
                             </v-btn>
                         </template>

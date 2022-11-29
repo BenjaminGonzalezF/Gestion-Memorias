@@ -5,7 +5,7 @@
             <h1>Alumnos: Temas Ofrecidos</h1> 
             <notificacion></notificacion>
             </div>
-            <v-layout row class="mx-1">
+            <v-layout row class="mx-6">
                 <v-spacer></v-spacer>
                 <v-menu offset-y>
                     <template v-slot:activator="{ on, attrs }">

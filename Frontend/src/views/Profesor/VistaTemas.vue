@@ -4,8 +4,8 @@
             <h1>Docente: Mis Temas</h1> 
             <notificacion></notificacion>
             </div>
-        <v-layout row class="mx-1">
-            <v-btn depressed color="#f5a42a" dark small
+        <v-layout row class="mx-6">
+            <v-btn  depressed color="#f5a42a" dark small 
                 @click="agregar_temas(false, nombre_temacrear1, descripcion_temacrear1)">
                 Agregar tema
                 <v-icon right small>mdi-note-plus</v-icon>
@@ -55,7 +55,7 @@
                                     </v-flex>
                                     <v-flex xs2 sm1 md2>
                                         <div class="caption grey--text">Estado</div>
-                                        <v-btn @click="verEstado(project)">ver estado</v-btn>
+                                        <v-btn @click="verEstado(project)">Ver Estado</v-btn>
                                     </v-flex>
                                 </v-layout>
                             </v-card>
