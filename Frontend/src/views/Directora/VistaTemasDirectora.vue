@@ -259,6 +259,7 @@ export default {
                 if (result.isConfirmed) {
                     this.$store.state.loading = true
                     tema.resultado_directora = voto
+                    tema.fechacambio=new Date().toLocaleDateString()
                     this.enviarNotificacion(tema,voto)
                     this.axios.put(`tema_ac/${tema._id}`, tema).then((resp) => {
                     })
