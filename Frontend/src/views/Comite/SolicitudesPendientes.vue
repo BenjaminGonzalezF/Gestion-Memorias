@@ -358,7 +358,7 @@ export default {
                     } else {
                         this.enviarNotificacion(false, null, tema_voto[0].nombre)
                     }
-                    tema_voto[0].fechacambio = Date.now()
+                    tema_voto[0].fechacambio = new Date().toLocaleDateString()
                     this.axios.put(`/tema_ac/${id}`, tema_voto[0])
                         .then((response) => {
                             const index = this.temas.findIndex(v => v._id == tema_voto[0]._id);
