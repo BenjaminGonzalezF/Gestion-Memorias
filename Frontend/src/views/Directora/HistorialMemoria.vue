@@ -5,15 +5,13 @@
             <notificacion></notificacion>
             </div>
         <v-layout row class="mx-6">
+            <v-col cols="12" sm="6" md="4">
+                <v-autocomplete max-width="400" rounded solo-inverted v-model="buscar" :items="solicitudes" @change="busqueda()"
+                    color="white" item-text="nombre" item-title="nombre" label="Buscar proyectos"
+                    placeholder="Escribe para buscar" prepend-icon="mdi-database-search">
+                </v-autocomplete>
+            </v-col>
             <v-spacer></v-spacer>
-            <v-btn-toggle v-model="toggle" dense class="mr-2" style="max-height: 20px !important">
-                <v-btn small color="#f5a42a" :disabled="toggle === 0">
-                    <v-icon class="white--text">mdi-view-agenda</v-icon>
-                </v-btn>
-                <v-btn small color="#f5a42a" :disabled="toggle === 1">
-                    <v-icon class="white--text">mdi-view-grid</v-icon>
-                </v-btn>
-            </v-btn-toggle>
             <v-menu offset-y>
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn depressed color="#f5a42a" class="mb-5" dark small v-bind="attrs" v-on="on">
@@ -130,6 +128,9 @@ export default {
             fecha: null,
             feedbacktext: null,
             cargando_solicitudes: true,
+            buscar:null,
+            temasBuscar:null,
+            temasRespaldo:null,
             solicitud_seleccionado: null,
             solicitudes: [],
             solicitudes_realizadas: 0,
@@ -186,7 +187,8 @@ export default {
                                 })
                                 this.solicitudes_realizadas++
                             }
-                        }
+                        }                
+                        this.temasRespaldo = this.solicitudes        
                         this.cargando_solicitudes = false
                     })
                 }).catch((e) => {
@@ -245,6 +247,17 @@ export default {
                 }
                 localStorage.clear()
             }
+        },
+        busqueda(){            
+            if(this.buscar !== null){
+                var buscarMinuscula = this.buscar.toLowerCase()
+                this.temasBuscar = this.temasRespaldo.filter(temas => temas.nombre.toLowerCase().indexOf(buscarMinuscula) !== -1)
+                this.solicitudes=this.temasBuscar
+            }else{
+                this.solicitudes = this.temasRespaldo
+
+            }
+            
         }
     }
 

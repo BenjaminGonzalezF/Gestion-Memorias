@@ -6,7 +6,7 @@
         </div>
         <v-layout row class="mx-1">
             <v-col cols="12" sm="6" md="4">
-                <v-autocomplete max-width="400" rounded solo-inverted v-model="buscar" :items="temasHistorial"
+                <v-autocomplete max-width="400" rounded solo-inverted v-model="buscar" :items="temasHistorial" @change="busqueda()"
                     color="white" item-text="nombre" item-title="nombre" label="Buscar proyectos"
                     placeholder="Escribe para buscar" prepend-icon="mdi-database-search">
                 </v-autocomplete>
@@ -30,7 +30,7 @@
                     </v-progress-circular>
                     <div v-else>
                         <v-container class="my-3">
-                            <div v-for="project in temas" :key="project._id">
+                            <div v-for="project in temasHistorial" :key="project._id">
                                 <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2"
                                     v-if="project.resultado_comite != null">
                                     <v-layout row wrap :class="`pa- project ${project.estadovalido}`">
@@ -168,6 +168,8 @@ export default {
             fecha: null,
             toggle: null,
             temas: [],
+            temasRespaldo: null,
+            temasBuscar: null,
             temasHistorial: [],
             cargando_temas: true,
             itemsOrdenar: [
@@ -208,6 +210,7 @@ export default {
                                 this.temasHistorial.push(this.temas[i])
                             }
                         }
+                        this.temasRespaldo = this.temasHistorial
                         this.cargando_temas = false
                     })
                 })
@@ -373,6 +376,19 @@ export default {
             else if (status == 'en progreso') return 'En progreso'
             else if (status == 'atrasado') return 'Atrasado'
         },
+        busqueda(){            
+            console.log(this.buscar)
+            if(this.buscar !== null){
+                var buscarMinuscula = this.buscar.toLowerCase()
+                this.temasBuscar = this.temasRespaldo.filter(temas => temas.nombre.toLowerCase().indexOf(buscarMinuscula) !== -1)
+                this.temasHistorial=this.temasBuscar
+            }else{
+                console.log("akjdsakldask")
+                this.temasHistorial = this.temasRespaldo
+
+            }
+            
+        }
     }
 }
 </script>
