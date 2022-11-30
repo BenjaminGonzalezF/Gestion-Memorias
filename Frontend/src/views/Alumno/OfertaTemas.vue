@@ -1,11 +1,11 @@
 <template>
     <v-app>
         <div class="Oferta de temas">
-            <div class="one"> 
-            <h1>Alumnos: Temas Ofrecidos</h1> 
-            <notificacion></notificacion>
+            <div class="one">
+                <h1>Alumnos: Temas Ofrecidos</h1>
+                <notificacion></notificacion>
             </div>
-            <v-layout row class="mx-1">
+            <v-layout row class="mx-6">
                 <v-spacer></v-spacer>
                 <v-menu offset-y>
                     <template v-slot:activator="{ on, attrs }">
@@ -30,7 +30,7 @@
                     </v-progress-circular>
                     <div v-for="project in temas" :key="project._id">
                         <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2" height="60%" width="100%"
-                        v-if="project.resultado_comite == true && project.resultado_directora == true && project.colaborador == null && project.resultado_profesor == null">
+                            v-if="project.resultado_comite == true && project.resultado_directora == true && project.colaborador == null && project.resultado_profesor == null">
                             <v-layout row wrap :class="`pa-3 project ${project.status}`">
                                 <v-flex xs8 md3>
                                     <div class="caption grey--text">Titulo proyecto</div>
@@ -88,8 +88,8 @@
                     </v-dialog>
                     <v-dialog v-model="drawerContrasena" max-width="500" persistent>
                         <v-card>
-                            <v-card-title>
-                                <span class="text-h5">Cambio Contraseña</span>
+                            <v-card-title class="mx-16">
+                                <p>Cambio de Contraseña</p>
                             </v-card-title>
                             <v-card-text>
                                 <v-col>
@@ -101,15 +101,14 @@
                                         :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                                         :type="show1 ? 'text' : 'password'">
                                     </v-text-field>
-                                    <v-row>
-                                        <v-spacer></v-spacer>
-                                        <v-btn color="teal lighten-2" :class="vBtn" class="white--text"
-                                            :disabled="vBtnIngreso"
-                                            @click="cambiarContraseña(verificarContraseña, verificarContraseñaNuevamente)">
-                                            Guardar Cambios</v-btn>
-                                        <v-spacer></v-spacer>
-                                    </v-row>
                                 </v-col>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="#f5a42a" :class="vBtn" class="white--text" :disabled="vBtnIngreso"
+                                        @click="cambiarContraseña(verificarContraseña, verificarContraseñaNuevamente)">
+                                        Guardar Cambios</v-btn>
+                                    <v-spacer></v-spacer>
+                                </v-card-actions>
                             </v-card-text>
                         </v-card>
                     </v-dialog>
@@ -181,21 +180,13 @@ export default {
         vBtn() {
             if (this.verificarContraseña == "" || this.verificarContraseñaNuevamente == "" || this.verificarContraseña == null || this.verificarContraseñaNuevamente == null
                 || this.verificarContraseña.length < 8 || this.verificarContraseñaNuevamente.length < 8) {
-                //console.log("1 " + this.verificarContraseña)
-                //console.log("1 " + this.verificarContraseñaNuevamente)
-                //console.log("1 " + this.verificarContraseña.length)
-                //console.log("1 " + this.verificarContraseñaNuevamente.length)
                 this.vBtnIngreso = true
             } else {
-                //console.log("2 " + this.verificarContraseña)
-                //console.log("2 " + this.verificarContraseñaNuevamente)
-                //console.log("2 " + this.verificarContraseña.length)
-                //console.log("2 " + this.verificarContraseñaNuevamente.length)
                 this.vBtnIngreso = false
             }
         }
     },
-    components: { Swal,notificacion },
+    components: { Swal, notificacion },
     methods: {
         cargar_temas() {
             this.axios.get("todos_temas")
@@ -248,11 +239,9 @@ export default {
                 const usuario = RespU.data
                 var user = usuario.find(u => u._id == localStorage.getItem("key_user"))
                 //console.log(user.contrasena)
-                if (user.contrasena == "12345678") {
-                    //console.log("si es nuevo")
+                if (user.contrasena == "12345") {
                     this.drawerContrasena = true;
                 } else {
-                    //console.log("no es nuevo")
                     this.drawerContrasena = false;
                 }
             })
@@ -292,31 +281,33 @@ export default {
     background: #f5a42a;
 }
 
-.one h1 { 
-  text-align: center; 
-  text-transform: uppercase; 
-  padding-bottom: 5px; 
-} 
-.one h1:before { 
-  width: 28px; 
-  height: 5px; 
-  display: block; 
-  content: ""; 
-  position: absolute; 
-  bottom: 3px; 
-  left: 50%; 
-  margin-left: -14px; 
-  background-color: #f5a42a; 
-} 
-.one h1:after { 
-  width: 100px; 
-  height: 1px; 
-  display: block; 
-  content: ""; 
-  position: relative; 
-  margin-top: 25px; 
-  left: 50%; 
-  margin-left: -50px; 
-  background-color: #f5a42a; 
-} 
+.one h1 {
+    text-align: center;
+    text-transform: uppercase;
+    padding-bottom: 5px;
+}
+
+.one h1:before {
+    width: 28px;
+    height: 5px;
+    display: block;
+    content: "";
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    margin-left: -14px;
+    background-color: #f5a42a;
+}
+
+.one h1:after {
+    width: 100px;
+    height: 1px;
+    display: block;
+    content: "";
+    position: relative;
+    margin-top: 25px;
+    left: 50%;
+    margin-left: -50px;
+    background-color: #f5a42a;
+}
 </style>

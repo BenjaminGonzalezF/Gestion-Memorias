@@ -36,6 +36,7 @@ export default new Vuex.Store({
     cargar_datos() {
       var usuario_id = null
       var usuario_sesion = null
+      this.state.vistaSeleccionada=1
       usuario_id = localStorage.getItem("key_user")
       if (usuario_id !== null) {
         axios.get(`/usuario/${usuario_id}`)

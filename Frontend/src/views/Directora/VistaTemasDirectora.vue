@@ -1,10 +1,10 @@
 <template>
     <div class="Solicitudes">
-        <div class="one">
-            <h1>Direccion de Escuela: Temas de Memorias</h1>
+        <div class="one"> 
+            <h1>Direccion de Escuela: Temas de Memorias</h1> 
             <notificacion></notificacion>
-        </div>
-        <v-layout row class="mx-1">
+            </div>
+        <v-layout row class="mx-6">
             <v-spacer></v-spacer>
             <v-btn-toggle v-model="toggle" dense class="mr-2" style="max-height: 20px !important">
 
@@ -85,6 +85,33 @@
                             </div>
                         </v-container>
                     </div>
+                    <v-dialog v-model="drawerContrasena" max-width="500" persistent>
+                        <v-card>
+                            <v-card-title class="mx-16">
+                                <p>Cambio de Contraseña</p>
+                            </v-card-title>
+                            <v-card-text>
+                                <v-col>
+                                    <v-text-field v-model="verificarContraseña" class="ml-12 mr-12"
+                                        label="Nueva Contraseña" :rules="ContraRules" required>>
+                                    </v-text-field>
+                                    <v-text-field v-model="verificarContraseñaNuevamente" class="ml-12 mr-12"
+                                        label="Verificacion Contraseña" :rules="ContraRules" required
+                                        :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                                        :type="show1 ? 'text' : 'password'">
+                                    </v-text-field>
+                                </v-col>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="#f5a42a" :class="vBtn" class="white--text" :disabled="vBtnIngreso"
+                                        @click="cambiarContraseña(verificarContraseña, verificarContraseñaNuevamente)">
+                                        Guardar Cambios</v-btn>
+                                    <v-spacer></v-spacer>
+                                </v-card-actions>
+
+                            </v-card-text>
+                        </v-card>
+                    </v-dialog>
                     <div class="text-center" v-if="cargando_tema == false && temas_pendientes == 0">
                         <h1> No tienes Solicitudes pendientes</h1>
                         <v-avatar size="150">
@@ -132,6 +159,21 @@ export default {
                     prop: 'fecha',
                 },
             ],
+            items: [
+                { title: "Mis solicitudes", icon: "mdi-folder" },
+                { title: "Estudiantes", icon: "mdi-account-multiple" },
+                { title: "Cerrar sesion", icon: "mdi-forum" },
+            ],
+            ContraRules: [
+                v => !!v || 'Este campo no puede quedar vacio',
+                v => v.length >= 8 || 'Minimo 8 caracteres',
+            ],
+            drawerContrasena: false,
+            verificarContraseña: "",
+            verificarContraseñaNuevamente: "",
+            vBtnIngreso: true,
+            errorMessages: '',
+            show1: false,
         };
     },
     components: {
@@ -141,6 +183,17 @@ export default {
     },
     created() {
         this.cargar_temas()
+        this.verificar_inicio()
+    },
+    computed: {
+        vBtn() {
+            if (this.verificarContraseña == "" || this.verificarContraseñaNuevamente == "" || this.verificarContraseña == null || this.verificarContraseñaNuevamente == null
+                || this.verificarContraseña.length < 8 || this.verificarContraseñaNuevamente.length < 8) {
+                this.vBtnIngreso = true
+            } else {
+                this.vBtnIngreso = false
+            }
+        }
     },
     methods: {
         enviarNotificacion(tema_votado, voto) {
@@ -197,13 +250,14 @@ export default {
         },
         votar_solicitud(voto, tema) {
             Swal.fire({
-                title: 'Estas seguro?',
-                text: "No se podran revertir los cambios!",
+                title: '¿Estas seguro?',
+                text: "¡No se podran revertir los cambios!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Confirmar',
+                cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
                     this.$store.state.loading = true
@@ -255,6 +309,45 @@ export default {
                     this.$router.push({ path: "/" })
                 }
                 localStorage.clear()
+            }
+        },
+        verificar_inicio() {
+            this.axios.get("todos_usuarios").then((RespU) => {
+                const usuario = RespU.data
+                var user = usuario.find(u => u._id == localStorage.getItem("key_user"))
+                //console.log(user.contrasena)
+                if (user.contrasena == "12345") {
+                    //console.log("nuevo")
+                    this.drawerContrasena = true;
+                } else {
+                    this.drawerContrasena = false;
+                    //console.log("viejo")
+                }
+            })
+
+        },
+        cambiarContraseña(contraseña, contraseñaVerificar) {
+            if (contraseña == contraseñaVerificar) {
+                this.$store.state.loading = true
+                this.axios.get("todos_usuarios").then((respU) => {
+                    const usuarios = respU.data
+                    var alumno = usuarios.filter(u => u._id == localStorage.getItem("key_user"))
+                    alumno[0].contrasena = contraseña
+                    this.axios.put(`usuario_ac/${alumno[0]._id}`, alumno[0])
+                    this.drawerContrasena = false;
+                })
+                this.$store.commit('cargar_datos')
+                Swal.fire(
+                    'Se ha cambiado la contraseña',
+                    'Se ha cambiado la contraseña correctamente!',
+                    'success'
+                )
+            } else {
+                Swal.fire(
+                    'Verifique las contraseñas',
+                    'Las contraseñas no son iguales!',
+                    'error'
+                )
             }
         }
     }

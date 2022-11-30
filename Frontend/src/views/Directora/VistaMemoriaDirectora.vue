@@ -1,10 +1,10 @@
 <template>
     <div class="Solicitudes">
-        <div class="one"> 
+            <div class="one"> 
             <h1>Direccion de Escuela: Solicitudes de Memorias</h1> 
             <notificacion></notificacion>
             </div>
-        <v-layout row class="mx-1">
+            <v-layout row class="mx-6">
             <v-spacer></v-spacer>
             <v-btn-toggle v-model="toggle" dense class="mr-2" style="max-height: 20px !important">
             </v-btn-toggle>
@@ -231,13 +231,16 @@ export default {
         },
         votar_solicitud(voto, tema) {
             Swal.fire({
-                title: 'Estas seguro?',
-                text: "Los cambios no se podran revertir!",
+                title: '¿Estas seguro?',
+                text: "¡Los cambios no se podran revertir!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Aceptar',
+                cancelButtonText: 'Cancelar'
+
+
             }).then((result) => {
                 if (result.isConfirmed) {
                     this.$store.state.loading = true
@@ -256,8 +259,8 @@ export default {
                     this.axios.put(`solicitud_ac/${this.solicitud_seleccionado._id}`, this.solicitud_seleccionado)
                     this.$store.commit('cargar_datos')
                     Swal.fire(
-                        'Has votado!',
-                        'Votaste correctamente.',
+                        'Solicitud aceptada',
+                        'Has aceptado la solicitud correctamente.',
                         'success'
                     )
                 }
