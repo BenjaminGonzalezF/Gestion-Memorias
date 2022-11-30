@@ -306,7 +306,8 @@ export default {
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Si, confirmar!'
+                confirmButtonText: 'Confirmar',
+                cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
                     this.$store.state.loading = true

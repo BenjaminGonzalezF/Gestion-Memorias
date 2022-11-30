@@ -362,13 +362,15 @@ export default {
         },
         votar_tema(voto) {
             Swal.fire({
-                title: 'Estas seguro?',
-                text: "Esta decision no se podra revertir!",
+                title: '¿Estas seguro?',
+                text: "¡Esta decision no se podra revertir!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Confirmar',
+                cancelButtonText: 'Cancelar'
+
             }).then((result) => {
                 if (result.isConfirmed) {
                     if (voto) {
@@ -421,8 +423,8 @@ export default {
                         })
                     }
                     Swal.fire(
-                        'Voto realizado!',
-                        'Has votado correctamente.',
+                        'Solicitud aceptada',
+                        'Has aceptado la solicitud correctamente.',
                         'success'
                     )
                 }

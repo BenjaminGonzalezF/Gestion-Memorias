@@ -255,13 +255,14 @@ export default {
         },
         votar_solicitud(voto, tema) {
             Swal.fire({
-                title: 'Estas seguro?',
-                text: "No se podran revertir los cambios!",
+                title: '¿Estas seguro?',
+                text: "¡No se podran revertir los cambios!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Confirmar',
+                cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
                     this.$store.state.loading = true
