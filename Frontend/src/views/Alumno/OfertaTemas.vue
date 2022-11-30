@@ -150,14 +150,14 @@ export default {
             temas: [],
             oferta_temas: 0,
             itemsOrdenar: [
-                { title: "Por titulo", prop: "title" },
+                { title: "Por titulo", prop: 'nombre' },
                 {
-                    title: "Por profesor",
-                    prop: "profesor",
+                    title: "Por descripcion",
+                    prop: 'descripcion',
                 },
                 {
-                    title: "Por fecha",
-                    prop: "fecha",
+                    title: "Por creador",
+                    prop: 'nombrecreadir',
                 },
             ],
             drawerContrasena: false,
@@ -220,6 +220,9 @@ export default {
         verSolicitud(tema) {
             this.drawerSolicitud = true;
             this.tema_seleccionado = tema
+        },
+        sortBy(prop) {
+            this.temas.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
         },
         enviarSolicitud(id) {
             var estado = false

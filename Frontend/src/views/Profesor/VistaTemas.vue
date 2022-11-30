@@ -157,7 +157,7 @@
                                 </v-timeline-item>
                                 <v-timeline-item icon="mdi-checkbox-marked-circle" color="green"
                                     v-if="solicitud_seleccionada.resultado_comite == true">
-                                    <span slot="opposite">Aceptado</span>
+                                    <span slot="opposite">Aceptado </span>
                                     <span slot="opposite">Comite </span>
                                 </v-timeline-item>
                                 <v-timeline-item icon="mdi-cancel" color="red"
@@ -177,7 +177,7 @@
                                 </v-timeline-item>
                                 <v-timeline-item icon="mdi-cancel" color="red" 
                                     v-if="solicitud_seleccionada.resultado_directora == false">
-                                    <span slot="opposite">Rechazado</span>
+                                    <span slot="opposite">Rechazado </span>
                                     <span slot="opposite">Director </span>
                                 </v-timeline-item>
                             </v-timeline>
@@ -223,6 +223,10 @@ export default {
                 {
                     title: 'Por descripcion',
                     prop: 'descripcion',
+                },
+                {
+                    title: 'Por requisitos',
+                    prop: 'requisitos',
                 },
             ],
             errorMessages: '',

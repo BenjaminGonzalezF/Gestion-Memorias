@@ -11,10 +11,7 @@
                 <v-icon right small>mdi-note-plus</v-icon>
             </v-btn>
             <v-spacer></v-spacer>
-            <!-- Arreglar el ordenar Ojo********* -->
             <v-menu offset-y>
-                <v-text-field class="pt-5" placeholder="Strawberries" outlined clearable></v-text-field>
-                <v-btn dark x-large color="pink"> SEARCH </v-btn>
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn depressed color="#f5a42a" class="mb-5" dark small v-bind="attrs" v-on="on">
                         Ordenar

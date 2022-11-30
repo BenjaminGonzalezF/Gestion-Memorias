@@ -6,10 +6,10 @@
             </div>
         <v-layout row class="mx-1">
             <v-col cols="12" sm="6" md="4">
-                <v-autocomplete max-width="400" rounded solo-inverted v-model="buscar"
+                <v-autocomplete max-width="400" rounded dense filled outlined v-model="buscar"
                     :items="temasHistorial" color="white" item-text="nombre" item-title="nombre"
                     label="Buscar proyectos" placeholder="Escribe para buscar"
-                    prepend-icon="mdi-database-search">
+                    prepend-icon="mdi-database-search" return-object>
                 </v-autocomplete>
             </v-col>
             <v-spacer></v-spacer>
@@ -21,6 +21,13 @@
                         <v-icon right small>mdi-sort</v-icon>
                     </v-btn>
                 </template>   
+                <v-list>
+                    <v-list-item v-for="(item, index) in itemsOrdenar" :key="index" link>
+                        <v-list-item-title @click="sortBy(item.prop)">{{
+                            item.title
+                        }}</v-list-item-title>
+                    </v-list-item>
+                </v-list>
             </v-menu>
         </v-layout>
         <v-card height="500" width="100%" outlined class="overflow-y-auto" >
@@ -43,7 +50,7 @@
                                     <div class="caption grey--text">Creador</div>
                                     <div>{{ project.nombreCreador }}</div>
                                 </v-flex>
-                                <v-flex xs6 sm4 md1>
+                                <v-flex xs6 sm4 md2>
                                     <div class="caption grey--text">fecha</div>
                                     <div>{{ project.fechacambio }}</div>
                                 </v-flex>
@@ -52,7 +59,7 @@
                                     <div v-if="project.resultado_comite">Aprobado</div>
                                     <div v-else>Rechazado</div>
                                 </v-flex>
-                                <v-flex xs2 sm3 md2>
+                                <v-flex xs2 sm3 md1>
                                     <!-- <div class="caption grey--text">Durum</div> -->
                                     <div class="my-1 text-center">
                                         <v-btn
@@ -151,6 +158,7 @@ export default {
         return {
             drawer: null,
             toggle: false,
+            buscar: null,
             drawerSolicitud: false,
             tituloProyecto: null,
             descripcionProyecto: null,
@@ -161,14 +169,14 @@ export default {
             temasHistorial: [],
             cargando_temas: true,
             itemsOrdenar: [
-                { title: 'Por titulo', prop: 'title' },
+                { title: 'Por titulo', prop: 'nombre' },
                 {
                     title: 'Por creador',
-                    prop: 'creador',
+                    prop: 'nombreCreador',
                 },
                 {
                     title: 'Por fecha',
-                    prop: 'fecha',
+                    prop: 'fechacambio',
                 },
             ],
         };
@@ -318,7 +326,7 @@ export default {
             //doc.save(pdfName + '.pdf');
         },
         sortBy(prop) {
-            this.solicitudes.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
+            this.temas.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
         },
         verSolicitud(titulo, descripcion, estudiante, fecha) {
             this.drawerSolicitud = true

@@ -1,19 +1,14 @@
 <template>
     <div class="Solicitudes">
-        <div class="one"> 
-            <h1>Direccion de Escuela: Historial</h1> 
-            <notificacion></notificacion>
-        </div>
         <v-layout row class="mx-1">
+            <v-col cols="12" sm="6" md="4">
+                <v-autocomplete max-width="400" rounded dense filled outlined v-model="buscar"
+                    :items="solicitudes" color="white" item-text="nombre" item-title="nombre"
+                    label="Buscar proyectos" placeholder="Escribe para buscar"
+                    prepend-icon="mdi-database-search">
+                </v-autocomplete>
+            </v-col>
             <v-spacer></v-spacer>
-            <v-btn-toggle v-model="toggle" dense class="mr-2" style="max-height: 20px !important">
-                <v-btn small color="#f5a42a" :disabled="toggle === 0">
-                    <v-icon class="white--text">mdi-view-agenda</v-icon>
-                </v-btn>
-                <v-btn small color="#f5a42a" :disabled="toggle === 1">
-                    <v-icon class="white--text">mdi-view-grid</v-icon>
-                </v-btn>
-            </v-btn-toggle>
             <v-menu offset-y>
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn depressed color="#f5a42a" class="mb-5" dark small v-bind="attrs" v-on="on">
@@ -40,7 +35,6 @@
                 <v-container class="my-3">
                     <div v-for="(project, index) in solicitudes" :key="index">
                         <v-card color="rgb(247, 247, 247)" flat class="pa-3 mb-2" v-if="project.estado == null">
-
                             <v-layout row wrap :class="`pa-3 project ${project.status}`">
                                 <v-flex xs8 md2>
                                     <div class="caption grey--text">Titulo proyecto</div>
@@ -54,8 +48,7 @@
                                     <div class="caption grey--text">Alumno</div>
                                     <div>{{ project.alumno }}</div>
                                 </v-flex>
-
-                                <v-flex xs4 sm4 md1>
+                                <v-flex xs4 sm4 md2>
                                     <div class="caption grey--text">Profesor guia</div>
                                     <div>{{ project.profeguia }}</div>
                                 </v-flex>   
@@ -115,7 +108,6 @@
 
 <script>
 import loading from "@/components/loading.vue"
-import notificacion from "@/components/notificacion.vue"
 export default {
     name: 'Solicitudes',
     data() {
@@ -134,14 +126,14 @@ export default {
             solicitudes: [],
             solicitudes_realizadas: 0,
             itemsOrdenar: [
-                { title: 'Por titulo', prop: 'title' },
+                { title: 'Por titulo', prop: 'nombre' },
                 {
-                    title: 'Por creador',
-                    prop: 'person',
+                    title: 'Por alumno',
+                    prop: 'alumno',
                 },
                 {
-                    title: 'Por fecha',
-                    prop: 'fecha',
+                    title: 'Por estado',
+                    prop: 'estado_solicitud',
                 },
             ],
             items: [
@@ -152,8 +144,7 @@ export default {
         };
     },
     components: {
-        loading,
-        notificacion
+        loading
     },
     created() {
         this.cargar_solicitudes()
@@ -229,6 +220,9 @@ export default {
             else if (status == 'en progreso') return 'En progreso'
             else if (status == 'atrasado') return 'Atrasado'
         },
+        sortBy(prop) {
+            this.solicitudes.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
+        },
 
         redirigir(ref) {
             if (ref == "Mis solicitudes") {
@@ -254,34 +248,6 @@ export default {
 </script>
 
 <style>
-
-.one h1 { 
-  text-align: center; 
-  text-transform: uppercase; 
-  padding-bottom: 5px; 
-} 
-.one h1:before { 
-  width: 28px; 
-  height: 5px; 
-  display: block; 
-  content: ""; 
-  position: absolute; 
-  bottom: 3px; 
-  left: 50%; 
-  margin-left: -14px; 
-  background-color: #f5a42a; 
-} 
-.one h1:after { 
-  width: 100px; 
-  height: 1px; 
-  display: block; 
-  content: ""; 
-  position: relative; 
-  margin-top: 25px; 
-  left: 50%; 
-  margin-left: -50px; 
-  background-color: #f5a42a; 
-} 
 .v-list-item:hover {
     background: #f5a42a;
 }

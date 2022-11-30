@@ -127,14 +127,14 @@ export default {
             mis_solicitudes: 0,
             solicitud_seleccionada:{},
             itemsOrdenar: [
-                { title: "Por titulo", prop: "title" },
+                { title: "Por titulo", prop: "nombre" },
                 {
-                    title: "Por profesor",
-                    prop: "profesor",
+                    title: "Por descripcion",
+                    prop: "descripcion",
                 },
                 {
-                    title: "Por fecha",
-                    prop: "fecha",
+                    title: "Por estado",
+                    prop: "resultado_profesor_postulante",
                 },
             ],
             id_user:null,
@@ -177,6 +177,9 @@ export default {
         verSolicitud(tema) {
             this.drawerSolicitud = true;
             this.tema_seleccionado = tema
+        },
+        sortBy(prop) {
+            this.missolicitudestemas.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
         },
         enviarSolicitud(id) {
             this.$store.state.id_tema_solicitar = id

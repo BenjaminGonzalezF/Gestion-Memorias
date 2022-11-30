@@ -7,12 +7,7 @@
         <v-layout row class="mx-1">
             <v-spacer></v-spacer>
             <v-btn-toggle v-model="toggle" dense class="mr-2" style="max-height: 20px !important">
-                <v-btn small color="#f5a42a" :disabled="toggle === 0">
-                    <v-icon class="white--text">mdi-view-agenda</v-icon>
-                </v-btn>
-                <v-btn small color="#f5a42a" :disabled="toggle === 1">
-                    <v-icon class="white--text">mdi-view-grid</v-icon>
-                </v-btn>
+
             </v-btn-toggle>
             <v-menu offset-y>
                 <template v-slot:activator="{ on, attrs }">
@@ -127,20 +122,15 @@ export default {
             temas: [],
             temas_pendientes: 0,
             itemsOrdenar: [
-                { title: 'Por titulo', prop: 'title' },
+                { title: 'Por titulo', prop: 'nombre' },
                 {
                     title: 'Por creador',
-                    prop: 'person',
+                    prop: 'nombrecreador',
                 },
                 {
                     title: 'Por fecha',
                     prop: 'fecha',
                 },
-            ],
-            items: [
-                { title: "Mis solicitudes", icon: "mdi-folder" },
-                { title: "Estudiantes", icon: "mdi-account-multiple" },
-                { title: "Cerrar sesion", icon: "mdi-forum" },
             ],
         };
     },
@@ -248,7 +238,9 @@ export default {
             else if (status == 'en progreso') return 'En progreso'
             else if (status == 'atrasado') return 'Atrasado'
         },
-
+        sortBy(prop) {
+            this.temas.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
+        },
         redirigir(ref) {
             if (ref == "Mis solicitudes") {
                 if (this.$route.path !== "/profesor") {
