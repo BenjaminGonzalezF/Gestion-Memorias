@@ -118,7 +118,7 @@
                                                                 </div>
                                                             </v-flex>
                                                             <v-flex>
-                                                                <div class="caption black--text"><h2>Estudiante:</h2></div>
+                                                                <div class="caption black--text"><h2>Creador:</h2></div>
                                                                 <div> <h4> {{ estudiante }}</h4></div>
                                                             </v-flex>
                                                         </v-container>
