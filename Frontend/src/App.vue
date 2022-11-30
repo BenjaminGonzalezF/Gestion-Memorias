@@ -19,7 +19,7 @@
           UNIVERSIDAD DE TALCA 
           <br>
           FACULTAD DE INGENIERÍA.
-          LOS NICHES-CURICÓ-CHIE.
+          LOS NICHES-CURICÓ-CHILE.
           <br>
           TELEFONO: +56 75 220 17 36
         </v-card>
@@ -59,7 +59,7 @@
         <v-col
           cols="12"
           class="align-center"
-          >&copy; 2022 Sitema de Memorias Utalca</v-col>
+          >&copy; 2022 Sistema de Memorias Utalca</v-col>
       </v-row>
     </v-footer>
   <!-- Footer -->
